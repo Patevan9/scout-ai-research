@@ -114,3 +114,10 @@ unbuilt integration and is marked `SIMULATED_FUTURE`.
 "set that" scheduling/actuator capability. Corrected: no such capability
 exists; the case was rewritten to test self-correction within a
 teaching-shaped statement instead, which is real and testable today.
+
+**MILESTONE** — Scout Intelligence Test v1 (25 cases) completed the full
+gated review workflow — Claude drafted, ChatGPT independently reviewed across
+two rounds, Patrick approved — and was recorded to
+`benchmarks/scout-intelligence-test-v1.md`. Final scope: 21 CURRENT, 2
+SIMULATED_FUTURE, 2 BOTH. No results exist yet; TinyLlama baseline testing has
+not begun.

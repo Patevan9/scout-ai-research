@@ -60,24 +60,31 @@ work begins.
 - Gated research → review → approval workflow adopted (ADR-0002).
 - TinyLlama adopted as the required baseline for any future brain comparison
   (ADR-0003).
+- The permanent handoff documentation structure itself (this file, the
+  Charter, the decision records, `benchmarks/`, `RESEARCH_LOG.md`) —
+  independently inspected by ChatGPT at commit `436180e` and approved.
+- **Scout Intelligence Test v1** — 25 benchmark cases — completed two rounds
+  of ChatGPT review and is approved. See `benchmarks/scout-intelligence-test-v1.md`.
 
 ## Last completed step
 
-Claude produced **Benchmark Draft v1** of the Scout Intelligence Test's first
-25 cases, incorporating ChatGPT's first review round (vision-confidence
-correction, Brain Score / System Score separation, `test_scope` tagging,
-rewritten B4/C4/C5). **Not yet committed anywhere** — still awaiting ChatGPT's
-second independent review before Patrick decides whether it's approved.
+Benchmark v1 was recorded into `benchmarks/scout-intelligence-test-v1.md`
+following its approval. **TinyLlama baseline testing has not begun yet.** No
+replacement model has been selected. No benchmark harness has been
+implemented.
 
 ## Current benchmark status
 
-- 25 cases defined, categorized A–G.
-- Each case tagged: attribution (LM / Infra / Mixed), `test_scope` (CURRENT /
-  SIMULATED_FUTURE / BOTH), and scored via separate `system_verdict` /
-  `brain_verdict` fields.
-- **Status: DRAFT, under second review — not approved, not final, not in
-  `benchmarks/` yet.** `benchmarks/README.md` explains why the directory is
-  currently empty.
+- **Scout Intelligence Test v1 is approved and recorded** — 25 cases,
+  categories A–G, in `benchmarks/scout-intelligence-test-v1.md`.
+- 21 CURRENT, 2 SIMULATED_FUTURE, 2 BOTH.
+- Each case carries attribution (LM / Infra / Mixed) and is scored via
+  separate `system_verdict` / `brain_verdict` fields (Brain Score vs. System
+  Score kept separate, never collapsed).
+- **No results exist yet.** `benchmarks/results/` has not been created.
+  Running TinyLlama against this benchmark, choosing any candidate
+  replacement model, and building a test harness are all still undecided —
+  see "Next safest step."
 
 ## Important verified findings
 
@@ -126,18 +133,18 @@ second independent review before Patrick decides whether it's approved.
 
 ## Awaiting ChatGPT review
 
-Benchmark Draft v1 (25 cases) — full content currently lives in conversation
-history only, not yet committed to `benchmarks/`. Will be committed once
-ChatGPT's second review and Patrick's approval are both in.
+This documentation/recording commit itself — ChatGPT will independently
+inspect it before TinyLlama baseline testing or any implementation begins.
+Nothing else is currently pending review.
 
 ## Next safest step
 
-1. ChatGPT independently reviews Benchmark Draft v1.
-2. Patrick approves (or requests further revision).
-3. Only then: commit the approved benchmark into `benchmarks/`, and record an
-   ADR in `docs/decisions/` if the benchmark's methodology (Brain/System
-   split, `test_scope` tagging) should be treated as an established decision
-   rather than just an approved document.
+**Undecided.** Benchmark v1 being approved does not by itself decide what
+happens next — that remains for Patrick and ChatGPT to review and agree on
+together. Candidates that have been named but not chosen: beginning TinyLlama
+baseline testing against v1, designing a minimal test harness, or continuing
+research on an unresolved question above. None of these has been approved to
+start.
 
 ---
 

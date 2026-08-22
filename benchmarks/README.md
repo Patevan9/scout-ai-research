@@ -1,24 +1,20 @@
 # Benchmarks
 
-Reserved location for the Scout Intelligence Test and future benchmark
-results, once approved.
+## Approved: Scout Intelligence Test v1
 
-## Current status: empty, on purpose
+**[`scout-intelligence-test-v1.md`](scout-intelligence-test-v1.md)** — the
+approved benchmark definition. 25 cases across categories A–G, each with
+attribution (LM / Infra / Mixed) and `test_scope` (CURRENT / SIMULATED_FUTURE
+/ BOTH). Completed the gated review workflow (Claude drafted → ChatGPT
+reviewed, two rounds → Patrick approved) — see `SCOUT_AI_STATUS.md` and
+`RESEARCH_LOG.md` for the milestone record.
 
-**Benchmark Draft v1** (the first 25 test cases) exists but is **not yet
-here** — it's still under ChatGPT's second independent review round, per the
-gated workflow in `SCOUT_AI_STATUS.md` (0002). It is not final and has not
-been approved by Patrick. Committing it here happens only after that review
-and approval are both complete — see "Next safest step" in
-`SCOUT_AI_STATUS.md` for exactly what's pending.
+**No testing has been run against it yet.** TinyLlama baseline testing has
+not begun; no replacement model has been selected. See "Next safest step" in
+`SCOUT_AI_STATUS.md`.
 
-## Intended structure, once populated
+## `results/` — not yet created
 
-- `scout_intelligence_test_v1.md` (or similar) — the approved case
-  definitions: categories, per-case input/context, capability tested,
-  expected/unacceptable behavior, pass/fail criteria, LM/Infra/Mixed
-  attribution, and `test_scope` (CURRENT / SIMULATED_FUTURE / BOTH).
-- `results/` — one structured result file per benchmark run (see the result
-  schema referenced in `SCOUT_AI_STATUS.md` / `RESEARCH_LOG.md`), enough to
-  compare TinyLlama against any future candidate fairly, with Brain Score and
-  System Score reported separately rather than collapsed into one number.
+Reserved for one structured result file per benchmark run, using the schema
+defined at the bottom of `scout-intelligence-test-v1.md`. Created once actual
+testing begins.
