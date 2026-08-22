@@ -28,7 +28,19 @@ the design of the first concrete deliverable: the **Scout Intelligence Test** �
 permanent benchmark of real Scout interactions that any future brain must
 demonstrably beat.
 
-See `CLAUDE.md` for the full working notes, grounding facts, and current plan.
+## Start here
+
+- **[`SCOUT_AI_STATUS.md`](SCOUT_AI_STATUS.md)** — the current handoff document.
+  Read this first in any new session; it's meant to be enough to recover where
+  the project stands without prior conversation history.
+- **[`SCOUT_AI_CHARTER.md`](SCOUT_AI_CHARTER.md)** — stable long-term vision and
+  boundaries.
+- **[`docs/decisions/`](docs/decisions/)** — approved architectural/process
+  decisions.
+- **[`benchmarks/`](benchmarks/)** — the Scout Intelligence Test, once approved.
+- **[`RESEARCH_LOG.md`](RESEARCH_LOG.md)** — chronological findings.
+- `CLAUDE.md` — earlier working notes, predates the structure above; being
+  reconciled with it (see "Unresolved questions" in `SCOUT_AI_STATUS.md`).
 
 ---
 
