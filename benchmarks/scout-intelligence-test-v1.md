@@ -26,17 +26,21 @@ Every case carries:
   output, for example, still tests a `CURRENT` capability: Scout's routing
   and brain handle *some* text today regardless of where that text came
   from. `SIMULATED_FUTURE` is reserved for cases where the capability itself
-  has no current implementation, deterministic or model-based, to evaluate
-  at all.
+  has no current implementation, deterministic or model-based, for Scout's
+  *integrated* system to route to or invoke. A `RAW` test against a
+  canonical simulated payload may still be possible for such a case — see
+  the benchmark runner design
+  ([ADR-0005](../docs/decisions/0005-benchmark-runner-methodology.md)).
 
 Every result recorded against a case gets two separate verdicts, never one
 collapsed score — see **Brain Score vs. System Score** below.
 
 ## Brain Score vs. System Score
 
-A case tagged `Infra` gets a `system_verdict` only (`brain_verdict:
-NOT_TESTED` — the model was never supposed to see it). A case tagged `Mixed`
-or `BOTH` gets both, scored independently:
+A case tagged `Infra` attribution gets a `system_verdict` only
+(`brain_verdict: NOT_TESTED` — the model was never supposed to see it). A
+case tagged `Mixed` attribution — or tagged `LM` attribution with
+`test_scope: BOTH` (F2, F3) — gets both verdicts, scored independently:
 
 - **`system_verdict`** — did routing, retrieval, gating, wake-word handling,
   or the relevant deterministic guard do its job correctly.
@@ -232,9 +236,11 @@ a genuinely stated fact only ever hedged.
 *Attribution:* LM. *test_scope:* **SIMULATED_FUTURE** — `HabitLayer.
 getSummaryForGemini()` is called only from Gemini's prompt builder;
 TinyLlama's own prompt builder contains zero references to HabitLayer at
-all. TinyLlama cannot be meaningfully scored on this today. HabitLayer also
-only stores raw decaying keyword-frequency counts, never a structured
-preference — that structure exists only via explicit teaching into TruthDb.
+all. TinyLlama's current SYSTEM integration never receives this
+information — but TinyLlama CAN be scored in a RAW test using the canonical
+simulated payload (see ADR-0005). HabitLayer also only stores raw decaying
+keyword-frequency counts, never a structured preference — that structure
+exists only via explicit teaching into TruthDb.
 
 **C5. Cold-start from a real export file** *(revised — exact export fields
 corrected)*
@@ -350,7 +356,9 @@ hedging on something the detector was actually highly confident about.
 *Pass/Fail:* hedge language present only when warranted by the (simulated)
 confidence level.
 *Attribution:* LM. *test_scope:* **SIMULATED_FUTURE** — no reasoning-over-
-vision capability exists in any form today, deterministic or model-based.
+vision capability exists within Scout's current *integrated* system, in any
+form, deterministic or model-based. RAW model testing against a simulated
+vision payload remains possible (see ADR-0005).
 
 **F2. Coherent multi-signal description**
 *Input:* a known face plus two whitelisted objects.

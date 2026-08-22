@@ -121,3 +121,23 @@ two rounds, Patrick approved — and was recorded to
 `benchmarks/scout-intelligence-test-v1.md`. Final scope: 21 CURRENT, 2
 SIMULATED_FUTURE, 2 BOTH. No results exist yet; TinyLlama baseline testing has
 not begun.
+
+**MILESTONE** — The Least Sufficient Intelligence Principle (Fast Path /
+Retrieval Path / Reasoning Path, with a general escalation-safety rule) and
+the benchmark runner methodology (RAW / SYSTEM / BOTH per-case assignment,
+canonical model-neutral RAW context, three permanently-separate evaluation
+axes) each completed the gated review workflow and were recorded as
+ADR-0004 and ADR-0005. See those records for full content — not duplicated
+here.
+
+**SUPERSEDED** — Benchmark v1's C4/F1 notes originally read as though
+TinyLlama could not be scored on those cases at all. Corrected: the
+limitation only applies to Scout's *current integrated* system — a RAW test
+against a canonical simulated payload can still score TinyLlama (and any
+future candidate) on both. Benchmark v1's wording was clarified accordingly,
+not rewritten in substance.
+
+**SUPERSEDED** — Benchmark v1's "Brain Score vs. System Score" section
+previously read "a case tagged `Mixed` or `BOTH` gets both" — comparing an
+`attribution` value (`Mixed`) against a `test_scope` value (`BOTH`) as if
+they were the same field. Corrected to name both fields explicitly.

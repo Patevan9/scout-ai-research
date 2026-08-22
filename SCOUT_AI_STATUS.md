@@ -65,13 +65,28 @@ work begins.
   independently inspected by ChatGPT at commit `436180e` and approved.
 - **Scout Intelligence Test v1** — 25 benchmark cases — completed two rounds
   of ChatGPT review and is approved. See `benchmarks/scout-intelligence-test-v1.md`.
+- **Least Sufficient Intelligence Principle** (Fast Path / Retrieval Path /
+  Reasoning Path selection, and its selector safety rules) — approved. See
+  [ADR-0004](docs/decisions/0004-least-sufficient-intelligence.md).
+- **Benchmark runner methodology** (RAW / SYSTEM / BOTH per-case assignment,
+  the canonical model-neutral RAW-context principle, and the three
+  permanently-separate evaluation axes — Brain Quality, System Quality,
+  Response Speed) — approved. See
+  [ADR-0005](docs/decisions/0005-benchmark-runner-methodology.md).
 
 ## Last completed step
 
-Benchmark v1 was recorded into `benchmarks/scout-intelligence-test-v1.md`
-following its approval. **TinyLlama baseline testing has not begun yet.** No
-replacement model has been selected. No benchmark harness has been
-implemented.
+Benchmark v1 was recorded, then clarified with three wording fixes (the
+`SIMULATED_FUTURE` definition, and the C4/F1 notes) to correctly state that
+C4 and F1 can still be scored via a RAW test even though no current
+integrated-Scout path exists for them — plus one unrelated wording fix
+(Brain Score vs. System Score previously compared an `attribution` value
+against a `test_scope` value). The Least Sufficient Intelligence Principle
+and the benchmark runner methodology (RAW/SYSTEM/BOTH) were recorded as
+ADR-0004 and ADR-0005.
+
+**TinyLlama baseline testing has not begun yet. No replacement model has
+been selected. No benchmark harness has been implemented.**
 
 ## Current benchmark status
 
@@ -133,9 +148,10 @@ implemented.
 
 ## Awaiting ChatGPT review
 
-This documentation/recording commit itself — ChatGPT will independently
-inspect it before TinyLlama baseline testing or any implementation begins.
-Nothing else is currently pending review.
+This documentation/recording commit (ADR-0004, ADR-0005, and the three
+Benchmark v1 wording clarifications) — ChatGPT will independently inspect it
+before TinyLlama baseline testing or any implementation begins. Nothing else
+is currently pending review.
 
 ## Next safest step
 
