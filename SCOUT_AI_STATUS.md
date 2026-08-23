@@ -80,25 +80,38 @@ benchmark data.
   ModelAdapter/InferenceBackend boundary, fixture and result schemas, the
   Benchmark Profile process) — reviewed by ChatGPT and approved. Being
   implemented in small, individually authorized steps; not yet complete.
+- **Canonical Context Renderer / Option B interface migration** (the
+  renderer, `RenderedContext`/`RenderedTurn`, and the `ModelAdapter`
+  boundary change) — reviewed by ChatGPT and approved through Step 5,
+  commit `3ad0598`. See "Last completed step" below.
 
 ## Last completed step
 
-Lab Runner implementation Step 3: the canonical RAW fixture schema and a
-loader/validator were implemented in `lab/lab_runner/`, enforcing required
-fields, allowed field names, field types, and valid conversation roles —
-a malformed fixture is always rejected, never silently accepted. Proven
-against one valid and one intentionally invalid synthetic fixture
-(`lab_runner/tests/fixture_data/`), plus one integration test showing a
-validated fixture flows through the existing mock adapter/backend
-pipeline. PyYAML was added as the one new dependency, for fixture
-parsing only. No real model, no llama-cpp-python, no TinyLlama file, no
-real benchmark fixtures, and no Benchmark Profile exist yet — see
-`lab/README.md` for current implementation status. (Steps 1 and 2 —
-directory structure, then the mock adapter/backend plumbing — were
-completed and approved first.)
+Step 5 of the Canonical Context Renderer / Option B interface migration,
+complete at commit `3ad0598`. The pipeline is now enforced by
+construction:
 
-**TinyLlama baseline testing has not begun yet. No replacement model has
-been selected. No real benchmark has been run.**
+    canonical context -> Canonical Context Renderer -> RenderedContext
+      -> ModelAdapter -> InferenceBackend
+
+`run_case()` now invokes the renderer before calling the adapter.
+`ModelAdapter` — and both concrete adapters, `MockAdapter` and
+`TinyLlamaChatMLAdapter` — receive only `RenderedContext`, never the raw
+canonical fixture dict. Structured conversation turns (`RenderedTurn`,
+introduced in the Step 4A correction) become TinyLlama's ChatML
+`<|user|>`/`<|assistant|>` turns directly, with no fragile string
+parsing. TinyLlama's verified ChatML format and Scout's system
+instruction are unchanged in substance. Current full test suite: **44/44
+passing.** See `RESEARCH_LOG.md` for the milestone entries covering the
+renderer Steps 1–4A and this Step 5 commit; full detail lives in each
+commit's own message, not duplicated here.
+
+`B1.yaml`, `D2.yaml`, and `F1.yaml` remain untracked pilot fixtures and
+are **not** part of the permanent benchmark record yet.
+
+**No real model has been run. No real inference backend has been
+implemented or run. TinyLlama baseline testing has not begun. No
+replacement model has been selected.**
 
 ## Current benchmark status
 
@@ -169,18 +182,18 @@ preserved as evidence for later reviewed incorporation.
 
 ## Awaiting ChatGPT review
 
-Lab Runner implementation Step 3 (the canonical fixture schema and
-loader/validator commit) — Patrick will bring the report to ChatGPT for
-independent inspection before Step 4 is authorized. Nothing else is
-currently pending review.
+Step 5 (the Option B interface migration commit, `3ad0598`) has been
+independently reviewed and approved by ChatGPT. Nothing is currently
+pending review.
 
 ## Next safest step
 
-Lab Runner implementation continues in small, individually authorized
-steps only — each one proposed, reported, reviewed by ChatGPT, and
-approved by Patrick before the next begins. Step 4 has not been authorized
-yet. TinyLlama baseline testing, choosing any candidate replacement model,
-and approving a Benchmark Profile all remain undecided and unstarted.
+**Not yet authorized.** The Canonical Context Renderer / Option B
+migration (Steps 1 through 5) is complete and reviewed. What comes
+next — the remaining pilot-fixture work, a Step 6, TinyLlama baseline
+testing, choosing any candidate replacement model, or approving a
+Benchmark Profile — is undecided. Waiting for Patrick and ChatGPT to
+define the next safe step together.
 
 ---
 

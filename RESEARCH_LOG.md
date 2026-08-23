@@ -235,3 +235,34 @@ This evidence does not change Scout Intelligence Test v1, the approved
 25-case benchmark, any Lab Runner code, or any fixture, and does not
 authorize modifying current production Scout — recorded as research
 evidence only, for later reviewed incorporation.
+
+**MILESTONE** — Canonical Context Renderer, Steps 1–4A, all reviewed and
+approved: fixture validator hardening for `capability_availability` and
+`simulated_vision_payload.detections` (`a03577e`); the `RenderedContext`
+dataclass (`6ca6757`); `render_canonical_context()` implementing the five
+deterministic rendering rules — facts, vision evidence, capabilities,
+connectivity, plus the two deliberately-deferred cases (`memory_habit_payload`
+populated, empty vision detections) that raise rather than guess (`af5bbcd`);
+reviewer-field leak protection tests (`77d5b62`); and the Step 4A correction
+replacing flattened `conversation_block` text with structured `RenderedTurn`
+objects, resolving a real architectural blocker (TinyLlama's separate ChatML
+turns can't be reconstructed from flattened text without fragile parsing)
+without ever writing that parser (`8495909`). Full detail lives in each
+commit's own message and this session's reports, not duplicated here.
+
+**MILESTONE** — Step 5, Option B `ModelAdapter` interface migration,
+reviewed and approved at commit `3ad0598`. The pipeline is now enforced by
+construction: canonical context → `render_canonical_context()` →
+`RenderedContext` → `ModelAdapter` → `InferenceBackend`. `run_case()`
+invokes the renderer before calling the adapter; `MockAdapter` and
+`TinyLlamaChatMLAdapter` receive only `RenderedContext`, never the raw
+canonical dict — reviewer-only fields (`test_id`, `source_case`, `expected`,
+`notes`) are structurally unavailable to either. Structured conversation
+turns become TinyLlama's `<|user|>`/`<|assistant|>` ChatML turns directly,
+with no string parsing. TinyLlama's verified ChatML format and Scout's
+system instruction are unchanged in substance; a new `CANONICAL CONTEXT`
+section (fixed order: state, capability, facts, memory/habit, vision
+evidence) is folded into the system turn only when populated. Full test
+suite: 44/44 passing. `B1.yaml`/`D2.yaml`/`F1.yaml` remain untracked pilot
+fixtures, not part of the permanent benchmark record. No real model, no
+real inference backend. Next implementation step not yet authorized.
