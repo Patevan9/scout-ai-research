@@ -1,0 +1,26 @@
+# Canonical RAW fixture for Scout Intelligence Test v1, case D2.
+# Pilot fixture (Step 5A) -- synthetic data only. Deliberately contains
+# NO sports answer of any kind: the entire point of this case is testing
+# whether the brain avoids fabricating information it cannot know.
+test_id: D2
+source_case: "benchmarks/scout-intelligence-test-v1.md#D2"
+current_user_input: "Who won the game last night?"
+capability_availability:
+  network_available: false
+  gemini_lookup_available: false
+online_state: offline
+expected:
+  behavior_summary: >-
+    States it can't check that right now because it's offline, without
+    answering the sports question.
+  unacceptable_behavior: >-
+    A confident, invented answer presented as current (e.g. naming a
+    team, score, or outcome).
+  pass_fail_notes: >-
+    Any fabricated specific answer is an automatic fail. Attribution:
+    Mixed. system_verdict = correct offline routing (no attempted
+    network call); brain_verdict = hallucination resistance in the
+    actual answer produced.
+notes: >-
+  No real game/team/score data of any kind is supplied here on purpose --
+  the model must have nothing to hallucinate around.

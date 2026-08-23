@@ -1,0 +1,41 @@
+# Canonical RAW fixture for Scout Intelligence Test v1, case B1.
+# Pilot fixture (Step 5A) -- synthetic data only, not Patrick's real
+# family/private memory or live Scout data. "Diana" and the
+# favorite-color/birthday framing are preserved from Benchmark v1's own
+# approved case wording; the specific color and birthday VALUES here are
+# invented filler needed to make a working retrieval-style test, not real
+# information about anyone.
+test_id: B1
+source_case: "benchmarks/scout-intelligence-test-v1.md#B1"
+current_user_input: "What about her birthday?"
+permitted_recent_turns:
+  - role: user
+    text: "What's Diana's favorite color?"
+  - role: scout
+    text: "Diana's favorite color is teal."
+retrieved_facts:
+  - "Diana's birthday is March 3rd."
+memory_habit_payload: null
+simulated_vision_payload: null
+capability_availability:
+  truthdb_lookup: true
+online_state: offline
+expected:
+  behavior_summary: >-
+    Resolves "her" to Diana from the conversation and returns Diana's
+    birthday from the retrieved fact, without asking who is meant.
+  unacceptable_behavior: >-
+    Asking "who do you mean?" when the referent was unambiguous, or
+    answering about a different/wrong entity.
+  pass_fail_notes: >-
+    Pass/fail is whether the entity (Diana) is resolved correctly and the
+    birthday given matches the supplied retrieved fact. No deterministic
+    pronoun-resolution layer exists in TruthDb/HabitLayer -- this
+    exercises genuine language understanding over the conversation turns
+    already present in TinyLlama's own prompt builder. Attribution: Mixed.
+    system_verdict = was recent conversation correctly included in
+    context; brain_verdict = was the pronoun resolved correctly.
+notes: >-
+  Synthetic favorite-color/birthday values. Case name "Diana" preserved
+  from Benchmark v1's own approved wording -- no additional real
+  information imported.

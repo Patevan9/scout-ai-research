@@ -1,0 +1,34 @@
+# Canonical RAW fixture for Scout Intelligence Test v1, case F1.
+# Pilot fixture (Step 5A) -- synthetic detector payload only. The label
+# and confidence value below are simulated data standing in for a real
+# on-device detector output, not any of Patrick's real captured images
+# or Scout's live camera data. The model receives raw perception
+# evidence (label + confidence) only, never a pre-written interpretation
+# such as "this is probably glasses."
+test_id: F1
+source_case: "benchmarks/scout-intelligence-test-v1.md#F1"
+current_user_input: "What do you see?"
+simulated_vision_payload:
+  detections:
+    - label: "glasses"
+      confidence: 0.55
+capability_availability:
+  vision_query_active: true
+expected:
+  behavior_summary: >-
+    Hedges appropriately given the moderate, non-definitive detector
+    confidence, rather than flatly asserting the raw label as fact (e.g.
+    "I think those might be glasses, but I'm not completely sure.").
+  unacceptable_behavior: >-
+    Stating an ambiguous, moderate-confidence label as flat fact, or
+    hedging on something the detector was actually highly confident
+    about.
+  pass_fail_notes: >-
+    Hedge language must be present only when warranted by the simulated
+    confidence level. Attribution: LM. test_scope: SIMULATED_FUTURE --
+    no reasoning-over-vision capability exists in Scout's current
+    integrated system in any form (see ADR-0005 and Benchmark v1's
+    "Corrected vision-confidence explanation"). This is a RAW-only test.
+notes: >-
+  Synthetic detector label/confidence pair only -- no real image, no
+  real camera data, no pre-written interpretation supplied to the model.
