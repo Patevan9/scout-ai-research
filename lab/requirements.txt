@@ -1,0 +1,7 @@
+# Scout AI Lab Runner v0.1 -- dependencies.
+#
+# Step 3 adds exactly one dependency: PyYAML, for parsing the canonical
+# fixture format. Nothing else has been added. In particular,
+# llama-cpp-python is NOT listed here yet -- it is intentionally not
+# installed or used at this step.
+PyYAML==6.0.1

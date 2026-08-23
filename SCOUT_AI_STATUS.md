@@ -52,8 +52,10 @@ own tagging system.
 **Groundwork, with the first approved implementation underway.** No model
 chosen, no fine-tuning, no TinyLlama run, no real inference. The approved
 Scout AI Lab Runner v0.1 design is being built in small, individually
-authorized steps (see `lab/`) — architecture plumbing only so far, proven
-with a mock adapter and a mock backend, not a real model.
+authorized steps (see `lab/`) — architecture plumbing and the canonical
+fixture schema/validator proven so far, with a mock adapter, a mock
+backend, and synthetic-only test fixtures, not a real model or real
+benchmark data.
 
 ## Current approved work
 
@@ -81,14 +83,19 @@ with a mock adapter and a mock backend, not a real model.
 
 ## Last completed step
 
-Lab Runner implementation Step 2: the approved `ModelAdapter` and
-`InferenceBackend` interfaces were defined in `lab/lab_runner/`, along with
-one mock adapter and one mock backend proving the
-`canonical context → adapter → backend → result` pipeline end to end, and
-one automated test confirming it. No real model, no llama-cpp-python, no
-TinyLlama file, no benchmark fixtures, and no Benchmark Profile exist yet —
-see `lab/README.md` for current implementation status. (Step 1, the
-directory-structure-only commit, was completed and approved first.)
+Lab Runner implementation Step 3: the canonical RAW fixture schema and a
+loader/validator were implemented in `lab/lab_runner/`, enforcing required
+fields, allowed field names, field types, and valid conversation roles —
+a malformed fixture is always rejected, never silently accepted. Proven
+against one valid and one intentionally invalid synthetic fixture
+(`lab_runner/tests/fixture_data/`), plus one integration test showing a
+validated fixture flows through the existing mock adapter/backend
+pipeline. PyYAML was added as the one new dependency, for fixture
+parsing only. No real model, no llama-cpp-python, no TinyLlama file, no
+real benchmark fixtures, and no Benchmark Profile exist yet — see
+`lab/README.md` for current implementation status. (Steps 1 and 2 —
+directory structure, then the mock adapter/backend plumbing — were
+completed and approved first.)
 
 **TinyLlama baseline testing has not begun yet. No replacement model has
 been selected. No real benchmark has been run.**
@@ -153,16 +160,16 @@ been selected. No real benchmark has been run.**
 
 ## Awaiting ChatGPT review
 
-Lab Runner implementation Step 2 (the mock-adapter/mock-backend plumbing
-commit) — Patrick will bring the report to ChatGPT for independent
-inspection before Step 3 is authorized. Nothing else is currently pending
-review.
+Lab Runner implementation Step 3 (the canonical fixture schema and
+loader/validator commit) — Patrick will bring the report to ChatGPT for
+independent inspection before Step 4 is authorized. Nothing else is
+currently pending review.
 
 ## Next safest step
 
 Lab Runner implementation continues in small, individually authorized
 steps only — each one proposed, reported, reviewed by ChatGPT, and
-approved by Patrick before the next begins. Step 3 has not been authorized
+approved by Patrick before the next begins. Step 4 has not been authorized
 yet. TinyLlama baseline testing, choosing any candidate replacement model,
 and approving a Benchmark Profile all remain undecided and unstarted.
 

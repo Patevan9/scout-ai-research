@@ -156,3 +156,11 @@ duplicated here.
 end with a mock adapter and mock backend, plus one automated test) are
 committed to `lab/`. No real model, no llama-cpp-python, and no TinyLlama
 run exist yet.
+
+**MILESTONE** — Lab Runner Step 3: the canonical RAW fixture schema and a
+loader/validator are committed to `lab/`, proven against one valid and
+one intentionally invalid synthetic fixture plus one runner-integration
+test — see `lab/README.md` and `SCOUT_AI_STATUS.md` for current status,
+not duplicated here. PyYAML added as the first dependency. Still no real
+model, no llama-cpp-python, no real benchmark fixtures, and no Benchmark
+Profile.

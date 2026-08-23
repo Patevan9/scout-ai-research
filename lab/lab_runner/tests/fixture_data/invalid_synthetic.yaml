@@ -1,0 +1,9 @@
+# SYNTHETIC, INTENTIONALLY MALFORMED fixture for Lab Runner Step 3
+# automated tests only. Used to prove the loader rejects an unknown
+# field rather than silently accepting it. Not a real benchmark case.
+# Contains no real Scout memory, TruthDb content, family/private
+# information, or conversation transcript.
+test_id: TEST_SYNTHETIC_INVALID_01
+current_user_input: "This fixture is intentionally invalid."
+made_up_field_that_does_not_exist: true
+notes: "Synthetic, intentionally malformed -- used only to prove the loader rejects unknown fields."

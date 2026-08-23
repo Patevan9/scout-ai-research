@@ -5,13 +5,15 @@ v1's RAW cases against local models — completely separate from the Scout
 Android app. It does not require Scout to run, and it never modifies
 `Patevan9/Scout`.
 
-**Status: architecture plumbing proven with a mock model only. No real
-model has been loaded or run.** `lab_runner/` now contains the approved
-`ModelAdapter`/`InferenceBackend` interfaces, one mock adapter and one
-mock backend that prove the `canonical context → adapter → backend →
-result` pipeline works end to end, and one automated test confirming it.
-There is still no real inference backend, no TinyLlama, no benchmark
-fixtures, and no Benchmark Profile.
+**Status: architecture plumbing + fixture validation proven with mocks
+and synthetic data only. No real model has been loaded or run.**
+`lab_runner/` contains the approved `ModelAdapter`/`InferenceBackend`
+interfaces, a mock adapter and mock backend proving the
+`canonical context → adapter → backend → result` pipeline end to end,
+and the canonical fixture schema + loader/validator, proven against one
+valid and one intentionally invalid synthetic fixture. There is still no
+real inference backend, no TinyLlama, no real benchmark fixtures, and no
+Benchmark Profile.
 
 The full design (platform choice, model-adapter boundary, fixture and
 result schemas, scoring approach, Benchmark Profile process, and the
@@ -24,8 +26,11 @@ approval and what step comes next.
 
 - `config/` — hand-maintained configuration, starting with an empty
   model registry scaffold (`models.yaml`).
-- `fixtures/` — will hold the RAW benchmark test-case fixtures (YAML).
-  Empty for now — no fixtures have been created yet.
+- `fixtures/` — will hold the real RAW benchmark test-case fixtures
+  (YAML), one per Scout Intelligence Test v1 case. Still empty — no real
+  fixtures have been created yet. (Synthetic, plumbing-only fixtures used
+  purely by automated tests live under `lab_runner/tests/fixture_data/`,
+  kept deliberately separate from this directory.)
 - `results/` — will hold benchmark result records (JSON). Empty for now —
   no benchmark has been run.
 - `models/` — where local model binary files (e.g. `.gguf`) would be
@@ -35,12 +40,14 @@ approval and what step comes next.
   the approved interfaces; `mock_adapter.py`/`mock_backend.py` are
   stand-ins that prove the pipeline without any real model;
   `runner.py` is the orchestration function that wires an adapter and a
-  backend together; `tests/` has one automated test proving the wiring
-  actually works. Run it with:
+  backend together; `fixture_schema.py`/`fixtures_loader.py` define and
+  enforce the canonical RAW fixture schema; `tests/` has the automated
+  tests, including synthetic-only fixture data. Run all of them with:
   ```
   cd lab
-  python3 -m unittest lab_runner.tests.test_runner -v
+  python3 -m unittest discover -s lab_runner/tests -t . -v
   ```
 
 No TinyLlama or any other real model file has been downloaded or run. No
-real inference backend exists yet — only the mock.
+real inference backend exists yet — only the mock. `requirements.txt`
+lists exactly one dependency so far: PyYAML, for parsing fixtures.
