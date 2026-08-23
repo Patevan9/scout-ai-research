@@ -6,7 +6,7 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-22
+Last updated: 2026-08-23
 
 ---
 
@@ -49,10 +49,11 @@ own tagging system.
 
 ## Current project phase
 
-**Groundwork.** No implementation, no model chosen, no fine-tuning, no code.
-Current focus: defining the Scout Intelligence Test (a permanent benchmark of
-real Scout interactions) as the first concrete deliverable, before any brain
-work begins.
+**Groundwork, with the first approved implementation underway.** No model
+chosen, no fine-tuning, no TinyLlama run, no real inference. The approved
+Scout AI Lab Runner v0.1 design is being built in small, individually
+authorized steps (see `lab/`) — architecture plumbing only so far, proven
+with a mock adapter and a mock backend, not a real model.
 
 ## Current approved work
 
@@ -73,20 +74,24 @@ work begins.
   permanently-separate evaluation axes — Brain Quality, System Quality,
   Response Speed) — approved. See
   [ADR-0005](docs/decisions/0005-benchmark-runner-methodology.md).
+- **Scout AI Lab Runner v0.1 design** (standalone PC test harness, the
+  ModelAdapter/InferenceBackend boundary, fixture and result schemas, the
+  Benchmark Profile process) — reviewed by ChatGPT and approved. Being
+  implemented in small, individually authorized steps; not yet complete.
 
 ## Last completed step
 
-Benchmark v1 was recorded, then clarified with three wording fixes (the
-`SIMULATED_FUTURE` definition, and the C4/F1 notes) to correctly state that
-C4 and F1 can still be scored via a RAW test even though no current
-integrated-Scout path exists for them — plus one unrelated wording fix
-(Brain Score vs. System Score previously compared an `attribution` value
-against a `test_scope` value). The Least Sufficient Intelligence Principle
-and the benchmark runner methodology (RAW/SYSTEM/BOTH) were recorded as
-ADR-0004 and ADR-0005.
+Lab Runner implementation Step 2: the approved `ModelAdapter` and
+`InferenceBackend` interfaces were defined in `lab/lab_runner/`, along with
+one mock adapter and one mock backend proving the
+`canonical context → adapter → backend → result` pipeline end to end, and
+one automated test confirming it. No real model, no llama-cpp-python, no
+TinyLlama file, no benchmark fixtures, and no Benchmark Profile exist yet —
+see `lab/README.md` for current implementation status. (Step 1, the
+directory-structure-only commit, was completed and approved first.)
 
 **TinyLlama baseline testing has not begun yet. No replacement model has
-been selected. No benchmark harness has been implemented.**
+been selected. No real benchmark has been run.**
 
 ## Current benchmark status
 
@@ -148,19 +153,18 @@ been selected. No benchmark harness has been implemented.**
 
 ## Awaiting ChatGPT review
 
-This documentation/recording commit (ADR-0004, ADR-0005, and the three
-Benchmark v1 wording clarifications) — ChatGPT will independently inspect it
-before TinyLlama baseline testing or any implementation begins. Nothing else
-is currently pending review.
+Lab Runner implementation Step 2 (the mock-adapter/mock-backend plumbing
+commit) — Patrick will bring the report to ChatGPT for independent
+inspection before Step 3 is authorized. Nothing else is currently pending
+review.
 
 ## Next safest step
 
-**Undecided.** Benchmark v1 being approved does not by itself decide what
-happens next — that remains for Patrick and ChatGPT to review and agree on
-together. Candidates that have been named but not chosen: beginning TinyLlama
-baseline testing against v1, designing a minimal test harness, or continuing
-research on an unresolved question above. None of these has been approved to
-start.
+Lab Runner implementation continues in small, individually authorized
+steps only — each one proposed, reported, reviewed by ChatGPT, and
+approved by Patrick before the next begins. Step 3 has not been authorized
+yet. TinyLlama baseline testing, choosing any candidate replacement model,
+and approving a Benchmark Profile all remain undecided and unstarted.
 
 ---
 

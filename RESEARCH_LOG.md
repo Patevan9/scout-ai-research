@@ -141,3 +141,18 @@ not rewritten in substance.
 previously read "a case tagged `Mixed` or `BOTH` gets both" — comparing an
 `attribution` value (`Mixed`) against a `test_scope` value (`BOTH`) as if
 they were the same field. Corrected to name both fields explicitly.
+
+## 2026-08-23
+
+**MILESTONE** — Scout AI Lab Runner v0.1 design (standalone PC test
+harness, ModelAdapter/InferenceBackend boundary, fixture/result schemas,
+Benchmark Profile process) completed two rounds of ChatGPT review and was
+approved. Implementation authorized in small, individually gated steps —
+see `lab/README.md` and `SCOUT_AI_STATUS.md` for current status, not
+duplicated here.
+
+**MILESTONE** — Lab Runner Step 1 (directory structure only) and Step 2
+(the approved `ModelAdapter`/`InferenceBackend` interfaces, proven end to
+end with a mock adapter and mock backend, plus one automated test) are
+committed to `lab/`. No real model, no llama-cpp-python, and no TinyLlama
+run exist yet.

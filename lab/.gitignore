@@ -1,0 +1,3 @@
+# Python bytecode caches -- never committed.
+__pycache__/
+*.pyc
