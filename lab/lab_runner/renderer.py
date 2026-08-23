@@ -26,7 +26,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .rendered_context import RenderedContext
+from .rendered_context import RenderedContext, RenderedTurn
 
 
 class RendererError(ValueError):
@@ -34,14 +34,13 @@ class RendererError(ValueError):
     approved rendering rule for yet. Raised rather than guessing."""
 
 
-def _render_conversation_block(canonical_context: dict[str, Any]) -> str | None:
+def _render_conversation_turns(
+    canonical_context: dict[str, Any],
+) -> list[RenderedTurn] | None:
     turns = canonical_context.get("permitted_recent_turns")
     if not turns:
         return None
-    lines = ["Conversation:"]
-    for turn in turns:
-        lines.append(f"{turn['role']}: {turn['text']}")
-    return "\n".join(lines)
+    return [RenderedTurn(role=turn["role"], text=turn["text"]) for turn in turns]
 
 
 def _render_facts_block(canonical_context: dict[str, Any]) -> str | None:
@@ -105,7 +104,7 @@ def _render_state_block(canonical_context: dict[str, Any]) -> str | None:
 def render_canonical_context(canonical_context: dict[str, Any]) -> RenderedContext:
     return RenderedContext(
         current_user_input=canonical_context["current_user_input"],
-        conversation_block=_render_conversation_block(canonical_context),
+        conversation_turns=_render_conversation_turns(canonical_context),
         facts_block=_render_facts_block(canonical_context),
         memory_habit_block=_render_memory_habit_block(canonical_context),
         vision_evidence_block=_render_vision_evidence_block(canonical_context),

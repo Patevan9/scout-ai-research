@@ -22,7 +22,30 @@ from __future__ import annotations
 import dataclasses
 import unittest
 
+from lab_runner.rendered_context import RenderedTurn
 from lab_runner.renderer import render_canonical_context
+
+
+def _strings_in_field_value(value: object) -> list[str]:
+    """Every string actually contained in one RenderedContext field's
+    value, regardless of whether that field is a plain string or a list
+    of RenderedTurn objects -- so the leak check inspects real content,
+    not just top-level string fields."""
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list):
+        strings: list[str] = []
+        for item in value:
+            if isinstance(item, RenderedTurn):
+                strings.append(item.role)
+                strings.append(item.text)
+            elif isinstance(item, str):
+                strings.append(item)
+        return strings
+    raise AssertionError(f"Unexpected RenderedContext field value type: {type(value)!r}")
+
 
 REVIEWER_MARKERS = {
     "test_id": "MARKER_TEST_ID_7f3a",
@@ -68,17 +91,16 @@ class TestReviewerFieldLeakProtection(unittest.TestCase):
 
         for field in dataclasses.fields(result):
             value = getattr(result, field.name)
-            if value is None:
-                continue
-            for marker_name, marker in REVIEWER_MARKERS.items():
-                self.assertNotIn(
-                    marker,
-                    value,
-                    msg=(
-                        f"Reviewer-only marker for {marker_name!r} leaked "
-                        f"into RenderedContext.{field.name}"
-                    ),
-                )
+            for actual_string in _strings_in_field_value(value):
+                for marker_name, marker in REVIEWER_MARKERS.items():
+                    self.assertNotIn(
+                        marker,
+                        actual_string,
+                        msg=(
+                            f"Reviewer-only marker for {marker_name!r} leaked "
+                            f"into RenderedContext.{field.name}"
+                        ),
+                    )
 
     def test_legitimate_model_visible_content_still_present(self) -> None:
         # Sanity check that the test above isn't vacuously passing
@@ -86,10 +108,17 @@ class TestReviewerFieldLeakProtection(unittest.TestCase):
         canonical_context = {
             "test_id": REVIEWER_MARKERS["test_id"],
             "current_user_input": "What about her birthday?",
+            "permitted_recent_turns": [
+                {"role": "user", "text": "What's Diana's favorite color?"}
+            ],
             "retrieved_facts": ["Diana's birthday is March 3rd."],
         }
         result = render_canonical_context(canonical_context)
         self.assertEqual(result.current_user_input, "What about her birthday?")
+        self.assertEqual(
+            result.conversation_turns,
+            [RenderedTurn(role="user", text="What's Diana's favorite color?")],
+        )
         self.assertIn("Diana's birthday is March 3rd.", result.facts_block)
 
 

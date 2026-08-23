@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import unittest
 
+from lab_runner.rendered_context import RenderedTurn
 from lab_runner.renderer import RendererError, render_canonical_context
 
 
@@ -20,7 +21,7 @@ class TestRendererBasics(unittest.TestCase):
         result = render_canonical_context(
             {"test_id": "X", "current_user_input": "hello scout"}
         )
-        self.assertIsNone(result.conversation_block)
+        self.assertIsNone(result.conversation_turns)
         self.assertIsNone(result.facts_block)
         self.assertIsNone(result.memory_habit_block)
         self.assertIsNone(result.vision_evidence_block)
@@ -29,7 +30,7 @@ class TestRendererBasics(unittest.TestCase):
 
 
 class TestConversationRendering(unittest.TestCase):
-    def test_conversation_block_preserves_order_and_roles(self) -> None:
+    def test_conversation_turns_preserve_order_and_roles(self) -> None:
         result = render_canonical_context(
             {
                 "test_id": "X",
@@ -41,11 +42,18 @@ class TestConversationRendering(unittest.TestCase):
             }
         )
         self.assertEqual(
-            result.conversation_block,
-            "Conversation:\n"
-            "user: What's Diana's favorite color?\n"
-            "scout: Diana's favorite color is teal.",
+            result.conversation_turns,
+            [
+                RenderedTurn(role="user", text="What's Diana's favorite color?"),
+                RenderedTurn(role="scout", text="Diana's favorite color is teal."),
+            ],
         )
+
+    def test_no_conversation_turns_is_none(self) -> None:
+        result = render_canonical_context(
+            {"test_id": "X", "current_user_input": "hello"}
+        )
+        self.assertIsNone(result.conversation_turns)
 
 
 class TestFactsRendering(unittest.TestCase):
