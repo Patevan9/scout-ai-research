@@ -1,0 +1,19 @@
+# Scout AI Lab Runner — model registry.
+#
+# Empty scaffold. No model has been registered yet — no model file has
+# been downloaded, no adapter or backend code exists yet to reference.
+#
+# Documented shape an entry will take once the runner is implemented
+# (from the approved Lab Runner v0.1 design), shown here as a comment
+# only — not a live entry:
+#
+# - model_id: tinyllama-1.1b-chat-v1.0-q4km
+#   display_name: TinyLlama 1.1B Chat v1.0 (Q4_K_M)
+#   file: tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+#   quantization: Q4_K_M
+#   backend: llama-cpp-python
+#   adapter: tinyllama_chatml
+#   context_size: 2048
+#   notes: "Same file/quant Scout ships via ModelDownloadActivity"
+
+[]

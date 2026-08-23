@@ -1,0 +1,5 @@
+# Model binaries are never committed to this repository.
+# Only this .gitignore and README.md in this directory are tracked.
+*
+!.gitignore
+!README.md
