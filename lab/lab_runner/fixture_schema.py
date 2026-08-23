@@ -24,6 +24,8 @@ from typing import Any
 VALID_TURN_ROLES = frozenset({"user", "scout"})
 VALID_TURN_KEYS = frozenset({"role", "text"})
 VALID_ONLINE_STATES = frozenset({"online", "offline"})
+VALID_VISION_PAYLOAD_KEYS = frozenset({"detections"})
+VALID_DETECTION_KEYS = frozenset({"label", "confidence"})
 
 REQUIRED_FIELDS = frozenset({"test_id", "current_user_input"})
 
@@ -122,3 +124,63 @@ def validate_fixture(data: Any) -> None:
                 f"online_state must be one of {sorted(VALID_ONLINE_STATES)}, "
                 f"got {data['online_state']!r}"
             )
+
+    if "capability_availability" in data and data["capability_availability"] is not None:
+        capabilities = data["capability_availability"]
+        for key, value in capabilities.items():
+            if not isinstance(key, str) or not key.strip():
+                raise FixtureValidationError(
+                    f"capability_availability key {key!r} must be a non-empty string"
+                )
+            if not isinstance(value, bool):
+                raise FixtureValidationError(
+                    f"capability_availability[{key!r}] must be a boolean, "
+                    f"got {type(value).__name__}"
+                )
+
+    if "simulated_vision_payload" in data and data["simulated_vision_payload"] is not None:
+        vision_payload = data["simulated_vision_payload"]
+        unknown_vision_keys = set(vision_payload.keys()) - VALID_VISION_PAYLOAD_KEYS
+        if unknown_vision_keys:
+            raise FixtureValidationError(
+                f"simulated_vision_payload has unknown field(s): "
+                f"{sorted(unknown_vision_keys)} -- only "
+                f"{sorted(VALID_VISION_PAYLOAD_KEYS)} are allowed"
+            )
+        if "detections" not in vision_payload:
+            raise FixtureValidationError(
+                "simulated_vision_payload must include 'detections' "
+                "(a list -- use an empty list for no detections)"
+            )
+        detections = vision_payload["detections"]
+        if not isinstance(detections, list):
+            raise FixtureValidationError("simulated_vision_payload.detections must be a list")
+        for i, detection in enumerate(detections):
+            if not isinstance(detection, dict):
+                raise FixtureValidationError(
+                    f"simulated_vision_payload.detections[{i}] must be a mapping/object"
+                )
+            unknown_detection_keys = set(detection.keys()) - VALID_DETECTION_KEYS
+            if unknown_detection_keys:
+                raise FixtureValidationError(
+                    f"simulated_vision_payload.detections[{i}] has unknown field(s): "
+                    f"{sorted(unknown_detection_keys)} -- only "
+                    f"{sorted(VALID_DETECTION_KEYS)} are allowed"
+                )
+            label = detection.get("label")
+            if not isinstance(label, str) or not label.strip():
+                raise FixtureValidationError(
+                    f"simulated_vision_payload.detections[{i}].label must be "
+                    f"a non-empty string"
+                )
+            confidence = detection.get("confidence")
+            if isinstance(confidence, bool) or not isinstance(confidence, (int, float)):
+                raise FixtureValidationError(
+                    f"simulated_vision_payload.detections[{i}].confidence must be "
+                    f"a number"
+                )
+            if not (0.0 <= float(confidence) <= 1.0):
+                raise FixtureValidationError(
+                    f"simulated_vision_payload.detections[{i}].confidence must be "
+                    f"between 0.0 and 1.0, got {confidence!r}"
+                )
