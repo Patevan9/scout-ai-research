@@ -113,6 +113,15 @@ been selected. No real benchmark has been run.**
   replacement model, and building a test harness are all still undecided —
   see "Next safest step."
 
+## Real-device TinyLlama evidence (new)
+
+Patrick-reported real-device observations — a TinyLlama identity/follow-up/
+correction failure transcript (Galaxy A32), and TinyLlama performance
+benchmarks on the Galaxy Fold 7 and Galaxy A32 — have been recorded in
+`RESEARCH_LOG.md`. Not independently reproduced by Claude. Not yet
+incorporated into Scout Intelligence Test v1 or any Lab Runner work —
+preserved as evidence for later reviewed incorporation.
+
 ## Important verified findings
 
 (Full detail with sourcing lives in `RESEARCH_LOG.md`; headlines only here.)

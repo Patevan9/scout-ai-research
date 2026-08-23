@@ -164,3 +164,74 @@ test — see `lab/README.md` and `SCOUT_AI_STATUS.md` for current status,
 not duplicated here. PyYAML added as the first dependency. Still no real
 model, no llama-cpp-python, no real benchmark fixtures, and no Benchmark
 Profile.
+
+**VERIFIED (Patrick-reported real-device observation, not independently
+reproduced by Claude)** — TinyLlama identity/follow-up/correction failure,
+observed on a Samsung Galaxy A32 running current production Scout. In one
+conversation: Scout correctly answered "What are the names in my family?"
+using its existing deterministic family/memory systems; the user then said
+"Scout is also part of the family," and Scout replied as though "Scout"
+were a dog's name ("My dog's name is Scout"); corrected with "No, your
+name is Scout," Scout then denied having a personal name and offered a
+generic dictionary-style definition of "scout" (a common dog name / a
+military-scouting abbreviation) instead of recognizing its own stable,
+already-known identity. Research significance: follow-up-context weakness,
+self-identity weakness, correction-handling weakness, a hallucinated
+relationship/fact ("my dog"), failure to respect Scout's own stable,
+deterministically-owned identity, and unnecessary generic generation in a
+case where a stable deterministic fact should have dominated. The exact
+transcript was not independently reproduced by Claude this session —
+recorded exactly as reported. This does not change Scout Intelligence
+Test v1 or authorize adding a new case (e.g. a "B5") — any such change
+requires its own separately reviewed step.
+
+**VERIFIED (Patrick-reported real-device observation, not independently
+reproduced by Claude)** — TinyLlama performance benchmarks on two real
+devices, using current production Scout's hidden TinyLlama Performance
+Benchmark: 4 synthetic prompt classes (short_factual, personal_memory,
+conversational, long_history) across 6 thread configurations (2/2, 2/4,
+3/3, 4/4, 5/5, 6/6), test order rotated to reduce thermal/order bias.
+These are controlled benchmark prompts modeled on Scout's production
+prompt shape, **not** exact live-conversation latency measurements.
+
+*Galaxy Fold 7* — all 24 runs recovered. Approximate average total
+generation time by thread configuration: 2/2 ~4.81s, 2/4 ~3.35s, 3/3
+~3.42s, 4/4 ~2.99s, 5/5 ~2.48s, 6/6 ~2.60s. Best overall configuration in
+this run: 5/5 (~2.48s) — maximum thread count (6/6) was slightly slower
+overall than 5/5; possible causes (scheduling, heterogeneous cores,
+thermals) remain hypotheses only, not established. Per-class examples:
+short_factual 2/2 ~1.91s, 5/5 ~1.44s, 6/6 ~1.24s; long_history 2/2 ~8.83s,
+5/5 ~3.68s.
+
+*Galaxy A32* — benchmark captured via screen recording; not all 24 values
+were recovered with enough confidence to calculate complete
+per-configuration averages, so **no A32 winning thread configuration
+should be declared from this partial dataset.** Clearly readable recovered
+values (seconds, total generation time): 2/2 short_factual ~6.09, 2/4
+personal_memory ~7.39, 3/3 conversational ~10.95, 4/4 long_history ~17.17,
+2/4 short_factual ~4.45, 3/3 personal_memory ~8.39, 4/4 conversational
+~9.32, 5/5 long_history ~9.32, 3/3 short_factual ~4.69, 4/4
+personal_memory ~8.60, 5/5 conversational ~9.14. One same-class comparison
+stands out even in this partial dataset: short_factual 2/2 (~6.09s) vs.
+short_factual 2/4 (~4.45s) — meaningful thread-configuration sensitivity
+on this slower device.
+
+*Instrumentation warning* — displayed fields including `prefill=0ms`,
+`gen=.../0ms`, and `0.0 tok/s` appear unreliable in this run and must
+**not** be treated as valid performance evidence until the instrumentation
+is investigated; rely primarily on `total_ms` and TTFT.
+
+*Current Scout runtime context* (Patrick-reported, not independently
+verified by Claude): production Scout generation currently uses
+`n_ctx=2048`, `n_batch=512`, `n_threads=2`; the native path destroys and
+recreates the llama context on every generation call — no KV-cache/context
+reuse occurs across calls.
+
+Potential future research leads (none assumed beneficial until actually
+measured): device-appropriate thread configuration, prompt-length
+reduction, context/KV-cache reuse, generation-length reduction,
+quantization/model choice, and specialized Scout-oriented local models.
+This evidence does not change Scout Intelligence Test v1, the approved
+25-case benchmark, any Lab Runner code, or any fixture, and does not
+authorize modifying current production Scout — recorded as research
+evidence only, for later reviewed incorporation.
