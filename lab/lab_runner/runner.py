@@ -1,10 +1,16 @@
 """Smallest possible orchestration proving the approved architecture:
 
-    canonical_context -> adapter.format_prompt(...) -> backend.run(...) -> result
+    canonical_context
+      -> render_canonical_context(...) -> RenderedContext
+      -> adapter.format_prompt(...) -> backend.run(...)
+      -> result
 
-The RUNNER owns this sequence. Neither ModelAdapter nor InferenceBackend
-ever calls the other directly -- run_case() below is the only place the
-two are wired together.
+The RUNNER owns this whole sequence -- it is the only place the
+renderer, ModelAdapter, and InferenceBackend are ever wired together.
+Neither the renderer, the adapter, nor the backend ever calls another of
+them directly. Per the approved Option B boundary, the adapter receives
+only the already-rendered RenderedContext -- it never sees the raw
+canonical_context dict.
 """
 
 from __future__ import annotations
@@ -14,6 +20,7 @@ from typing import Any
 
 from .adapter import ModelAdapter
 from .backend import InferenceBackend, RawGenerationResult
+from .renderer import render_canonical_context
 
 
 @dataclass
@@ -33,14 +40,20 @@ def run_case(
     handle: Any,
     sampling_params: dict[str, Any] | None = None,
 ) -> RunnerResult:
-    """Run one canonical context through one adapter + backend pair.
+    """Run one canonical context through the renderer, then one adapter +
+    backend pair.
 
-    Step 2 note: this function does not write anything to lab/results/
-    and does not assign a brain_verdict -- it only proves the plumbing.
-    Real result-record writing and scoring are separate, later,
-    explicitly-authorized steps.
+    canonical_context here is the raw, already-validated fixture dict --
+    it is kept on RunnerResult for later result-record traceability, but
+    it is never passed to the adapter. Only the renderer ever reads it.
+
+    Step 2 note, still true: this function does not write anything to
+    lab/results/ and does not assign a brain_verdict -- it only proves
+    the plumbing. Real result-record writing and scoring are separate,
+    later, explicitly-authorized steps.
     """
-    formatted_prompt = adapter.format_prompt(canonical_context)
+    rendered_context = render_canonical_context(canonical_context)
+    formatted_prompt = adapter.format_prompt(rendered_context)
     settings = (
         sampling_params
         if sampling_params is not None

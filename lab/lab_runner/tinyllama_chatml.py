@@ -2,7 +2,9 @@
 TinyLlama 1.1B Chat v1.0.
 
 Prompt formatting only. Performs no inference and never calls an
-InferenceBackend, per the ModelAdapter interface (adapter.py).
+InferenceBackend, per the ModelAdapter interface (adapter.py). Receives
+only an already-rendered RenderedContext -- never the raw canonical
+fixture dict (Option B, Step 5).
 
 The ChatML structure and default system instruction reproduced here were
 verified directly against Scout's real source, read-only, at
@@ -12,10 +14,16 @@ verified directly against Scout's real source, read-only, at
   - app/src/main/java/com/example/scoutface/LlamaEngine.kt (generation
     defaults)
 
-No name/identity context is used -- per explicit instruction, this step
-uses Scout's verified NO-NAME default system instruction only. The
-canonical fixture schema has no user-identity field, and none is added
-here.
+That verified structure -- the ChatML tokens, the no-name system
+instruction, the trailing bare `<|assistant|>` generation prefix, and
+the Scout reference generation settings -- is unchanged by the Step 5
+migration; only the input boundary (RenderedContext instead of a raw
+dict) and the new CANONICAL CONTEXT section are new.
+
+No name/identity context is used -- per explicit instruction, this
+adapter uses Scout's verified NO-NAME default system instruction only.
+The canonical fixture schema has no user-identity field, and none is
+added here.
 """
 
 from __future__ import annotations
@@ -23,6 +31,7 @@ from __future__ import annotations
 from typing import Any
 
 from .adapter import ModelAdapter
+from .rendered_context import RenderedContext
 
 # Verified verbatim from OfflinePromptBuilder.buildSystemInstruction()
 # with userName == null (the no-name branch).
@@ -37,11 +46,16 @@ class TinyLlamaChatMLAdapter(ModelAdapter):
     model_version = "v1.0"
     quantization = "Q4_K_M"
 
-    def format_prompt(self, canonical_context: dict[str, Any]) -> str:
-        """Reproduces OfflinePromptBuilder.build() exactly:
+    def format_prompt(self, rendered_context: RenderedContext) -> str:
+        """Reproduces OfflinePromptBuilder.build()'s ChatML structure
+        exactly, with the approved model-neutral context folded into the
+        system turn:
 
             <|system|>
-            {system}</s>
+            {system instruction}
+
+            CANONICAL CONTEXT:
+            {non-empty renderer blocks, fixed approved order}</s>
             <|user|>
             {text}</s>
             <|assistant|>
@@ -54,33 +68,56 @@ class TinyLlamaChatMLAdapter(ModelAdapter):
         with a trailing bare `<|assistant|>` (no closing tag) as the
         generation prefix.
 
-        Renders every entry in `permitted_recent_turns` as given -- it
-        does NOT apply OfflinePromptBuilder's own `maxTurns` truncation.
-        That truncation is a Scout-system-level convenience; the
-        canonical fixture's `permitted_recent_turns` is already the
-        curated, model-neutral set of turns a RAW test case permits the
-        model to see (per ADR-0005), so silently dropping any of it here
-        would misrepresent what the case actually supplies.
+        The CANONICAL CONTEXT section only appears when at least one of
+        the five approved blocks is populated -- if all five are None,
+        the system turn is exactly the plain system instruction, byte-
+        identical to Step 4's output. The fixed approved block order is:
+        state, capability, facts, memory/habit, vision evidence.
+
+        Renders every entry in `rendered_context.conversation_turns` as
+        given -- it does NOT apply OfflinePromptBuilder's own `maxTurns`
+        truncation. That truncation is a Scout-system-level convenience;
+        the canonical fixture's turns are already the curated,
+        model-neutral set of turns a RAW test case permits the model to
+        see (per ADR-0005), so silently dropping any of it here would
+        misrepresent what the case actually supplies.
         """
+        system_text = SYSTEM_INSTRUCTION.strip()
+
+        canonical_context_blocks = [
+            block
+            for block in (
+                rendered_context.state_block,
+                rendered_context.capability_block,
+                rendered_context.facts_block,
+                rendered_context.memory_habit_block,
+                rendered_context.vision_evidence_block,
+            )
+            if block is not None
+        ]
+        if canonical_context_blocks:
+            system_text += "\n\nCANONICAL CONTEXT:\n" + "\n".join(
+                canonical_context_blocks
+            )
+
         parts: list[str] = []
 
         parts.append("<|system|>\n")
-        parts.append(SYSTEM_INSTRUCTION.strip())
+        parts.append(system_text)
         parts.append("</s>\n")
 
-        for turn in canonical_context.get("permitted_recent_turns") or []:
-            text = (turn.get("text") or "").strip()
+        for turn in rendered_context.conversation_turns or []:
+            text = turn.text.strip()
             if not text:
                 continue
-            role = turn.get("role")
-            if role == "user":
+            if turn.role == "user":
                 parts.append("<|user|>\n")
             else:  # "scout" -- schema already restricts role to user/scout
                 parts.append("<|assistant|>\n")
             parts.append(text)
             parts.append("</s>\n")
 
-        current_user_input = (canonical_context.get("current_user_input") or "").strip()
+        current_user_input = rendered_context.current_user_input.strip()
         parts.append("<|user|>\n")
         parts.append(current_user_input)
         parts.append("</s>\n")

@@ -1,19 +1,31 @@
-"""Approved ModelAdapter interface (Scout AI Lab Runner v0.1 design, section 2).
+"""Approved ModelAdapter interface (Scout AI Lab Runner v0.1 design,
+section 2; Option B boundary, Step 5).
 
 Responsibility -- and ONLY this responsibility:
     - model-specific prompt/chat formatting
     - the model's own default generation settings and identity metadata
 
-A ModelAdapter must NEVER call an InferenceBackend and must NEVER perform
-inference itself. Its only job is turning a canonical context dict into a
-formatted prompt string. The runner (see runner.py) owns calling the
-backend -- the adapter does not.
+A ModelAdapter receives only an already-rendered RenderedContext --
+NEVER the raw canonical fixture/context dict, not even as a nested
+mini-dict. All meaning (what a fact, a piece of perception evidence, a
+capability, or a connectivity state actually says) was already decided
+by render_canonical_context() before the adapter ever sees it; the
+adapter's only remaining job is choosing this model's syntax for
+presenting that already-decided content.
+
+A ModelAdapter must NEVER call an InferenceBackend and must NEVER
+perform inference itself. It must not inspect raw fixture metadata, and
+it must not silently omit any information the renderer produced. The
+runner (see runner.py) owns calling both the renderer and the backend --
+the adapter calls neither.
 """
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import Any
+
+from .rendered_context import RenderedContext
 
 
 class ModelAdapter(ABC):
@@ -27,10 +39,11 @@ class ModelAdapter(ABC):
     quantization: str
 
     @abstractmethod
-    def format_prompt(self, canonical_context: dict[str, Any]) -> str:
-        """Turn a canonical context dict into this model's formatted
-        prompt string. Must not perform inference and must not call a
-        backend."""
+    def format_prompt(self, rendered_context: RenderedContext) -> str:
+        """Turn an already-rendered, model-neutral RenderedContext into
+        this model's formatted prompt string. Must not perform inference,
+        must not call a backend, and must not interpret what any field
+        means -- that interpretation already happened in the renderer."""
 
     @abstractmethod
     def default_generation_settings(self) -> dict[str, Any]:
