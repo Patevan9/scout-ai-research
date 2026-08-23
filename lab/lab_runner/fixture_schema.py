@@ -22,6 +22,7 @@ from __future__ import annotations
 from typing import Any
 
 VALID_TURN_ROLES = frozenset({"user", "scout"})
+VALID_TURN_KEYS = frozenset({"role", "text"})
 VALID_ONLINE_STATES = frozenset({"online", "offline"})
 
 REQUIRED_FIELDS = frozenset({"test_id", "current_user_input"})
@@ -96,6 +97,12 @@ def validate_fixture(data: Any) -> None:
             if not isinstance(turn, dict):
                 raise FixtureValidationError(
                     f"permitted_recent_turns[{i}] must be a mapping/object"
+                )
+            unknown_turn_keys = set(turn.keys()) - VALID_TURN_KEYS
+            if unknown_turn_keys:
+                raise FixtureValidationError(
+                    f"permitted_recent_turns[{i}] has unknown field(s): "
+                    f"{sorted(unknown_turn_keys)} -- only {sorted(VALID_TURN_KEYS)} are allowed"
                 )
             role = turn.get("role")
             if role not in VALID_TURN_ROLES:

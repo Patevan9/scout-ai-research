@@ -49,6 +49,17 @@ class TestFixtureLoading(unittest.TestCase):
         with self.assertRaises(FixtureValidationError):
             load_fixture_dict(data)
 
+    def test_unknown_nested_turn_field_rejected(self) -> None:
+        data = {
+            "test_id": "X",
+            "current_user_input": "hello",
+            "permitted_recent_turns": [
+                {"role": "user", "text": "hello", "typo_field": "accidental"}
+            ],
+        }
+        with self.assertRaises(FixtureValidationError):
+            load_fixture_dict(data)
+
 
 if __name__ == "__main__":
     unittest.main()
