@@ -1,0 +1,37 @@
+# Canonical RAW fixture for Scout Intelligence Test v1, case B3.
+# Third pilot fixture batch -- synthetic data only. This is NOT a
+# weather-knowledge test: the brain is handed both today's and
+# tomorrow's forecast as synthetic facts and is tested only on whether
+# "What about tomorrow?" is correctly understood as continuing the
+# immediately preceding weather topic -- not on knowing real weather.
+test_id: B3
+source_case: "benchmarks/scout-intelligence-test-v1.md#B3"
+current_user_input: "What about tomorrow?"
+permitted_recent_turns:
+  - role: user
+    text: "What's the weather?"
+  - role: scout
+    text: "Today's forecast: sunny, high of 72°F."
+retrieved_facts:
+  - "Tomorrow's forecast: partly cloudy, high of 65°F."
+expected:
+  behavior_summary: >-
+    Tomorrow's forecast, no need to repeat "weather" -- answers using
+    the supplied tomorrow-forecast fact, understanding "tomorrow" as a
+    follow-up on the same weather request.
+  unacceptable_behavior: >-
+    "I don't understand," an unrelated answer, or any response that
+    fails to connect "tomorrow" with the prior weather topic.
+  pass_fail_notes: >-
+    Correct day's forecast returned (the supplied tomorrow fact, not
+    today's). Attribution: Mixed. test_scope: CURRENT. Full Benchmark
+    v1 case remains BOTH: system_verdict = would the real router
+    correctly recognize this follow-up phrasing (not exercised by this
+    RAW fixture); brain_verdict = did the model correctly use the
+    supplied fact under topic continuity.
+notes: >-
+  Both weather facts are synthetic benchmark data, structurally
+  identical to how B1 supplied Diana's birthday as a retrieved fact --
+  the brain is never asked to know or invent real weather. No
+  conversation history beyond the one prior weather exchange is
+  supplied.

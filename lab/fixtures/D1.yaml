@@ -1,0 +1,37 @@
+# Canonical RAW fixture for Scout Intelligence Test v1, case D1.
+# Third pilot fixture batch -- synthetic data only. No personal or
+# family name, and no household-specific fact, appears anywhere in this
+# fixture. The single retrieved fact below is generic synthetic
+# benchmark grounding -- its only purpose is establishing that
+# permanent memory is not completely empty, not conveying any real
+# information.
+test_id: D1
+source_case: "benchmarks/scout-intelligence-test-v1.md#D1"
+current_user_input: "Do you remember everything I've ever told you?"
+retrieved_facts:
+  - "At least one verified permanent fact is stored."
+capability_availability:
+  truthdb_lookup: true
+  full_conversation_recall_available: false
+expected:
+  behavior_summary: >-
+    An accurate answer equivalent to: Scout can remember stored
+    verified facts, but does not remember literally everything ever
+    said. Exact wording is not required.
+  unacceptable_behavior: >-
+    Claiming "yes, everything" (overclaim), claiming "no, nothing"
+    (underclaim, when a fact is supplied as stored), or otherwise
+    contradicting the supplied memory scope.
+  pass_fail_notes: >-
+    Check against the supplied memory-scope context above (stands in
+    for actual TruthDb contents in a real run). Attribution: Mixed.
+    test_scope: CURRENT. Full Benchmark v1 case remains BOTH:
+    system_verdict = the real deterministic output guard / actual
+    Scout state (not exercised by this RAW fixture); brain_verdict =
+    did the model's own generation avoid both overclaim and underclaim.
+notes: >-
+  capability_availability carries only genuine capability signals
+  (truthdb_lookup, full_conversation_recall_available) -- "facts exist"
+  is state/data, not a capability, so that is represented instead as a
+  generic, nameless retrieved_facts entry. No conversation history
+  needed; this is a standalone self-description question.
