@@ -27,9 +27,16 @@ like ChatGPT or Claude.
 ## Core design principles
 
 - **Local/private first.** Scout AI runs on-device, offline-capable, by design.
-- **Model-replaceable.** The brain is a swappable component, not a fixed
-  identity — Scout is not defined by which model happens to power him at a
-  given time.
+- **Model-replaceable — the model is not Scout.** The brain is a swappable
+  component, not a fixed identity — Scout is not defined by which model
+  happens to power him at a given time. TinyLlama is the current baseline
+  only, never the intended final Scout AI brain (see
+  [ADR-0003](docs/decisions/0003-tinyllama-baseline.md)); no future
+  candidate model owns Scout's identity, Truth, memory, or personality
+  continuity — those live in Scout's own deterministic stores (see the next
+  principle) and persist across any brain swap. Scout AI is the larger
+  architecture surrounding a replaceable reasoning component, not the
+  component itself.
 - **Hardware-independent.** Android is the first target, not the permanent
   hardware definition. A Raspberry Pi, mini-PC, or other host must remain
   possible later.
@@ -54,6 +61,23 @@ like ChatGPT or Claude.
 - **Scout AI may eventually be useful independently of the Scout app/robot** —
   the intelligence itself is not assumed to be permanently bound to one
   product.
+- **No hard-coded personal identity data.** Personal/family names and
+  household-specific facts must never become hard-coded production
+  architecture. Benchmark/fixture data may contain synthetic or explicitly
+  benchmark-required example names (e.g. a case's own already-approved
+  wording), but Scout's actual identity and family knowledge belongs in the
+  appropriate data/memory systems, never in source-code constants.
+- **Stability over features.** Stable, predictable behavior takes priority
+  over rapid feature expansion. A new capability must never silently weaken
+  existing deterministic behavior, memory boundaries, identity, privacy, or
+  reliability.
+- **Language-neutral core, where practical.** Scout AI should not make
+  English the internal representation of intelligence. Where practical,
+  internal concepts — facts, identity, relationships, capabilities, actions,
+  memory concepts, perception evidence — should represent meaning rather
+  than English-specific sentences. Input/output language handling should
+  remain separable from core intelligence, so future multilingual support
+  does not require rebuilding Scout AI.
 
 ## What this charter is not
 

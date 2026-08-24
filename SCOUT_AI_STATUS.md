@@ -6,7 +6,7 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-24
+Last updated: 2026-08-24 (documentation hardening pass)
 
 ---
 
@@ -59,44 +59,62 @@ benchmark data.
 
 ## Current approved work
 
-- Separate repository established for this track (ADR-0001).
-- Gated research → review → approval workflow adopted (ADR-0002).
-- TinyLlama adopted as the required baseline for any future brain comparison
-  (ADR-0003).
-- The permanent handoff documentation structure itself (this file, the
-  Charter, the decision records, `benchmarks/`, `RESEARCH_LOG.md`) —
-  independently inspected by ChatGPT at commit `436180e` and approved.
-- **Scout Intelligence Test v1** — 25 benchmark cases — completed two rounds
-  of ChatGPT review and is approved. See `benchmarks/scout-intelligence-test-v1.md`.
-- **Least Sufficient Intelligence Principle** (Fast Path / Retrieval Path /
-  Reasoning Path selection, and its selector safety rules) — approved. See
+Each item below is tagged so a reader can tell what actually exists in this
+repository from what is only an approved decision or design on paper:
+**[DECISION]** — an approved architectural/process rule, no code implied.
+**[DESIGNED]** — a design or plan is approved, but little or no code exists
+for it yet. **[IMPLEMENTED]** — real, committed code exists and the
+automated test suite exercises it.
+
+- **[DECISION]** Separate repository established for this track (ADR-0001).
+- **[DECISION]** Gated research → review → approval workflow adopted
+  (ADR-0002).
+- **[DECISION]** TinyLlama adopted as the required baseline for any future
+  brain comparison (ADR-0003).
+- **[IMPLEMENTED]** The permanent handoff documentation structure itself
+  (this file, the Charter, the decision records, `benchmarks/`,
+  `RESEARCH_LOG.md`) — independently inspected by ChatGPT at commit
+  `436180e` and approved.
+- **[DESIGNED]** **Scout Intelligence Test v1** — 25 benchmark cases —
+  completed two rounds of ChatGPT review and is approved as a benchmark
+  *definition*. See `benchmarks/scout-intelligence-test-v1.md`. No results
+  exist yet — see "Current benchmark status."
+- **[DECISION]** **Least Sufficient Intelligence Principle** (Fast Path /
+  Retrieval Path / Reasoning Path selection, and its selector safety rules)
+  — approved, no selector built yet. See
   [ADR-0004](docs/decisions/0004-least-sufficient-intelligence.md).
-- **Benchmark runner methodology** (RAW / SYSTEM / BOTH per-case assignment,
-  the canonical model-neutral RAW-context principle, and the three
-  permanently-separate evaluation axes — Brain Quality, System Quality,
-  Response Speed) — approved. See
+- **[DECISION]** **Benchmark runner methodology** (RAW / SYSTEM / BOTH
+  per-case assignment, the canonical model-neutral RAW-context principle,
+  and the three permanently-separate evaluation axes — Brain Quality,
+  System Quality, Response Speed) — approved. See
   [ADR-0005](docs/decisions/0005-benchmark-runner-methodology.md).
-- **Canonical Context Renderer / Option B model-adapter boundary**
-  (the renderer as a single enforced choke point between canonical fixture
-  data and any `ModelAdapter`) — approved. See
-  [ADR-0006](docs/decisions/0006-canonical-context-renderer.md).
-- **Scout AI Lab Runner v0.1 design** (standalone PC test harness, the
-  ModelAdapter/InferenceBackend boundary, fixture and result schemas, the
-  Benchmark Profile process) — reviewed by ChatGPT and approved. Being
-  implemented in small, individually authorized steps; not yet complete.
-- **Canonical Context Renderer / Option B interface migration** (the
-  renderer, `RenderedContext`/`RenderedTurn`, and the `ModelAdapter`
-  boundary change) — reviewed by ChatGPT and approved through Step 5,
-  commit `3ad0598`, and formally recorded as
-  [ADR-0006](docs/decisions/0006-canonical-context-renderer.md). See
-  "Last completed step" below.
+- **[IMPLEMENTED]** **Canonical Context Renderer / Option B model-adapter
+  boundary** (the renderer as a single enforced choke point between
+  canonical fixture data and any `ModelAdapter`) — approved *and* built;
+  the pipeline is real, committed code. See
+  [ADR-0006](docs/decisions/0006-canonical-context-renderer.md) for the
+  decision record and "Last completed step" below for the actual commits.
+- **[DESIGNED]** **Scout AI Lab Runner v0.1 design** (standalone PC test
+  harness, the ModelAdapter/InferenceBackend boundary, fixture and result
+  schemas, the Benchmark Profile process) — reviewed by ChatGPT and
+  approved as a design. Being implemented in small, individually authorized
+  steps; not yet complete — no real inference backend, no Benchmark Profile.
 
 ## Last completed step
 
-The three approved pilot RAW fixtures — `B1.yaml`, `D2.yaml`, `F1.yaml` —
-are now tracked and committed at commit `f3eb6d7` (data-only commit, on
-top of Step 5). All three validate successfully against the current
-fixture schema.
+**The currently committed RAW fixtures are exactly six: `B1`, `B2`, `C2`,
+`D2`, `D3`, `F1`.** No other fixture exists in `lab/fixtures/` today.
+
+The second pilot fixture batch — `B2.yaml`, `C2.yaml`, `D3.yaml` — is now
+tracked and committed at commit
+`6232c541fe633c55d515c4e4b7d8624897c2103f` (data-only commit, on top of
+the Step 10 documentation checkpoint, `794529d`). All three re-validated
+successfully against the current fixture schema immediately before that
+commit, and the full 44-test suite passed unchanged.
+
+Before that, the first pilot batch — `B1.yaml`, `D2.yaml`, `F1.yaml` — was
+committed at commit `f3eb6d7` (data-only commit, on top of Step 5). All
+three validate successfully against the current fixture schema.
 
 Before that, Step 5 of the Canonical Context Renderer / Option B
 interface migration completed at commit `3ad0598`. The pipeline is now
@@ -190,22 +208,76 @@ preserved as evidence for later reviewed incorporation.
 - Where `CLAUDE.md` (this repo's pre-existing session-notes file) ranks
   relative to this new structure — it predates the Charter/Status/Decisions
   system and hasn't been reconciled with it yet. Flagged, not resolved.
+- **`memory_habit_payload` has no approved rendering schema.** The Canonical
+  Context Renderer raises `RendererError` rather than guessing one. See
+  [ADR-0006](docs/decisions/0006-canonical-context-renderer.md) for the
+  design discussion — not duplicated here.
+- **Empty `simulated_vision_payload.detections` has no approved rendering
+  behavior** (whether it should render as a deterministic "no detections"
+  line or as `None`). Same as above — raises `RendererError` rather than
+  guessing; see [ADR-0006](docs/decisions/0006-canonical-context-renderer.md).
+- **How to fairly scope a C3-style retention-verification RAW fixture**,
+  given Lab Runner has no persistence/action interface to check a spoken
+  claim against. Surfaced during the B3/D1/C3 design review; not yet
+  decided. See "Next safest step" above.
 
 ## Awaiting ChatGPT review
 
-Step 5 (the Option B interface migration commit, `3ad0598`) and the pilot
-fixture commit (`f3eb6d7`) have been independently reviewed and approved
-by ChatGPT. This documentation/ADR update (Step 10) is pending that same
+Step 5 (`3ad0598`), the first pilot fixture commit (`f3eb6d7`), the
+Step 10 documentation/ADR checkpoint (`794529d`), and the second pilot
+fixture commit (`6232c54`) have all been independently reviewed and
+approved by ChatGPT. This documentation-hardening pass (Charter/Status/
+Research-Log update) is the most recent work and is pending that same
 review cycle. Nothing else is currently pending review.
 
 ## Next safest step
 
-**Not yet authorized.** The Canonical Context Renderer / Option B
-migration (Steps 1 through 5, plus this documentation step) is complete
-and reviewed. What comes next — the remaining RAW fixtures, TinyLlama
-baseline testing, choosing any candidate replacement model, or approving
-a Benchmark Profile — is undecided. Waiting for Patrick and ChatGPT to
-define the next safe step together.
+**Not yet authorized.** A design-only review has been completed for three
+further Scout Intelligence Test v1 cases — B3, D1, C3 — covering exact
+canonical fields, reviewer-only expected behavior, and representability
+against the current schema/renderer. **That review did not create or
+authorize any fixture file** — `B3.yaml`, `D1.yaml`, and `C3.yaml` do not
+exist in this repository. C3 in particular surfaced an open architecture
+question (whether/how to scope a RAW fixture given Lab Runner has no
+persistence layer to verify a retention claim against) that is not yet
+decided. Whether to authorize fixture authoring for B3/D1, how to resolve
+C3, remaining RAW fixtures generally, TinyLlama baseline testing, choosing
+any candidate replacement model, and approving a Benchmark Profile are all
+undecided. Waiting for Patrick and ChatGPT to define the next safe step
+together.
+
+## How to independently verify this checkpoint
+
+Do not trust the prose above (or any conversation history) as ground
+truth — verify it directly against the repository. These are the checks
+this project's own reports have been using; run them yourself rather than
+assuming today's values below still hold by the time you read this:
+
+- **Current HEAD**: `git rev-parse HEAD` — compare against the SHA this
+  file names above.
+- **Working-tree cleanliness**: `git status --short` — should be empty on
+  a checkpoint commit.
+- **Full automated test suite**: from `lab/`,
+  `PYTHONPATH=lab python3 -m unittest discover -s lab_runner/tests -p "test_*.py"`
+  (or `pytest`, if installed) — compare the pass count against what this
+  file claims.
+- **Tracked benchmark fixtures**: `git ls-files lab/fixtures/` — compare
+  the list against what this file claims exists.
+- **Whether a real inference backend exists**: read `lab/lab_runner/backend.py`
+  (should still be an abstract interface only) and check whether any file
+  besides `mock_backend.py` implements it.
+- **Whether model binaries exist**: `find . -iname "*.gguf" -not -path "./.git/*"`
+  (or similar) — should find nothing.
+- **Whether a real inference dependency has been introduced**: check
+  `lab/requirements.txt` and `pip show llama-cpp-python` — should show it
+  is not listed/not installed.
+- **Whether any inference run has actually occurred**: inspect
+  `lab/results/` — should be empty; its existence or contents would mean
+  something changed since this was written.
+
+If any of these disagree with what this document says, **the repository is
+the source of truth, not this file** — flag the conflict rather than
+proceeding on the stale claim.
 
 ---
 

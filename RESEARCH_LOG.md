@@ -290,3 +290,59 @@ rendering) — is now formally recorded as
 tracked and committed as of `f3eb6d7`, removing the earlier stale
 "remain untracked" statement. Documentation/ADR-only commit — no code,
 fixture, benchmark, or model file touched.
+
+**MILESTONE** — Second pilot RAW fixture batch, `B2.yaml`/`C2.yaml`/
+`D3.yaml`, independently validated end to end through the real rendering
+pipeline — Working-Memory-gap honesty with deliberately zero grounding
+(B2), a personal-memory question with lookup capability present but no
+matching fact (C2), and an unsupported-capability request with an
+explicit `light_control_available: false` flag (D3). All three PASS
+validation. Committed data-only at `6232c541fe633c55d515c4e4b7d8624897c2103f`,
+on top of the Step 10 documentation checkpoint (`794529d`). Full test
+suite: 44/44 passing at that commit. No model or inference work
+involved. Committed RAW fixtures now stand at six: `B1`, `B2`, `C2`,
+`D2`, `D3`, `F1`.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Remote communication / photo exchange. Future research may explore
+allowing an authorized family member to communicate with Scout while
+away from the local network: sending Scout a message, Scout sending a
+message/alert, requesting a camera image, and Scout returning an image
+only when explicitly permitted. No transport, protocol, or hosting
+choice (e.g. a specific messaging service, VPN, or cloud architecture)
+has been made — none of that is decided here. Scout is not being
+designated as a security or surveillance system by this idea.
+Privacy/local-first (see `SCOUT_AI_CHARTER.md`'s "Local/private first"
+principle) remains a controlling constraint on however this eventually
+gets designed, not an afterthought to reconcile later.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Autonomous charging/docking. Future robotics research may explore Scout
+recognizing low battery, locating a charging location/dock, navigating
+to it, and docking/charging autonomously. None of navigation, actuator
+control, docking, mapping, or autonomous charging exists today in any
+form — this is purely a future direction, consistent with the Charter's
+existing chassis-independence principle (any such capability would
+reach Scout AI through a replaceable hardware/chassis adapter, not a
+hard dependency on one robot body).
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Simple speech interruption. Future UX research may consider a simple
+screen tap to stop Scout speaking, as a practical first interruption
+mechanism if reliable acoustic barge-in proves impractical on target
+hardware. Not implemented; not designed in detail here.
+
+**VERIFIED (Patrick-reported real-device observation, not independently
+reproduced by Claude)** — The Galaxy A32 test device has expandable
+microSD storage available.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Optional expandable storage. Future Scout AI research may consider
+optional external (e.g. microSD) storage for large model/asset files,
+where Android safely permits it. Important boundaries on this idea:
+SD storage must remain strictly optional; Scout AI must not require an
+SD card to function; Android's own storage-access restrictions must be
+respected; and storage capacity is a separate constraint from RAM, CPU,
+latency, and thermals — solving for storage space does not solve for
+those, and none of this authorizes assuming a larger on-device model is
+automatically viable just because storage space exists.
