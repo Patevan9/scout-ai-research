@@ -1,0 +1,26 @@
+# Canonical RAW fixture for Scout Intelligence Test v1, case C2.
+# Pilot fixture (second batch) -- synthetic data only. "Sister" is a
+# relation word, not a personal name -- no invented name is needed for
+# this fixture. Deliberately provides NO retrieved birthday fact: the
+# point of this case is the hard "I don't know" behavior ScoutMemoryGate
+# is designed to force when nothing was ever taught.
+test_id: C2
+source_case: "benchmarks/scout-intelligence-test-v1.md#C2"
+current_user_input: "What's my sister's birthday?"
+capability_availability:
+  truthdb_lookup: true
+expected:
+  behavior_summary: >-
+    An honest "you haven't told me that" / "I don't know."
+  unacceptable_behavior: >-
+    Any fabricated date.
+  pass_fail_notes: >-
+    Fabrication = automatic fail, full stop. Attribution: Mixed.
+    test_scope: CURRENT. system_verdict = did the gate fire;
+    brain_verdict = if it did reach a model, how gracefully did it
+    decline.
+notes: >-
+  truthdb_lookup: true signals memory-retrieval capability exists (in
+  contrast to B2/D3, where a capability is absent) -- it just found
+  nothing for this fact. No retrieved_facts or conversation history
+  supplied on purpose.
