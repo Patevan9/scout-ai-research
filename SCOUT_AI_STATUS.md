@@ -6,7 +6,7 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-23
+Last updated: 2026-08-24
 
 ---
 
@@ -76,6 +76,10 @@ benchmark data.
   permanently-separate evaluation axes — Brain Quality, System Quality,
   Response Speed) — approved. See
   [ADR-0005](docs/decisions/0005-benchmark-runner-methodology.md).
+- **Canonical Context Renderer / Option B model-adapter boundary**
+  (the renderer as a single enforced choke point between canonical fixture
+  data and any `ModelAdapter`) — approved. See
+  [ADR-0006](docs/decisions/0006-canonical-context-renderer.md).
 - **Scout AI Lab Runner v0.1 design** (standalone PC test harness, the
   ModelAdapter/InferenceBackend boundary, fixture and result schemas, the
   Benchmark Profile process) — reviewed by ChatGPT and approved. Being
@@ -83,13 +87,20 @@ benchmark data.
 - **Canonical Context Renderer / Option B interface migration** (the
   renderer, `RenderedContext`/`RenderedTurn`, and the `ModelAdapter`
   boundary change) — reviewed by ChatGPT and approved through Step 5,
-  commit `3ad0598`. See "Last completed step" below.
+  commit `3ad0598`, and formally recorded as
+  [ADR-0006](docs/decisions/0006-canonical-context-renderer.md). See
+  "Last completed step" below.
 
 ## Last completed step
 
-Step 5 of the Canonical Context Renderer / Option B interface migration,
-complete at commit `3ad0598`. The pipeline is now enforced by
-construction:
+The three approved pilot RAW fixtures — `B1.yaml`, `D2.yaml`, `F1.yaml` —
+are now tracked and committed at commit `f3eb6d7` (data-only commit, on
+top of Step 5). All three validate successfully against the current
+fixture schema.
+
+Before that, Step 5 of the Canonical Context Renderer / Option B
+interface migration completed at commit `3ad0598`. The pipeline is now
+enforced by construction:
 
     canonical context -> Canonical Context Renderer -> RenderedContext
       -> ModelAdapter -> InferenceBackend
@@ -101,17 +112,17 @@ canonical fixture dict. Structured conversation turns (`RenderedTurn`,
 introduced in the Step 4A correction) become TinyLlama's ChatML
 `<|user|>`/`<|assistant|>` turns directly, with no fragile string
 parsing. TinyLlama's verified ChatML format and Scout's system
-instruction are unchanged in substance. Current full test suite: **44/44
-passing.** See `RESEARCH_LOG.md` for the milestone entries covering the
-renderer Steps 1–4A and this Step 5 commit; full detail lives in each
-commit's own message, not duplicated here.
+instruction are unchanged in substance. This architecture is now formally
+recorded in
+[ADR-0006](docs/decisions/0006-canonical-context-renderer.md). Current
+full test suite: **44/44 passing.** See `RESEARCH_LOG.md` for the
+milestone entries covering the renderer Steps 1–4A, the Step 5 commit,
+and the pilot fixture commit; full detail lives in each commit's own
+message, not duplicated here.
 
-`B1.yaml`, `D2.yaml`, and `F1.yaml` remain untracked pilot fixtures and
-are **not** part of the permanent benchmark record yet.
-
-**No real model has been run. No real inference backend has been
-implemented or run. TinyLlama baseline testing has not begun. No
-replacement model has been selected.**
+**No real inference backend exists. No model has been run. TinyLlama
+baseline testing has not begun. No replacement model has been
+selected.**
 
 ## Current benchmark status
 
@@ -182,17 +193,18 @@ preserved as evidence for later reviewed incorporation.
 
 ## Awaiting ChatGPT review
 
-Step 5 (the Option B interface migration commit, `3ad0598`) has been
-independently reviewed and approved by ChatGPT. Nothing is currently
-pending review.
+Step 5 (the Option B interface migration commit, `3ad0598`) and the pilot
+fixture commit (`f3eb6d7`) have been independently reviewed and approved
+by ChatGPT. This documentation/ADR update (Step 10) is pending that same
+review cycle. Nothing else is currently pending review.
 
 ## Next safest step
 
 **Not yet authorized.** The Canonical Context Renderer / Option B
-migration (Steps 1 through 5) is complete and reviewed. What comes
-next — the remaining pilot-fixture work, a Step 6, TinyLlama baseline
-testing, choosing any candidate replacement model, or approving a
-Benchmark Profile — is undecided. Waiting for Patrick and ChatGPT to
+migration (Steps 1 through 5, plus this documentation step) is complete
+and reviewed. What comes next — the remaining RAW fixtures, TinyLlama
+baseline testing, choosing any candidate replacement model, or approving
+a Benchmark Profile — is undecided. Waiting for Patrick and ChatGPT to
 define the next safe step together.
 
 ---

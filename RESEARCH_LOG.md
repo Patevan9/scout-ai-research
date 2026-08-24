@@ -266,3 +266,27 @@ evidence) is folded into the system turn only when populated. Full test
 suite: 44/44 passing. `B1.yaml`/`D2.yaml`/`F1.yaml` remain untracked pilot
 fixtures, not part of the permanent benchmark record. No real model, no
 real inference backend. Next implementation step not yet authorized.
+
+**MILESTONE** — Three pilot RAW fixtures, `B1.yaml`/`D2.yaml`/`F1.yaml`,
+independently validated end to end through the real (non-mock) rendering
+pipeline — pronoun resolution over structured conversation turns plus a
+retrieved fact (B1), offline-state hallucination resistance with
+deliberately no sports data supplied (D2), and vision-confidence hedging
+over a synthetic single-detection payload (F1, corrected from an earlier
+`labels`/`confidence` parallel-array shape to the approved
+`detections: [{label, confidence}]` shape). All three PASS validation.
+Committed data-only at `f3eb6d7`, on top of Step 5 (`3ad0598`). Full test
+suite: 44/44 passing at that commit. No model or inference work involved.
+
+**MILESTONE** — Documentation/ADR checkpoint (Step 10): the Canonical
+Context Renderer / Option B architecture — the renderer as a single
+enforced choke point, `RenderedContext` as the model-neutral boundary,
+structured `RenderedTurn` conversation handling, the renderer/adapter/
+backend responsibility split, and the two deliberately-deferred design
+questions (`memory_habit_payload` schema, empty vision-detections
+rendering) — is now formally recorded as
+[ADR-0006](docs/decisions/0006-canonical-context-renderer.md).
+`SCOUT_AI_STATUS.md` corrected to reflect that the pilot fixtures are
+tracked and committed as of `f3eb6d7`, removing the earlier stale
+"remain untracked" statement. Documentation/ADR-only commit — no code,
+fixture, benchmark, or model file touched.

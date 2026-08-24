@@ -21,3 +21,4 @@ consequences, date, status.
 | [0003](0003-tinyllama-baseline.md) | TinyLlama is the required baseline for any future Scout AI brain | Approved | 2026-08-22 |
 | [0004](0004-least-sufficient-intelligence.md) | Least Sufficient Intelligence Principle — Fast/Retrieval/Reasoning path selection | Approved | 2026-08-22 |
 | [0005](0005-benchmark-runner-methodology.md) | Benchmark runner methodology — RAW/SYSTEM/BOTH, canonical context, three evaluation axes | Approved | 2026-08-22 |
+| [0006](0006-canonical-context-renderer.md) | Canonical Context Renderer / Option B — `ModelAdapter`s receive only `RenderedContext`, never raw fixture data | Approved | 2026-08-24 |
