@@ -6,7 +6,7 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-26 (post-consolidation documentation checkpoint)
+Last updated: 2026-08-26 (Benchmark Profile v1 documentation checkpoint)
 
 ---
 
@@ -98,7 +98,13 @@ automated test suite exercises it.
   harness, the ModelAdapter/InferenceBackend boundary, fixture and result
   schemas, the Benchmark Profile process) — reviewed by ChatGPT and
   approved as a design. Being implemented in small, individually authorized
-  steps; not yet complete — no real inference backend, no Benchmark Profile.
+  steps; not yet complete — no real inference backend exists.
+- **[DECISION]** **Benchmark Profile v1** — RAW-only, scoped to exactly the
+  9 currently committed fixtures (B1, B2, B3, C2, C3, D1, D2, D3, F1);
+  temperature 0/greedy, 1 run per fixture, max 150 output tokens, `n_ctx`
+  2048; existing renderer and result schema unchanged — approved. See
+  `benchmarks/benchmark-profile-v1.md`. No inference has been run under it
+  yet — no real inference backend exists.
 
 ## Last completed step
 
@@ -158,10 +164,14 @@ selected.**
 - Each case carries attribution (LM / Infra / Mixed) and is scored via
   separate `system_verdict` / `brain_verdict` fields (Brain Score vs. System
   Score kept separate, never collapsed).
-- **No results exist yet.** `benchmarks/results/` has not been created.
-  Running TinyLlama against this benchmark, choosing any candidate
-  replacement model, and building a test harness are all still undecided —
-  see "Next safest step."
+- **Benchmark Profile v1 is approved** — RAW-only, scoped to the 9
+  currently committed fixtures, fixed generation settings (temperature 0,
+  1 run/fixture, 150 max tokens, `n_ctx` 2048). See
+  `benchmarks/benchmark-profile-v1.md`.
+- **No results exist yet.** `benchmarks/results/` is still an empty
+  placeholder. Running TinyLlama against this benchmark, choosing any
+  candidate replacement model, and building a real inference backend are
+  all still undecided/not authorized — see "Next safest step."
 
 ## Real-device TinyLlama evidence (new)
 
@@ -235,14 +245,22 @@ Step 5 (`3ad0598`), the first pilot fixture commit (`f3eb6d7`), the
 Step 10 documentation/ADR checkpoint (`794529d`), the second pilot
 fixture commit (`6232c54`), and the 2026-08-24 documentation-hardening
 pass have all been independently reviewed and approved by ChatGPT. The
-**post-consolidation documentation checkpoint** (2026-08-26) — new
-Charter sections on presence/expression and the Scout Constitution's
-stable-character boundaries, several new/strengthened core-design-
-principle bullets, and a batch of future-parked design ideas and one
-open question recorded in `RESEARCH_LOG.md` — is the most recent work
-and is pending that same review cycle. No implementation, benchmark,
-fixture, or model work occurred in this checkpoint, and `Patevan9/Scout`
-was not touched. Nothing else is currently pending review.
+**post-consolidation documentation checkpoint** (2026-08-26, the Charter
+presence/expression and Constitution sections) and the **third pilot
+fixture commit** (`3503736`) were pending that same review cycle as of
+this file's prior version; their status is not changed by this edit.
+
+The **Benchmark Profile v1 documentation checkpoint** (2026-08-26) — the
+new `benchmarks/benchmark-profile-v1.md` record and the accompanying
+`benchmarks/README.md`/`lab/README.md`/this file's sync to reflect it —
+is the most recent work. The *decisions* it records (fixture scope, RAW
+mode, temperature/token/context settings) were already reviewed and
+approved by Patrick and ChatGPT before this commit, per the task that
+authorized writing them down; the *commit itself* (exact wording and
+placement) has not yet had its own independent ChatGPT pass and is
+pending review like the items above. No fixture, renderer, backend,
+model, or benchmark-run work occurred in this checkpoint, and
+`Patevan9/Scout` was not touched.
 
 ## Next safest step
 
@@ -250,10 +268,12 @@ was not touched. Nothing else is currently pending review.
 committed (see "Last completed step" above) — C3 in particular remains
 scoped to only the RAW/brain half of that case, since Lab Runner has no
 persistence layer to verify a retention claim against; how (or whether)
-to ever test the SYSTEM half is not yet decided. Remaining RAW fixtures
-generally, TinyLlama baseline testing, choosing any candidate replacement
-model, and approving a Benchmark Profile are all still undecided. Waiting
-for Patrick and ChatGPT to define the next safe step together.
+to ever test the SYSTEM half is not yet decided. **Benchmark Profile v1 is
+now approved** (see "Current benchmark status" above) — that no longer
+blocks the next step. Remaining RAW fixtures generally, TinyLlama baseline
+testing, choosing any candidate replacement model, and implementing a real
+inference backend are all still undecided/not authorized. Waiting for
+Patrick and ChatGPT to define the next safe step together.
 
 ## How to independently verify this checkpoint
 

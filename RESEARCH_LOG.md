@@ -438,3 +438,21 @@ it, what "unusually difficult" would mean in practice, and how escalation
 would be decided are all undesigned; the Charter's "optional cloud
 reasoning, never required" principle is the only part of this that is
 currently durable.
+
+**MILESTONE** — Benchmark Profile v1 approved and documented. Following a
+read-only Claude investigation (fixture-set fit, renderer/schema
+constraints, and open questions around C4/C5/F3), Patrick and ChatGPT
+approved the first Scout AI Benchmark Profile: RAW-mode only, scoped to
+exactly the 9 currently committed fixtures (B1, B2, B3, C2, C3, D1, D2,
+D3, F1), with temperature 0 (greedy), 1 run per fixture, 150 max output
+tokens, and `n_ctx` 2048 fixed for every candidate model tested under it.
+The existing canonical renderer, adapter/backend boundary, and result
+schema are unchanged. Recorded in the new
+`benchmarks/benchmark-profile-v1.md`, cross-referenced from
+`benchmarks/README.md` and `lab/README.md`, and synced into
+`SCOUT_AI_STATUS.md`. C4, C5, and F3 remain excluded from this profile
+because no fixture for them can be honestly represented yet (open
+renderer/schema questions, unchanged by this milestone); A2, B4, E1, E2,
+and F2 simply have no fixture committed yet. Documentation-only — no
+fixture, renderer, backend, or model file touched, no inference run, and
+`Patevan9/Scout` was not touched.

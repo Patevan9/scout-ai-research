@@ -22,7 +22,10 @@ adapter (`MockAdapter`, `TinyLlamaChatMLAdapter`) receives only a
 `RenderedContext`, never the raw fixture dict; and a mock backend
 proving the pipeline end to end with no real model. `run_case()` always
 renders before calling an adapter. There is still no real inference
-backend, no TinyLlama installed or run, and no Benchmark Profile.
+backend and no TinyLlama installed or run. Benchmark Profile v1 —
+RAW-only, scoped to the 9 currently committed fixtures — is now approved;
+see `../benchmarks/benchmark-profile-v1.md`. No inference has been run
+under it yet.
 
 The full design (platform choice, model-adapter boundary, fixture and
 result schemas, scoring approach, Benchmark Profile process, and the
