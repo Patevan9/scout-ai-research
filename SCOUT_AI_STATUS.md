@@ -102,11 +102,19 @@ automated test suite exercises it.
 
 ## Last completed step
 
-**The currently committed RAW fixtures are exactly six: `B1`, `B2`, `C2`,
-`D2`, `D3`, `F1`.** No other fixture exists in `lab/fixtures/` today.
+**The currently committed RAW fixtures are exactly nine: `B1`, `B2`,
+`B3`, `C2`, `C3`, `D1`, `D2`, `D3`, `F1`.** No other fixture exists in
+`lab/fixtures/` today.
 
-The second pilot fixture batch — `B2.yaml`, `C2.yaml`, `D3.yaml` — is now
+The third pilot fixture batch — `B3.yaml`, `D1.yaml`, `C3.yaml` — is now
 tracked and committed at commit
+`35037367337cd8dffc4646c03dd6900093c09444` (data-only commit, on top of
+the documentation-hardening pass, `2f953cf`). All three re-validated
+successfully against the current fixture schema immediately before that
+commit, and the full 44-test suite passed unchanged.
+
+Before that, the second pilot fixture batch — `B2.yaml`, `C2.yaml`,
+`D3.yaml` — was tracked and committed at commit
 `6232c541fe633c55d515c4e4b7d8624897c2103f` (data-only commit, on top of
 the Step 10 documentation checkpoint, `794529d`). All three re-validated
 successfully against the current fixture schema immediately before that
@@ -238,19 +246,14 @@ was not touched. Nothing else is currently pending review.
 
 ## Next safest step
 
-**Not yet authorized.** A design-only review has been completed for three
-further Scout Intelligence Test v1 cases — B3, D1, C3 — covering exact
-canonical fields, reviewer-only expected behavior, and representability
-against the current schema/renderer. **That review did not create or
-authorize any fixture file** — `B3.yaml`, `D1.yaml`, and `C3.yaml` do not
-exist in this repository. C3 in particular surfaced an open architecture
-question (whether/how to scope a RAW fixture given Lab Runner has no
-persistence layer to verify a retention claim against) that is not yet
-decided. Whether to authorize fixture authoring for B3/D1, how to resolve
-C3, remaining RAW fixtures generally, TinyLlama baseline testing, choosing
-any candidate replacement model, and approving a Benchmark Profile are all
-undecided. Waiting for Patrick and ChatGPT to define the next safe step
-together.
+**Not yet authorized.** `B3.yaml`, `D1.yaml`, and `C3.yaml` are now
+committed (see "Last completed step" above) — C3 in particular remains
+scoped to only the RAW/brain half of that case, since Lab Runner has no
+persistence layer to verify a retention claim against; how (or whether)
+to ever test the SYSTEM half is not yet decided. Remaining RAW fixtures
+generally, TinyLlama baseline testing, choosing any candidate replacement
+model, and approving a Benchmark Profile are all still undecided. Waiting
+for Patrick and ChatGPT to define the next safe step together.
 
 ## How to independently verify this checkpoint
 
