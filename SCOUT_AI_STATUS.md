@@ -6,7 +6,7 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-24 (documentation hardening pass)
+Last updated: 2026-08-26 (post-consolidation documentation checkpoint)
 
 ---
 
@@ -224,11 +224,17 @@ preserved as evidence for later reviewed incorporation.
 ## Awaiting ChatGPT review
 
 Step 5 (`3ad0598`), the first pilot fixture commit (`f3eb6d7`), the
-Step 10 documentation/ADR checkpoint (`794529d`), and the second pilot
-fixture commit (`6232c54`) have all been independently reviewed and
-approved by ChatGPT. This documentation-hardening pass (Charter/Status/
-Research-Log update) is the most recent work and is pending that same
-review cycle. Nothing else is currently pending review.
+Step 10 documentation/ADR checkpoint (`794529d`), the second pilot
+fixture commit (`6232c54`), and the 2026-08-24 documentation-hardening
+pass have all been independently reviewed and approved by ChatGPT. The
+**post-consolidation documentation checkpoint** (2026-08-26) — new
+Charter sections on presence/expression and the Scout Constitution's
+stable-character boundaries, several new/strengthened core-design-
+principle bullets, and a batch of future-parked design ideas and one
+open question recorded in `RESEARCH_LOG.md` — is the most recent work
+and is pending that same review cycle. No implementation, benchmark,
+fixture, or model work occurred in this checkpoint, and `Patevan9/Scout`
+was not touched. Nothing else is currently pending review.
 
 ## Next safest step
 

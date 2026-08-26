@@ -346,3 +346,95 @@ respected; and storage capacity is a separate constraint from RAM, CPU,
 latency, and thermals — solving for storage space does not solve for
 those, and none of this authorizes assuming a larger on-device model is
 automatically viable just because storage space exists.
+
+## 2026-08-26
+
+**MILESTONE** — Post-consolidation documentation checkpoint: a broader
+review of older Scout notes plus the current Scout AI vision was completed
+by Patrick and Claude, and the durable conclusions were preserved into
+`SCOUT_AI_CHARTER.md` (new "Presence, awareness, and expression" and
+"Scout Constitution — stable character" sections, plus new/strengthened
+core-design-principle bullets: local-first-not-offline-only, optional
+cloud reasoning, chassis/Workbench hardware-vs-intelligence, grounded
+action and honesty, no-lesser-public-Scout capability scaling,
+affordability, strengthened language-neutral core, and an expanded
+model-replaceable bullet covering companion-quality evaluation and
+expression/reasoning independence). This entry and the design-idea/open-
+question entries below record the future-facing and forward-looking
+material from that same review that is not yet durable enough for the
+Charter. Documentation-only — no code, fixture, benchmark, or model file
+touched; `Patevan9/Scout` untouched.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Expression decision trichotomy. Scout AI should eventually be able to
+choose appropriately among SPEAK, EXPRESS SILENTLY, and DO NOTHING for a
+given moment, rather than defaulting to speech. No selection mechanism is
+designed here.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Individual Scout personality adaptation. Concrete examples of the
+Charter's "individual Scouts may gradually develop subtle differences"
+principle: more playful vs. more reserved, more or less talkative,
+preference for silent visual acknowledgement over speech, person-specific
+interaction styles, household-specific conversational habits. No
+adaptation mechanism, storage shape, or trigger is designed here.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Grounded web retrieval. When online capability is enabled, Scout AI should
+recognize when it lacks current/external knowledge and request grounded
+web retrieval: `Scout AI -> approved Web Retrieval capability -> retrieved
+evidence -> Scout AI reasoning/response`. Web results are temporary
+evidence for that turn (see the Charter's "Grounded action and honesty"
+principle) — they do not automatically become TruthDb facts, permanent
+memory, or identity; anything worth keeping must pass through Scout's own
+memory rules. Not designed or implemented here.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Deterministic tools beyond weather. The same grounded-request architecture
+already planned for weather (`weather provider/retrieval -> grounded
+weather data -> Scout AI -> natural contextual response`) may eventually
+extend to calendar, further web retrieval, camera/perception, battery
+state, household sensors, and spatial/navigation state — Scout AI
+requesting information/actions from controlled Scout systems rather than
+inventing or performing them. No specific tool beyond weather is designed
+here.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Builder's Workbench. A future owner-facing toggle: OFF is the normal
+companion experience; ON additionally exposes approved physical/robotic
+capabilities on the same Scout (motors/chassis, servos, pan/tilt camera,
+additional sensors, navigation, room mapping, docking hardware, other
+hobbyist hardware) to hobbyists, without requiring a separate Scout
+identity or AI architecture. See the Charter's chassis-independence
+principle for the durable boundary (hardware, not intelligence, is what
+Workbench unlocks). Not designed here.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Autonomous/spatial Scout. A sufficiently equipped future Scout may map a
+home, learn room labels, localize itself, navigate safely between rooms,
+locate people with appropriate confidence, deliver messages, and
+dock/charge autonomously — e.g. "Scout, go to the kitchen and tell Diana
+I'll be there in 10 minutes." This requires multiple coordinated systems
+and must never be represented as merely an LLM command; potential
+architecture may include a separate spatial/world-state layer, not defined
+here. Physical-action honesty (Charter) applies throughout: an unverified
+action must never be reported as a success.
+
+**OPEN QUESTION** — Whether/how a future spatial/world-state layer should
+relate to TruthDb. Recorded only that it is a legitimate future design
+question and should **not** be assumed to belong in TruthDb automatically —
+not decided either way.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Multilingual interaction example. One household member primarily using
+English, another using Spanish, and someone switching languages
+mid-conversation, all handled by the same Scout without changing identity
+or memory ownership — an illustration of the Charter's language-neutral
+core principle, not a design for how it would be implemented.
+
+**DESIGN IDEA (future direction — not authorized, not implemented)** —
+Optional cloud-reasoning escalation mechanism. How an owner would enable
+it, what "unusually difficult" would mean in practice, and how escalation
+would be decided are all undesigned; the Charter's "optional cloud
+reasoning, never required" principle is the only part of this that is
+currently durable.
