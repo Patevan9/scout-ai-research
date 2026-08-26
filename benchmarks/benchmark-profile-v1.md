@@ -26,8 +26,8 @@ can be honestly represented yet — C4 and F3 need renderer rules that
 [ADR-0006](../docs/decisions/0006-canonical-context-renderer.md)
 explicitly leaves open (`memory_habit_payload`, empty
 `simulated_vision_payload.detections`), and C5 needs a fixture-schema field
-for a real export-file payload that does not exist yet. A2, B4, E1, and E2
-simply have no fixture committed yet. None of these gaps is resolved by
+for a real export-file payload that does not exist yet. A2, B4, E1, E2,
+and F2 simply have no fixture committed yet. None of these gaps is resolved by
 this document — this Benchmark Profile may be extended later, once a case
 can be represented honestly, without needing to be redefined from scratch.
 
