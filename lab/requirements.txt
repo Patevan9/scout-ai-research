@@ -1,7 +1,10 @@
 # Scout AI Lab Runner v0.1 -- dependencies.
 #
-# Step 3 adds exactly one dependency: PyYAML, for parsing the canonical
-# fixture format. Nothing else has been added. In particular,
-# llama-cpp-python is NOT listed here yet -- it is intentionally not
-# installed or used at this step.
+# PyYAML: parses the canonical fixture format (Step 3).
+#
+# llama-cpp-python: runs real inference against a local GGUF model file,
+# for TinyLlamaBackend (Scout AI first-real-inference step). No model
+# file is ever committed to this repository -- see
+# lab/models/.gitignore and lab/models/README.md.
 PyYAML==6.0.1
+llama-cpp-python==0.3.35
