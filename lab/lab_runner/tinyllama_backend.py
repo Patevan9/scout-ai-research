@@ -29,6 +29,15 @@ first-real-inference step). Deliberately narrow:
     version's sampler takes an explicit `temp == 0.0 -> add_greedy()`
     path (verified by reading llama_cpp/llama.py directly), which is
     deterministic independent of seed.
+  - Corrected after ChatGPT review of the first version of this file:
+    this backend does not hard-code a ChatML stop sequence (that was a
+    template-knowledge leak across the adapter/backend boundary -- see
+    run()'s docstring) and does not default `repeat_penalty` itself
+    (that was an uncontrolled Benchmark Profile decision made silently
+    inside backend code -- llama_cpp's own sampler applies the repeat
+    penalty to logits *before* greedy selection, so it is not a no-op
+    parameter under temperature 0). Both are now supplied only via
+    `sampling_params`, never invented here.
 
 Model file discipline: the .gguf file itself is never committed to this
 repository (see lab/models/.gitignore, lab/models/README.md) -- this
@@ -75,23 +84,44 @@ class TinyLlamaBackend(InferenceBackend):
         already-formatted prompt string.
 
         Reads only generation-level settings from `sampling_params`
-        (`max_tokens`, `temperature`, `repeat_penalty`). `n_ctx` is a
-        load()-time model setting, not a per-run generation setting, and
-        is never read here -- consistent with the approved
+        (`max_tokens`, `temperature`, `repeat_penalty`, `stop`). `n_ctx`
+        is a load()-time model setting, not a per-run generation
+        setting, and is never read here -- consistent with the approved
         renderer/adapter/backend responsibility split (ADR-0006).
+
+        This backend invents neither a `repeat_penalty` nor a `stop`
+        value:
+
+        - `repeat_penalty` is a tunable Benchmark Profile decision (see
+          benchmarks/benchmark-profile-v1.md), never a backend fallback
+          -- confirmed by direct inspection of llama_cpp's own sampler
+          chain that repeat_penalty rescales logits *before* greedy
+          selection, so a silently-chosen value here would silently
+          change output. If `sampling_params` doesn't supply one, this
+          backend passes nothing and llama-cpp-python's own library
+          default applies -- never a Scout-AI-chosen number.
+        - `stop` is TinyLlama ChatML template knowledge, owned by
+          TinyLlamaChatMLAdapter.stop_sequences() and supplied here only
+          via `sampling_params` (run_case() folds it in). If absent,
+          this backend does not substitute `</s>` or any other value
+          itself.
         """
         max_tokens = sampling_params.get("max_tokens", 150)
         temperature = sampling_params.get("temperature", 0.0)
-        repeat_penalty = sampling_params.get("repeat_penalty", 1.0)
+
+        completion_kwargs: dict[str, Any] = {
+            "prompt": prompt,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        }
+        if "repeat_penalty" in sampling_params:
+            completion_kwargs["repeat_penalty"] = sampling_params["repeat_penalty"]
+        stop = sampling_params.get("stop")
+        if stop:
+            completion_kwargs["stop"] = stop
 
         start = time.monotonic()
-        completion = handle.create_completion(
-            prompt=prompt,
-            max_tokens=max_tokens,
-            temperature=temperature,
-            repeat_penalty=repeat_penalty,
-            stop=["</s>"],
-        )
+        completion = handle.create_completion(**completion_kwargs)
         generation_time_ms = (time.monotonic() - start) * 1000.0
 
         choice = completion["choices"][0]

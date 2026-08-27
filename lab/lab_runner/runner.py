@@ -54,11 +54,30 @@ def run_case(
     """
     rendered_context = render_canonical_context(canonical_context)
     formatted_prompt = adapter.format_prompt(rendered_context)
-    settings = (
+    base_settings = (
         sampling_params
         if sampling_params is not None
         else adapter.default_generation_settings()
     )
+
+    # Copy rather than mutate -- base_settings may be the caller's own
+    # dict (an explicit Benchmark Profile settings dict), and it must
+    # come back out of this function unchanged.
+    #
+    # Only the adapter's stop_sequences() is folded in here -- never
+    # adapter.default_generation_settings() wholesale. When a caller
+    # supplies explicit sampling_params (as any real Benchmark Profile
+    # run does, to guarantee its own fixed temperature/max_tokens/
+    # repeat_penalty are used), that dict must stay authoritative for
+    # every tunable setting; only the adapter-owned stop sequence -- a
+    # structural template fact, never a tunable benchmark decision --
+    # is added, and only when the caller didn't already supply one.
+    settings = dict(base_settings)
+    if "stop" not in settings:
+        stop_sequences = adapter.stop_sequences()
+        if stop_sequences:
+            settings["stop"] = stop_sequences
+
     raw_result = backend.run(handle, formatted_prompt, settings)
     return RunnerResult(
         canonical_context=canonical_context,

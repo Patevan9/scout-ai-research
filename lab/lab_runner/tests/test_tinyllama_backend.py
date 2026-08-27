@@ -59,13 +59,21 @@ class TestTinyLlamaBackendRun(unittest.TestCase):
         return handle
 
     def test_run_passes_benchmark_profile_v1_generation_settings(self) -> None:
+        # Benchmark Profile v1 now fixes repeat_penalty=1.0 explicitly,
+        # and the adapter/runner supply "stop" -- both flow through
+        # unchanged when present in sampling_params.
         backend = TinyLlamaBackend()
         handle = self._fake_handle()
 
         backend.run(
             handle,
             "<|system|>\n...\n<|assistant|>\n",
-            {"max_tokens": 150, "temperature": 0, "repeat_penalty": 1.0},
+            {
+                "max_tokens": 150,
+                "temperature": 0,
+                "repeat_penalty": 1.0,
+                "stop": ["</s>"],
+            },
         )
 
         handle.create_completion.assert_called_once_with(
@@ -75,6 +83,32 @@ class TestTinyLlamaBackendRun(unittest.TestCase):
             repeat_penalty=1.0,
             stop=["</s>"],
         )
+
+    def test_run_does_not_invent_repeat_penalty_when_absent(self) -> None:
+        # repeat_penalty is a Benchmark Profile decision, never a backend
+        # fallback (ChatGPT review finding) -- if sampling_params doesn't
+        # supply one, this backend must not pass any value at all, so
+        # llama-cpp-python's own library default applies rather than a
+        # Scout-AI-chosen number.
+        backend = TinyLlamaBackend()
+        handle = self._fake_handle()
+
+        backend.run(handle, "prompt", {"max_tokens": 150, "temperature": 0})
+
+        _, kwargs = handle.create_completion.call_args
+        self.assertNotIn("repeat_penalty", kwargs)
+
+    def test_run_does_not_invent_stop_sequence_when_absent(self) -> None:
+        # "</s>" is TinyLlama ChatML template knowledge, owned by
+        # TinyLlamaChatMLAdapter -- this backend must never hard-code or
+        # substitute a stop sequence itself (ChatGPT review finding).
+        backend = TinyLlamaBackend()
+        handle = self._fake_handle()
+
+        backend.run(handle, "prompt", {"max_tokens": 150, "temperature": 0})
+
+        _, kwargs = handle.create_completion.call_args
+        self.assertNotIn("stop", kwargs)
 
     def test_run_uses_documented_defaults_when_sampling_params_sparse(self) -> None:
         backend = TinyLlamaBackend()
@@ -86,8 +120,6 @@ class TestTinyLlamaBackendRun(unittest.TestCase):
             prompt="prompt",
             max_tokens=150,
             temperature=0.0,
-            repeat_penalty=1.0,
-            stop=["</s>"],
         )
 
     def test_run_returns_raw_generation_result_with_extracted_fields(self) -> None:

@@ -82,6 +82,11 @@ class TestTinyLlamaChatMLFormatting(unittest.TestCase):
             },
         )
 
+    def test_stop_sequences_returns_chatml_terminator(self) -> None:
+        # "</s>" is TinyLlama ChatML template knowledge -- owned here,
+        # never by TinyLlamaBackend (ChatGPT review finding).
+        self.assertEqual(self.adapter.stop_sequences(), ["</s>"])
+
 
 class TestStep5RegressionAgainstStep4(unittest.TestCase):
     """Regression proof required by the Step 5 assignment: for a context

@@ -142,3 +142,14 @@ class TinyLlamaChatMLAdapter(ModelAdapter):
             "temperature": 0.6,
             "repeat_penalty": 1.12,
         }
+
+    def stop_sequences(self) -> list[str]:
+        """TinyLlama's ChatML turns are terminated by the literal
+        `</s>` token -- verified against the same real
+        OfflinePromptBuilder.kt source as this adapter's ChatML
+        structure (see module docstring). Structural template knowledge
+        owned here per the ModelAdapter/InferenceBackend boundary
+        (ADR-0006) -- TinyLlamaBackend never hard-codes or infers this
+        itself.
+        """
+        return ["</s>"]

@@ -54,21 +54,42 @@ schema, or any adapter.
 | Runs per fixture | 1 |
 | Maximum output tokens | 150 |
 | Model context limit (`n_ctx`) | 2048 |
+| Repeat penalty (`repeat_penalty`) | 1.0 (neutral / no-op) |
 
-These four values must be identical across every candidate model
+These five values must be identical across every candidate model
 benchmarked under this profile — changing any of them produces a different
 profile, not a comparable result under this one. (150 and 2048 reuse
 TinyLlama's real on-device reference values from `OfflinePromptBuilder`/
 `LlamaEngine.kt`, adopted here as this profile's own fixed values, not
 inherited implicitly — see `TinyLlamaChatMLAdapter.
 default_generation_settings()`'s own note that its defaults are reference
-evidence, not an authoritative benchmark setting.)
+evidence, not an authoritative benchmark setting. `repeat_penalty` is
+fixed at 1.0 — the mathematically neutral value that applies no logit
+rescaling — rather than reusing TinyLlama's own reference value of 1.12,
+so every candidate model receives the same neutral setting where its
+backend supports this parameter, instead of each backend silently
+inheriting its own library's default.)
 
-Sampling parameters not listed above (top-p, top-k, repeat_penalty, random
-seed) are intentionally left undecided by this profile — no real
-`InferenceBackend` exists yet to make them concrete, and under greedy
-decoding most of them have no effect. They remain open for whichever future
-step actually implements a backend.
+**Repeat penalty is not a no-op under greedy decoding, and this profile's
+own earlier wording was wrong to imply otherwise.** Verified directly
+against `llama_cpp`'s own sampler chain construction
+(`Llama._init_sampler()`): `repeat_penalty` is applied via
+`sampler.add_penalties()` unconditionally, before the `temperature == 0`
+branch that selects greedy decoding — it rescales candidate-token logits
+first, and greedy selection then takes the argmax over those
+*already-rescaled* logits. A `repeat_penalty` value other than 1.0 can
+therefore change which token greedy decoding picks. Fixing it at 1.0 is
+what makes it safe to treat as neutral under this profile — the neutrality
+comes from the specific value chosen, not from temperature 0 making the
+parameter irrelevant.
+
+Sampling parameters not listed above (top-p, top-k, random seed) remain
+intentionally left undecided by this profile — under greedy decoding
+these have no effect on which token is selected (unlike `repeat_penalty`,
+they operate only in the stochastic-sampling code path that greedy
+decoding bypasses entirely), so leaving them unset does not introduce the
+kind of hidden decision `repeat_penalty` did. They remain open for
+whichever future step needs them.
 
 ## Result recording
 

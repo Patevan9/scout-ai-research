@@ -53,3 +53,22 @@ class ModelAdapter(ABC):
         (see the Lab Runner design, section 9) -- must never silently
         override an approved profile once one exists.
         """
+
+    def stop_sequences(self) -> list[str]:
+        """This model's own chat/prompt template stop sequence(s) --
+        structural information about how this adapter's format_prompt()
+        output ends a turn (e.g. TinyLlama ChatML's `</s>`), never a
+        tunable benchmark sampling setting.
+
+        Deliberately NOT part of default_generation_settings() -- a
+        caller/Benchmark Profile may supply its own explicit sampling
+        settings that bypass that method entirely (see run_case()), but
+        stop-sequence knowledge must still reach the backend, since only
+        the adapter knows its own template's termination syntax. An
+        InferenceBackend must never invent this itself (see backend.py).
+
+        Concrete, not abstract, with an empty-list default so an adapter
+        with no meaningful stop sequence (e.g. MockAdapter) is never
+        forced to invent one.
+        """
+        return []
