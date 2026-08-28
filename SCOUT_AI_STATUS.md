@@ -6,7 +6,8 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-26 (Benchmark Profile v1 documentation checkpoint)
+Last updated: 2026-08-28 (first real TinyLlama inference implemented and
+corrected; first full 9-fixture RAW baseline run executed, pending review)
 
 ---
 
@@ -49,13 +50,15 @@ own tagging system.
 
 ## Current project phase
 
-**Groundwork, with the first approved implementation underway.** No model
-chosen, no fine-tuning, no TinyLlama run, no real inference. The approved
-Scout AI Lab Runner v0.1 design is being built in small, individually
-authorized steps (see `lab/`) — architecture plumbing and the canonical
-fixture schema/validator proven so far, with a mock adapter, a mock
-backend, and synthetic-only test fixtures, not a real model or real
-benchmark data.
+**Groundwork, with the first real inference implemented and a first raw
+benchmark baseline run.** No model chosen as a final replacement, no
+fine-tuning. A real `TinyLlamaBackend` now exists (see "Last completed
+step") and has been exercised against fixture B2 and, as of 2026-08-28,
+against all 9 currently committed RAW fixtures under Benchmark Profile
+v1. That benchmark run is raw evidence only — not yet scored, not yet
+independently reviewed. The approved Scout AI Lab Runner v0.1 design
+continues to be built in small, individually authorized steps (see
+`lab/`).
 
 ## Current approved work
 
@@ -98,15 +101,64 @@ automated test suite exercises it.
   harness, the ModelAdapter/InferenceBackend boundary, fixture and result
   schemas, the Benchmark Profile process) — reviewed by ChatGPT and
   approved as a design. Being implemented in small, individually authorized
-  steps; not yet complete — no real inference backend exists.
+  steps.
+- **[IMPLEMENTED]** **Real `TinyLlamaBackend`** (`llama-cpp-python`) — the
+  first and only real `InferenceBackend` that exists; `MockBackend`/
+  `MockAdapter` remain for plumbing tests. Corrected after ChatGPT's review
+  to keep `repeat_penalty` and the ChatML stop sequence out of the
+  backend's own defaults: `ModelAdapter.stop_sequences()` (adapter-owned
+  template knowledge) and an explicit `repeat_penalty = 1.0` in Benchmark
+  Profile v1 replace the earlier silent backend defaults. 59/59 tests
+  passing. See `lab/lab_runner/tinyllama_backend.py`.
 - **[DECISION]** **Benchmark Profile v1** — RAW-only, scoped to exactly the
   9 currently committed fixtures (B1, B2, B3, C2, C3, D1, D2, D3, F1);
   temperature 0/greedy, 1 run per fixture, max 150 output tokens, `n_ctx`
-  2048; existing renderer and result schema unchanged — approved. See
-  `benchmarks/benchmark-profile-v1.md`. No inference has been run under it
-  yet — no real inference backend exists.
+  2048, `repeat_penalty` 1.0; existing renderer and result schema
+  unchanged — approved. See `benchmarks/benchmark-profile-v1.md`. Fixture
+  B2 was run first as the initial proof (checkpoint `b308874`/`763fc82`);
+  all 9 fixtures were run once each on 2026-08-28 — raw evidence only, not
+  yet scored or independently reviewed. See "Current benchmark status."
 
 ## Last completed step
+
+**A first full 9-fixture RAW baseline run under Benchmark Profile v1 was
+executed on 2026-08-28**, reusing the exact same approved, unchanged
+pipeline (`render_canonical_context()` → `RenderedContext` →
+`TinyLlamaChatMLAdapter` → `TinyLlamaBackend`) and Benchmark Profile v1's
+fixed settings (temperature 0, 1 run/fixture, `max_tokens` 150, `n_ctx`
+2048, `repeat_penalty` 1.0). All 9 currently committed fixtures — `B1`,
+`B2`, `B3`, `C2`, `C3`, `D1`, `D2`, `D3`, `F1` — were run once each, no
+retries, no prompt or parameter changes. Every `raw_response` was
+preserved verbatim. Result file:
+`benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`.
+`system_verdict` and `brain_verdict` are recorded as `NOT_TESTED` for
+every case — this run produced raw evidence only; no pass/fail scoring
+has been applied and none is authorized yet. `F1` is recorded with
+`test_scope: SIMULATED_FUTURE`; `C3`'s record makes no persistence claim,
+consistent with its RAW/brain-only scope. Two fixtures (`D3`, `F1`) hit
+the 150-token cap (`finish_reason: length`) with visible repetition in
+the tail of the output — recorded as-is, not retried or edited.
+
+**The first real `InferenceBackend`, `TinyLlamaBackend`, was implemented
+and proven end to end against fixture `B2`** (checkpoint `b308874`,
+`llama-cpp-python` 0.3.35, model obtained via a GitHub Release with a
+verified SHA-256 after Hugging Face was network-blocked in-session).
+ChatGPT's review found two architecture-boundary issues: `repeat_penalty`
+was silently defaulted inside the backend, and TinyLlama's ChatML stop
+token (`</s>`) was hardcoded there too, leaking model-template knowledge
+out of `ModelAdapter`. Both were corrected at checkpoint `763fc82`
+(parent `b308874`): `ModelAdapter.stop_sequences()` was added (base
+returns `[]`; `TinyLlamaChatMLAdapter` returns `["</s>"]`), `run_case()`
+now merges only the adapter's stop sequence into caller-supplied
+settings — never `default_generation_settings()` wholesale, and never
+mutating the caller's dict — and `TinyLlamaBackend.run()` no longer
+invents a `repeat_penalty` or `stop` value of its own. Benchmark Profile
+v1 was updated to fix `repeat_penalty` at `1.0` explicitly, with the
+`Llama._init_sampler()` sampler-chain evidence for why this is not a
+no-op under greedy decoding. 9 new tests were added; the full suite
+passed 59/59 both before and after re-confirming the B2 proof under the
+corrected code. **`763fc82724a9904ecf0d5bed553f958ff90a41fa` is the
+accepted Scout AI checkpoint** as of this entry.
 
 **The currently committed RAW fixtures are exactly nine: `B1`, `B2`,
 `B3`, `C2`, `C3`, `D1`, `D2`, `D3`, `F1`.** No other fixture exists in
@@ -152,9 +204,10 @@ milestone entries covering the renderer Steps 1–4A, the Step 5 commit,
 and the pilot fixture commit; full detail lives in each commit's own
 message, not duplicated here.
 
-**No real inference backend exists. No model has been run. TinyLlama
-baseline testing has not begun. No replacement model has been
-selected.**
+**A real inference backend now exists (`TinyLlamaBackend`, see above) and
+has been run against all 9 currently committed fixtures once each. No
+replacement model has been selected or evaluated — TinyLlama remains the
+only model exercised.**
 
 ## Current benchmark status
 
@@ -168,10 +221,14 @@ selected.**
   currently committed fixtures, fixed generation settings (temperature 0,
   1 run/fixture, 150 max tokens, `n_ctx` 2048). See
   `benchmarks/benchmark-profile-v1.md`.
-- **No results exist yet.** `benchmarks/results/` is still an empty
-  placeholder. Running TinyLlama against this benchmark, choosing any
-  candidate replacement model, and building a real inference backend are
-  all still undecided/not authorized — see "Next safest step."
+- **A first result now exists, pending review.**
+  `benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`
+  holds one run of all 9 currently committed RAW fixtures under
+  Benchmark Profile v1 (see "Last completed step"). It is raw evidence
+  only — `system_verdict`/`brain_verdict` are `NOT_TESTED` throughout, no
+  scoring has been applied, and the file has not yet been independently
+  reviewed. Choosing any candidate replacement model is still
+  undecided/not authorized — see "Next safest step."
 
 ## Real-device TinyLlama evidence (new)
 
@@ -262,18 +319,32 @@ pending review like the items above. No fixture, renderer, backend,
 model, or benchmark-run work occurred in this checkpoint, and
 `Patevan9/Scout` was not touched.
 
+The **TinyLlamaBackend implementation and its ChatGPT-reviewed
+correction** — commits `b308874` (first real backend, proven on B2) and
+`763fc82` (repeat_penalty/stop-sequence boundary fix) — were built
+directly from ChatGPT's own review findings and Patrick's approved
+correction decision; the underlying architecture decisions have already
+been through that review cycle. The commits' own exact wording/diff have
+not yet had a separate independent ChatGPT pass and remain pending review
+like the items above.
+
+The **first full 9-fixture RAW baseline run** (2026-08-28,
+`benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`) and
+this documentation update are new work as of this entry and are pending
+their own independent ChatGPT review before any scoring or further
+benchmark step is authorized.
+
 ## Next safest step
 
-**Not yet authorized.** `B3.yaml`, `D1.yaml`, and `C3.yaml` are now
-committed (see "Last completed step" above) — C3 in particular remains
-scoped to only the RAW/brain half of that case, since Lab Runner has no
-persistence layer to verify a retention claim against; how (or whether)
-to ever test the SYSTEM half is not yet decided. **Benchmark Profile v1 is
-now approved** (see "Current benchmark status" above) — that no longer
-blocks the next step. Remaining RAW fixtures generally, TinyLlama baseline
-testing, choosing any candidate replacement model, and implementing a real
-inference backend are all still undecided/not authorized. Waiting for
-Patrick and ChatGPT to define the next safe step together.
+**Not yet authorized.** A real inference backend now exists and the first
+full 9-fixture RAW baseline run has been executed (see "Last completed
+step" / "Current benchmark status" above) — that no longer blocks the
+next step. What remains undecided/not authorized: scoring or interpreting
+the 2026-08-28 result set, choosing any candidate replacement model,
+evaluating any model other than TinyLlama, and any further benchmark run.
+Waiting for Patrick and ChatGPT to independently review this checkpoint's
+commits and the new result file, then define the next safe step
+together.
 
 ## How to independently verify this checkpoint
 
@@ -295,14 +366,19 @@ assuming today's values below still hold by the time you read this:
 - **Whether a real inference backend exists**: read `lab/lab_runner/backend.py`
   (should still be an abstract interface only) and check whether any file
   besides `mock_backend.py` implements it.
-- **Whether model binaries exist**: `find . -iname "*.gguf" -not -path "./.git/*"`
-  (or similar) — should find nothing.
+- **Whether model binaries exist**: `git ls-files -- '*.gguf'` — should
+  find nothing (a local `.gguf` may exist on disk per
+  `lab/models/.gitignore`, but it must never be committed).
 - **Whether a real inference dependency has been introduced**: check
-  `lab/requirements.txt` and `pip show llama-cpp-python` — should show it
-  is not listed/not installed.
+  `lab/requirements.txt` — `llama-cpp-python==0.3.35` should be listed
+  (added for `TinyLlamaBackend`); `pip show llama-cpp-python` confirms
+  whether it's actually installed in the current environment.
 - **Whether any inference run has actually occurred**: inspect
-  `lab/results/` — should be empty; its existence or contents would mean
-  something changed since this was written.
+  `benchmarks/results/` — as of this checkpoint it should contain exactly
+  one file, `2026-08-28-tinyllama-benchmark-profile-v1.json` (9 records,
+  one per fixture, `system_verdict`/`brain_verdict` `NOT_TESTED`
+  throughout); anything more would mean a further run occurred since this
+  was written.
 
 If any of these disagree with what this document says, **the repository is
 the source of truth, not this file** — flag the conflict rather than

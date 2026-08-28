@@ -456,3 +456,55 @@ renderer/schema questions, unchanged by this milestone); A2, B4, E1, E2,
 and F2 simply have no fixture committed yet. Documentation-only — no
 fixture, renderer, backend, or model file touched, no inference run, and
 `Patevan9/Scout` was not touched.
+
+**MILESTONE** — First real `TinyLlamaBackend` implemented and proven,
+then corrected per ChatGPT review. A real `InferenceBackend`
+(`lab/lab_runner/tinyllama_backend.py`, `llama-cpp-python` 0.3.35) was
+built and run end to end against fixture `B2` for the first time
+(checkpoint `b308874782bccce845b0bb2affc3aeeb93351c70`) — the model file
+(`tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf`) was obtained via a GitHub
+Release with a verified SHA-256 after Hugging Face was blocked by this
+session's network policy. ChatGPT's review then found two architecture-
+boundary issues: `repeat_penalty` was silently defaulted inside the
+backend rather than being an explicit Benchmark Profile decision, and
+TinyLlama's ChatML stop token (`</s>`) was hardcoded in the backend,
+leaking model-template knowledge that belongs to `ModelAdapter`. Both
+were corrected at checkpoint `763fc82724a9904ecf0d5bed553f958ff90a41fa`
+(parent `b308874`): `ModelAdapter.stop_sequences()` was added (base class
+returns `[]`, `TinyLlamaChatMLAdapter` returns `["</s>"]`); `run_case()`
+now merges only the adapter's stop sequence into caller-supplied
+settings — never `default_generation_settings()` wholesale, and never
+mutating the caller's own dict; and `TinyLlamaBackend.run()` no longer
+invents a `repeat_penalty` or `stop` value when the caller doesn't supply
+one. `benchmarks/benchmark-profile-v1.md` was updated to fix
+`repeat_penalty` at `1.0` explicitly, backed by direct evidence from
+`llama_cpp`'s own `Llama._init_sampler()` sampler-chain construction that
+this parameter is not a no-op under greedy decoding. 9 new tests were
+added; the full suite passed 59/59 both before and after re-confirming
+the original B2 proof against the corrected code, with identical output.
+`763fc82` is the accepted Scout AI checkpoint. Only fixture `B2` was run
+in this work; the remaining 8 currently committed RAW fixtures were
+intentionally not run yet. `Patevan9/Scout` was not touched; no Qwen work
+was performed.
+
+**MILESTONE** — First full 9-fixture RAW baseline run executed under
+Benchmark Profile v1 (2026-08-28). All 9 currently committed RAW
+fixtures — `B1`, `B2`, `B3`, `C2`, `C3`, `D1`, `D2`, `D3`, `F1` — were run
+once each through the unchanged approved pipeline
+(`render_canonical_context()` → `RenderedContext` →
+`TinyLlamaChatMLAdapter` → `TinyLlamaBackend`) at checkpoint `763fc82`,
+using Benchmark Profile v1's fixed settings exactly (temperature 0, 1
+run/fixture, `max_tokens` 150, `n_ctx` 2048, `repeat_penalty` 1.0). No
+prompt, parameter, or fixture changes; no retries. Every `raw_response`
+was preserved verbatim in
+`benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`.
+`system_verdict` and `brain_verdict` are recorded as `NOT_TESTED`
+throughout — this run is raw evidence only; no pass/fail scoring has been
+applied or authorized. `F1` is recorded as `SIMULATED_FUTURE`; `C3`'s
+record makes no persistence claim, consistent with its RAW/brain-only
+scope. Two fixtures (`D3`, `F1`) hit the 150-token cap
+(`finish_reason: length`) with visible repetition in the output tail,
+recorded as-is. This result file and the accompanying update to
+`SCOUT_AI_STATUS.md` are pending independent ChatGPT review before any
+scoring, interpretation, or further benchmark step. No model other than
+TinyLlama was run; `Patevan9/Scout` was not touched.
