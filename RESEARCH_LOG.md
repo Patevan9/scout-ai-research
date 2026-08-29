@@ -505,9 +505,10 @@ record makes no persistence claim, consistent with its RAW/brain-only
 scope. Two fixtures (`D3`, `F1`) hit the 150-token cap
 (`finish_reason: length`) with visible repetition in the output tail,
 recorded as-is. This result file and the accompanying update to
-`SCOUT_AI_STATUS.md` are pending independent ChatGPT review before any
-scoring, interpretation, or further benchmark step. No model other than
-TinyLlama was run; `Patevan9/Scout` was not touched.
+`SCOUT_AI_STATUS.md` have since been independently reviewed and accepted
+as faithfully recorded raw evidence; it remains unscored, and no scoring,
+interpretation, or further benchmark step is yet authorized. No model
+other than TinyLlama was run; `Patevan9/Scout` was not touched.
 
 **MILESTONE** — First full 9-fixture RAW baseline run executed for
 candidate model Qwen2.5-1.5B-Instruct under Benchmark Profile v1
@@ -537,7 +538,8 @@ were re-verified immediately before the run and matched exactly. Every
 throughout — raw evidence only; no pass/fail scoring has been applied or
 authorized. `F1` is recorded as `SIMULATED_FUTURE`; `C3`'s record makes
 no persistence claim. This result file and the accompanying update to
-`SCOUT_AI_STATUS.md` are pending independent ChatGPT review before any
-scoring, interpretation, or comparison against the TinyLlama result set
-is authorized. No model other than Qwen was run in this step (TinyLlama
-was not rerun); `Patevan9/Scout` was not touched.
+`SCOUT_AI_STATUS.md` have since been independently reviewed and accepted
+as faithfully recorded raw evidence; it remains unscored, and no scoring,
+interpretation, or comparison against the TinyLlama result set is yet
+authorized. No model other than Qwen was run in this step (TinyLlama was
+not rerun); `Patevan9/Scout` was not touched.

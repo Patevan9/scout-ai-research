@@ -6,9 +6,11 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-29 (Qwen2.5-1.5B-Instruct candidate: adapter
-implemented and corrected, single B2 proof run, first full 9-fixture RAW
-baseline run executed — all pending review)
+Last updated: 2026-08-29 (documentation correction: TinyLlama's and
+Qwen2.5-1.5B-Instruct's 9-fixture RAW benchmark results, and the Qwen
+adapter/correction/B2 proof, are all independently reviewed and accepted
+as faithfully recorded raw evidence; both remain unscored, no comparison
+performed yet)
 
 ---
 
@@ -59,8 +61,9 @@ fixtures under Benchmark Profile v1 (2026-08-28). A `QwenAdapter` for the
 candidate model Qwen2.5-1.5B-Instruct now also exists, reusing the same
 backend unchanged, and has likewise been run once against fixture B2 and
 then against all 9 fixtures under Benchmark Profile v1 (2026-08-29). Both
-benchmark runs are raw evidence only — not yet scored, not yet
-independently reviewed, and not yet compared against each other. The
+benchmark runs have been independently reviewed and accepted as
+faithfully recorded raw evidence — neither is scored, and no comparison
+between them has been performed. The
 approved Scout AI Lab Runner v0.1 design continues to be built in small,
 individually authorized steps (see `lab/`).
 
@@ -120,17 +123,24 @@ automated test suite exercises it.
   2048, `repeat_penalty` 1.0; existing renderer and result schema
   unchanged — approved. See `benchmarks/benchmark-profile-v1.md`. Fixture
   B2 was run first as the initial proof (checkpoint `b308874`/`763fc82`);
-  all 9 fixtures were run once each on 2026-08-28 — raw evidence only, not
-  yet scored or independently reviewed. See "Current benchmark status."
+  all 9 fixtures were run once each on 2026-08-28 — raw evidence only,
+  independently reviewed and accepted as faithfully recorded; still
+  unscored. See "Current benchmark status."
 - **[IMPLEMENTED]** **`QwenAdapter`** (`lab/lab_runner/qwen_chat.py`) —
   `ModelAdapter` for candidate model Qwen2.5-1.5B-Instruct (Q4_K_M),
   reusing the existing `TinyLlamaBackend` unchanged (already model-neutral
   llama.cpp wrapper). Chat template, stop sequence (`["<|im_end|>"]`), and
   `default_generation_settings()` verified directly against the real GGUF
-  and Qwen's own authoritative `generation_config.json`. Run once against
-  fixture B2 (checkpoint `f3930bb`) and then against all 9 fixtures under
-  Benchmark Profile v1's explicit settings (2026-08-29) — see "Current
-  benchmark status." 76/76 tests passing.
+  and Qwen's own authoritative `generation_config.json`. The initial
+  implementation (`c45e3b6`) was reviewed and found to have a contract
+  bug (its generation defaults reproduced Benchmark Profile v1's controls
+  instead of Qwen's own documented model defaults) — corrected and
+  independently reviewed/accepted at `f3930bb`, which is the accepted
+  adapter checkpoint, not `c45e3b6` alone. Run once against fixture B2 at
+  that checkpoint and then against all 9 fixtures under Benchmark Profile
+  v1's explicit settings (2026-08-29) — both runs independently reviewed
+  and accepted as faithfully recorded; see "Current benchmark status."
+  76/76 tests passing.
 
 ## Last completed step
 
@@ -151,7 +161,10 @@ preserved verbatim. Result file:
 `SIMULATED_FUTURE`; `C3`'s record makes no persistence claim. The model
 artifact's size and SHA-256 were re-verified immediately before this run
 and matched exactly. This followed a single authorized B2-only proof run
-(checkpoint `f3930bb`), separately reviewed, which used the same discipline.
+(checkpoint `f3930bb`), separately reviewed, which used the same
+discipline. This 9-fixture run has since been independently reviewed and
+accepted as faithfully recorded raw evidence — see "Awaiting ChatGPT
+review." It remains unscored.
 
 Before that, a first full 9-fixture RAW baseline run for TinyLlama under
 Benchmark Profile v1 was executed on 2026-08-28, reusing the exact same approved, unchanged
@@ -189,8 +202,13 @@ v1 was updated to fix `repeat_penalty` at `1.0` explicitly, with the
 `Llama._init_sampler()` sampler-chain evidence for why this is not a
 no-op under greedy decoding. 9 new tests were added; the full suite
 passed 59/59 both before and after re-confirming the B2 proof under the
-corrected code. **`763fc82724a9904ecf0d5bed553f958ff90a41fa` is the
-accepted Scout AI checkpoint** as of this entry.
+corrected code. `763fc82724a9904ecf0d5bed553f958ff90a41fa` was the
+accepted Scout AI checkpoint at the time of this entry — independently
+reviewed and accepted, and since superseded by the TinyLlama 9-fixture
+benchmark (`45283a7`), the QwenAdapter implementation and its
+generation-settings correction (`c45e3b6`/`f3930bb`), and the Qwen
+9-fixture benchmark (`46968e1`), all independently reviewed and accepted
+in turn; see "Awaiting ChatGPT review" for the current accepted state.
 
 **The currently committed RAW fixtures are exactly nine: `B1`, `B2`,
 `B3`, `C2`, `C3`, `D1`, `D2`, `D3`, `F1`.** No other fixture exists in
@@ -254,18 +272,18 @@ between the two result sets has been performed.**
   currently committed fixtures, fixed generation settings (temperature 0,
   1 run/fixture, 150 max tokens, `n_ctx` 2048). See
   `benchmarks/benchmark-profile-v1.md`.
-- **Two first result sets now exist, pending review.**
-  `benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`
+- **Two result sets now exist, both independently reviewed and
+  accepted.** `benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`
   (TinyLlama baseline) and
   `benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`
   (Qwen2.5-1.5B-Instruct candidate) each hold one run of all 9 currently
   committed RAW fixtures under Benchmark Profile v1's identical explicit
-  settings (see "Last completed step"). Both are raw evidence only —
+  settings (see "Last completed step"). Both have been independently
+  reviewed and accepted as faithfully recorded raw evidence —
   `system_verdict`/`brain_verdict` are `NOT_TESTED` throughout in both
-  files, no scoring has been applied to either, and neither has been
-  independently reviewed, nor compared against the other. Choosing any
-  candidate replacement model is still undecided/not authorized — see
-  "Next safest step."
+  files, no scoring has been applied to either, and no comparison between
+  them has been performed. Choosing any candidate replacement model is
+  still undecided/not authorized — see "Next safest step."
 
 ## Real-device TinyLlama evidence (new)
 
@@ -358,45 +376,54 @@ model, or benchmark-run work occurred in this checkpoint, and
 
 The **TinyLlamaBackend implementation and its ChatGPT-reviewed
 correction** — commits `b308874` (first real backend, proven on B2) and
-`763fc82` (repeat_penalty/stop-sequence boundary fix) — were built
-directly from ChatGPT's own review findings and Patrick's approved
-correction decision; the underlying architecture decisions have already
-been through that review cycle. The commits' own exact wording/diff have
-not yet had a separate independent ChatGPT pass and remain pending review
-like the items above.
+`763fc82` (repeat_penalty/stop-sequence boundary fix) — have both since
+been independently reviewed and accepted by Patrick and ChatGPT, `763fc82`
+in particular as the checkpoint's own exact wording/diff, not just its
+underlying architecture decisions.
 
 The **first full 9-fixture RAW baseline run for TinyLlama** (2026-08-28,
-`benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`) and
-its documentation update were pending independent ChatGPT review as of
-that entry; status unchanged by this edit.
+`benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`) has
+since been independently reviewed and accepted as faithfully recorded raw
+evidence. It remains unscored.
 
-The **QwenAdapter implementation** (`c45e3b6`) and its **generation-
-settings correction** (`f3930bb`, aligning `default_generation_settings()`
-with Qwen's own authoritative `generation_config.json` rather than
-Benchmark Profile v1's controls) have each already been independently
-reviewed and approved by Patrick and ChatGPT. The single **B2-only Qwen
+The **QwenAdapter implementation** (`c45e3b6`) was independently reviewed
+and found to have a contract bug: its `default_generation_settings()`
+reproduced Benchmark Profile v1's controls instead of Qwen's own
+documented model defaults, violating the `ModelAdapter` contract.
+`c45e3b6` was therefore **not** accepted as the final adapter checkpoint
+by itself. The **generation-settings correction** (`f3930bb`, aligning
+`default_generation_settings()` with Qwen's own authoritative
+`generation_config.json`) was independently reviewed and accepted —
+`f3930bb` is the accepted adapter checkpoint. The single **B2-only Qwen
 proof run** (checkpoint `f3930bb`, no repository change) was likewise
-already reviewed and approved before this step was authorized.
+independently reviewed and accepted before the 9-fixture step was
+authorized.
 
 The **first full 9-fixture RAW baseline run for Qwen2.5-1.5B-Instruct**
 (2026-08-29,
-`benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`)
-and this documentation update are new work as of this entry and are
-pending their own independent ChatGPT review before any scoring,
-comparison against the TinyLlama result set, or further benchmark step is
-authorized.
+`benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`,
+recorded at commit `46968e1`) has since been independently reviewed and
+accepted as faithfully recorded raw evidence. It remains unscored, and no
+comparison against the TinyLlama result set has been performed. This
+documentation correction itself (aligning this file's review-status
+wording with the review outcomes above) is new work as of this entry and
+has not yet had its own independent ChatGPT pass — pending review like
+any other commit's own exact wording, though the decisions and evidence
+it describes are not themselves newly at issue.
 
 ## Next safest step
 
-**Not yet authorized.** Both TinyLlama and Qwen2.5-1.5B-Instruct now have
-a first full 9-fixture RAW baseline run under identical Benchmark Profile
-v1 settings (see "Last completed step" / "Current benchmark status"
-above) — that no longer blocks the next step. What remains undecided/not
-authorized: scoring or interpreting either result set, any comparison
-between them, choosing any candidate replacement model, evaluating any
-model beyond these two, and any further benchmark run. Waiting for
-Patrick and ChatGPT to independently review this checkpoint's result file
-and documentation, then define the next safe step together.
+**Not yet authorized.** Both TinyLlama's and Qwen2.5-1.5B-Instruct's first
+full 9-fixture RAW baseline runs under identical Benchmark Profile v1
+settings have now been independently reviewed and accepted as faithfully
+recorded raw evidence (see "Current benchmark status" above) — that no
+longer blocks the next step. What remains undecided/not authorized:
+scoring or interpreting either result set, any comparison between them,
+choosing any candidate replacement model, evaluating any model beyond
+these two, and any further benchmark run. Current work remains RAW
+benchmark evidence only — no System-level conclusion may be inferred from
+it. Waiting for Patrick and ChatGPT to independently review this
+documentation correction itself, then define the next safe step together.
 
 ## How to independently verify this checkpoint
 
