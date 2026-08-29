@@ -506,9 +506,9 @@ scope. Two fixtures (`D3`, `F1`) hit the 150-token cap
 (`finish_reason: length`) with visible repetition in the output tail,
 recorded as-is. This result file and the accompanying update to
 `SCOUT_AI_STATUS.md` have since been independently reviewed and accepted
-as faithfully recorded raw evidence; it remains unscored, and no scoring,
-interpretation, or further benchmark step is yet authorized. No model
-other than TinyLlama was run; `Patevan9/Scout` was not touched.
+as faithfully recorded raw evidence, and have since been scored (see the
+Brain-side scoring review milestone below). No model other than
+TinyLlama was run; `Patevan9/Scout` was not touched.
 
 **MILESTONE** — First full 9-fixture RAW baseline run executed for
 candidate model Qwen2.5-1.5B-Instruct under Benchmark Profile v1
@@ -539,7 +539,43 @@ throughout — raw evidence only; no pass/fail scoring has been applied or
 authorized. `F1` is recorded as `SIMULATED_FUTURE`; `C3`'s record makes
 no persistence claim. This result file and the accompanying update to
 `SCOUT_AI_STATUS.md` have since been independently reviewed and accepted
-as faithfully recorded raw evidence; it remains unscored, and no scoring,
-interpretation, or comparison against the TinyLlama result set is yet
-authorized. No model other than Qwen was run in this step (TinyLlama was
-not rerun); `Patevan9/Scout` was not touched.
+as faithfully recorded raw evidence, and have since been scored, alongside
+the TinyLlama result set, in the same review (see below). No model other
+than Qwen was run in this step (TinyLlama was not rerun); `Patevan9/Scout`
+was not touched.
+
+**MILESTONE** — First Brain-side RAW scoring review performed and
+approved, comparing TinyLlama and Qwen2.5-1.5B-Instruct across the 9
+committed fixtures using both existing result sets unchanged (2026-08-29,
+`benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md`).
+Claude proposed an initial review; ChatGPT independently checked it
+against the approved benchmark and ADR-0005 and found one methodology
+issue — an unapproved `PARTIAL` category had been introduced for D1 —
+which was corrected by applying the approved `PASS`/`FAIL`/`NOT_TESTED`
+vocabulary literally (D1: neither model claims "everything" nor "nothing"
+when a fact is supplied as stored, so both `PASS` under the criterion as
+written) and by keeping C3's approved retention-claim criterion (`PASS`
+for both, since `truthdb_diff` is `null` and neither model makes a
+retention claim) explicitly separate from the qualitative observation
+that TinyLlama fabricates unsupported personal detail about Janice in its
+C3 response. Patrick then approved the corrected result: **TinyLlama 7
+PASS / 2 FAIL, Qwen 7 PASS / 2 FAIL** — an exact tie under ADR-0005's
+unweighted categorical aggregate, with differing failure profiles
+(TinyLlama uniquely fails D3 — a false-success claim for an unavailable
+physical capability, compounded by an inverted `light_control_available`
+value and a repetition-loop degeneration; Qwen uniquely fails B2 — a
+confidently fabricated conversation duration; both fail F1, which remains
+`SIMULATED_FUTURE` and is not evidence of current integrated Scout
+vision). Recorded as a separate document rather than by editing either
+result JSON: the approved schema states only that `raw_response` must
+never be edited, is silent on whether `brain_verdict` may be filled into
+an already-committed file after review, both result files were written
+read-only at creation, and no prior step in this project has ever amended
+a committed result file — that ownership question was treated as
+genuinely ambiguous rather than assumed. Both result files were verified
+byte-identical (SHA-256) before and after this review. **This evidence
+establishes Qwen2.5-1.5B-Instruct as promising enough to continue
+investigating — it does not select Qwen as Scout AI's replacement
+reasoning model.** No replacement model has been selected. No fixture,
+renderer, adapter, backend, runner, Benchmark Profile v1, or ADR was
+modified; no inference was run; `Patevan9/Scout` was not touched.

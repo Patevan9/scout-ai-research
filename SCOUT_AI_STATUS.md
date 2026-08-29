@@ -6,11 +6,10 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-29 (documentation correction: TinyLlama's and
-Qwen2.5-1.5B-Instruct's 9-fixture RAW benchmark results, and the Qwen
-adapter/correction/B2 proof, are all independently reviewed and accepted
-as faithfully recorded raw evidence; both remain unscored, no comparison
-performed yet)
+Last updated: 2026-08-29 (first Brain-side RAW scoring review approved:
+TinyLlama and Qwen2.5-1.5B-Instruct tied at 7 PASS / 2 FAIL on the 9
+committed fixtures — Qwen judged promising enough to continue
+investigating, not selected as a replacement model)
 
 ---
 
@@ -62,10 +61,14 @@ candidate model Qwen2.5-1.5B-Instruct now also exists, reusing the same
 backend unchanged, and has likewise been run once against fixture B2 and
 then against all 9 fixtures under Benchmark Profile v1 (2026-08-29). Both
 benchmark runs have been independently reviewed and accepted as
-faithfully recorded raw evidence — neither is scored, and no comparison
-between them has been performed. The
-approved Scout AI Lab Runner v0.1 design continues to be built in small,
-individually authorized steps (see `lab/`).
+faithfully recorded raw evidence, and a first Brain-side RAW scoring
+review has since been performed and approved: **TinyLlama and
+Qwen2.5-1.5B-Instruct are tied at 7 PASS / 2 FAIL** on the 9 committed
+fixtures, with differing failure profiles (see "Current benchmark
+status"). This makes Qwen promising enough to continue investigating —
+it does **not** select Qwen as a replacement model. The approved Scout AI
+Lab Runner v0.1 design continues to be built in small, individually
+authorized steps (see `lab/`).
 
 ## Current approved work
 
@@ -256,9 +259,10 @@ message, not duplicated here.
 
 **A real inference backend now exists (`TinyLlamaBackend`, see above),
 reused unchanged for a second model via `QwenAdapter`, and both have been
-run against all 9 currently committed fixtures once each. No candidate
-model has been selected as a replacement, and no scoring or comparison
-between the two result sets has been performed.**
+run against all 9 currently committed fixtures once each. A first Brain-
+side RAW scoring review has since been performed and approved (see
+"Current benchmark status") — TinyLlama and Qwen tied at 7 PASS / 2 FAIL.
+No candidate model has been selected as a replacement.**
 
 ## Current benchmark status
 
@@ -278,12 +282,21 @@ between the two result sets has been performed.**
   `benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`
   (Qwen2.5-1.5B-Instruct candidate) each hold one run of all 9 currently
   committed RAW fixtures under Benchmark Profile v1's identical explicit
-  settings (see "Last completed step"). Both have been independently
-  reviewed and accepted as faithfully recorded raw evidence —
-  `system_verdict`/`brain_verdict` are `NOT_TESTED` throughout in both
-  files, no scoring has been applied to either, and no comparison between
-  them has been performed. Choosing any candidate replacement model is
-  still undecided/not authorized — see "Next safest step."
+  settings (see "Last completed step"). `system_verdict`/`brain_verdict`
+  remain `NOT_TESTED` within both JSON files themselves — per an
+  unresolved ambiguity over whether editing an already-committed result
+  file after review is intended by the approved schema, the actual
+  `brain_verdict` scoring was recorded separately rather than written
+  into either file.
+- **A first Brain-side RAW scoring review is approved** —
+  `benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md`.
+  TinyLlama and Qwen2.5-1.5B-Instruct are tied at **7 PASS / 2 FAIL** each
+  (unweighted, per ADR-0005's categorical aggregate) — failure profiles
+  differ (TinyLlama uniquely fails D3; Qwen uniquely fails B2; both fail
+  F1, which remains `SIMULATED_FUTURE`). This evidence establishes Qwen
+  as promising enough to continue investigating — **not** as a selected
+  replacement model. Choosing any candidate replacement model is still
+  undecided/not authorized — see "Next safest step."
 
 ## Real-device TinyLlama evidence (new)
 
@@ -384,7 +397,7 @@ underlying architecture decisions.
 The **first full 9-fixture RAW baseline run for TinyLlama** (2026-08-28,
 `benchmarks/results/2026-08-28-tinyllama-benchmark-profile-v1.json`) has
 since been independently reviewed and accepted as faithfully recorded raw
-evidence. It remains unscored.
+evidence, and has since been scored (see below).
 
 The **QwenAdapter implementation** (`c45e3b6`) was independently reviewed
 and found to have a contract bug: its `default_generation_settings()`
@@ -403,27 +416,39 @@ The **first full 9-fixture RAW baseline run for Qwen2.5-1.5B-Instruct**
 (2026-08-29,
 `benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`,
 recorded at commit `46968e1`) has since been independently reviewed and
-accepted as faithfully recorded raw evidence. It remains unscored, and no
-comparison against the TinyLlama result set has been performed. This
-documentation correction itself (aligning this file's review-status
-wording with the review outcomes above) is new work as of this entry and
-has not yet had its own independent ChatGPT pass — pending review like
-any other commit's own exact wording, though the decisions and evidence
-it describes are not themselves newly at issue.
+accepted as faithfully recorded raw evidence, and has since been scored
+(see below). The prior review-status correction commit (`12998e3`) had
+its own exact wording independently reviewed and accepted as part of the
+same cycle that produced the scoring result below.
+
+The **Brain-side RAW scoring review** comparing both result sets
+(`benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md`) was
+proposed, independently reviewed by ChatGPT (which found and required
+correcting one scoring-methodology issue — an unapproved `PARTIAL`
+category — before D1 could be resolved using only the approved `PASS` /
+`FAIL` / `NOT_TESTED` vocabulary), corrected, and then approved by
+Patrick and ChatGPT: both models tied at 7 PASS / 2 FAIL. This
+documentation update recording that approved review is new work as of
+this entry and has not yet had its own independent ChatGPT pass on its
+exact wording — pending review like any other commit's own wording,
+though the scoring decision itself is not newly at issue.
 
 ## Next safest step
 
 **Not yet authorized.** Both TinyLlama's and Qwen2.5-1.5B-Instruct's first
-full 9-fixture RAW baseline runs under identical Benchmark Profile v1
-settings have now been independently reviewed and accepted as faithfully
-recorded raw evidence (see "Current benchmark status" above) — that no
-longer blocks the next step. What remains undecided/not authorized:
-scoring or interpreting either result set, any comparison between them,
-choosing any candidate replacement model, evaluating any model beyond
-these two, and any further benchmark run. Current work remains RAW
-benchmark evidence only — no System-level conclusion may be inferred from
-it. Waiting for Patrick and ChatGPT to independently review this
-documentation correction itself, then define the next safe step together.
+full 9-fixture RAW baseline runs have been independently reviewed and
+accepted as faithfully recorded raw evidence, and a Brain-side RAW scoring
+review has been performed and approved — tied at 7 PASS / 2 FAIL each
+(see "Current benchmark status" above) — that no longer blocks the next
+step. What remains undecided/not authorized: choosing any candidate
+replacement model, evaluating any model beyond these two, any further
+benchmark run, and any architecture or routing change based on these
+results. Current work remains RAW Brain-side evidence only — no
+System-level conclusion may be inferred from it, and PC latency in either
+result file must not be used to draw Android-device performance
+conclusions. Waiting for Patrick and ChatGPT to independently review this
+documentation update's exact wording, then define the next safe step
+together.
 
 ## How to independently verify this checkpoint
 
@@ -463,6 +488,11 @@ assuming today's values below still hold by the time you read this:
   `lab/lab_runner/qwen_chat.py` — should implement `QwenAdapter` reusing
   `TinyLlamaBackend` unchanged; check `lab/models/` for a locally-present
   (gitignored, never committed) `qwen2.5-1.5b-instruct-q4_k_m.gguf`.
+- **Whether a scoring review exists**: read
+  `benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md` — a
+  separate document, not the two result JSON files themselves (which
+  still show `NOT_TESTED` throughout, unmodified). Should show TinyLlama
+  and Qwen each at 7 PASS / 2 FAIL.
 
 If any of these disagree with what this document says, **the repository is
 the source of truth, not this file** — flag the conflict rather than
