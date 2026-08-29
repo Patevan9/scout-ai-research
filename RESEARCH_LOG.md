@@ -579,3 +579,99 @@ investigating — it does not select Qwen as Scout AI's replacement
 reasoning model.** No replacement model has been selected. No fixture,
 renderer, adapter, backend, runner, Benchmark Profile v1, or ADR was
 modified; no inference was run; `Patevan9/Scout` was not touched.
+
+**DESIGN IDEA (research conclusion — not an ADR, no schema implemented or
+approved)** — Epistemic/information-availability contract investigation,
+prompted by Qwen's B2 fabrication ("we've been talking for about 10
+seconds") but scoped to a general question: how should Scout's
+deterministic systems and a replaceable reasoning model communicate what
+is known, unavailable, retrievable, observed, or inferred, without making
+the model the owner of truth. Conducted read-only, across several rounds
+(initial proposal → rejected → typed-structure direction proposed →
+refined → one evidentiary overstatement corrected), no repository file
+touched during the investigation itself. Approved conclusions:
+
+1. **A universal six-state epistemic enum (`VERIFIED`/`OBSERVED`/
+   `INFERRED`/`UNAVAILABLE_NO_MECHANISM`/`UNAVAILABLE_TEMPORARY`/
+   `UNVERIFIED_RESULT`) is REJECTED as a design direction.** It mixed
+   several different semantic axes — evidence kind, confidence/trust,
+   availability, durability, and action outcome — into one flat value,
+   producing real non-exclusivity problems (e.g. an observation can be
+   both authentic *and* need hedging; an action result can be unconfirmed
+   while the capability itself remains available) that a single shared
+   enum cannot represent without collision or combinatorial growth.
+
+2. **The leading architectural direction is typed, model-neutral
+   information structures**, not one universal envelope: facts,
+   observations, inferences/habits, capabilities, and action results as
+   separate structures, each carrying only the status vocabulary
+   meaningful to its own type. This maps naturally onto `RenderedContext`
+   fields that already exist and are already separated by kind
+   (`facts_block`, `capability_block`, `vision_evidence_block`, the still-
+   open `memory_habit_block`). **Exact future schemas for these types
+   remain unresolved** — this is a direction, not an approved design.
+
+3. **The model does not determine what Scout knows.** Scout's
+   deterministic stores, sensors, tools, and systems produce evidence/
+   state; a replaceable reasoning model may reason over that evidence but
+   must never be allowed to promote an inference into truth, a detector
+   reading into a verified fact, a failed or unconfirmed action into a
+   success claim, or missing evidence into a fabricated fact.
+
+4. **Capability availability and action result are separate concepts.**
+   A capability may be available in general while one specific attempted
+   action using it fails or remains unconfirmed — these must never be
+   collapsed into one shared value.
+
+5. **D3 evidence, characterized precisely, after an earlier
+   overstatement was corrected:** D3 already supplied an explicit,
+   sufficient boolean signal (`light_control_available: false`).
+   TinyLlama contradicted that already-adequate signal and falsely
+   claimed success, additionally inverting the value in its own output.
+   D3 therefore demonstrates a Brain-quality problem, and potentially a
+   future System-enforcement question (whether a deterministic post-
+   generation check should catch and block a false-success claim) — **it
+   does NOT demonstrate any need to distinguish permanent capability
+   absence from temporary unavailability**, since that distinction was
+   never exercised by any current fixture. Richer capability semantics
+   alone would not have prevented TinyLlama's D3 failure — a model that
+   disregards an already-clear signal is not fixed by giving it a more
+   detailed signal to also disregard.
+
+6. **The existing boolean `capability_availability` schema remains
+   unchanged for now.** A permanent-vs-temporary capability distinction
+   remains a deliberately deferred design question, consistent with how
+   `memory_habit_payload` and empty-`simulated_vision_payload.detections`
+   are already handled (ADR-0006) — tracked, not built, until a real
+   fixture or system requirement actually needs it.
+
+7. **B2 remains unchanged as the RAW zero-grounding honesty test.** No
+   explicit unavailable-state information has been or should be added to
+   B2 — that would convert it from testing raw default honesty under zero
+   grounding into testing compliance with an explicit signal, a different
+   and separately valuable question. A future, separate SYSTEM-side
+   fixture could test explicit known-unavailable grounding without
+   touching or replacing B2.
+
+8. **Numeric vision confidence remains evidence, not truth.** No
+   universal hedge-confidence threshold is defined by this investigation
+   — phrasing policy for a given confidence value remains an open,
+   downstream question.
+
+9. **Remaining open, unresolved by this investigation:** Working Memory
+   design (already an open question — see 2026-08-22 entries), the
+   `memory_habit_payload` nested schema (ADR-0006), richer fact
+   provenance/durability representation, any action-result schema, and
+   any deterministic grounding/enforcement gate ahead of the reasoning
+   model (a candidate future home for resolving cases like B2's sibling
+   `UNAVAILABLE_NO_MECHANISM` situations before generation, not designed
+   or implemented here).
+
+10. **Guiding principle for future work:** *"Scout knows what Scout has.
+    The replaceable brain reasons with what Scout gives it."*
+
+No fixture, renderer, adapter, backend, runner, ADR, or benchmark result
+was created or modified during this investigation or by recording it
+here. `Patevan9/Scout` was not touched. This entry is a research finding,
+not an approved schema or an ADR — per the review workflow, nothing here
+is authoritative on its own until independently reviewed.

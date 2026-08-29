@@ -6,10 +6,11 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-29 (first Brain-side RAW scoring review approved:
-TinyLlama and Qwen2.5-1.5B-Instruct tied at 7 PASS / 2 FAIL on the 9
-committed fixtures — Qwen judged promising enough to continue
-investigating, not selected as a replacement model)
+Last updated: 2026-08-29 (epistemic/information-availability contract
+investigation concluded as a research finding — typed-structure direction
+favored over a rejected six-state enum, exact schemas unresolved,
+capability schema and B2 unchanged; see "Unresolved questions" and
+`RESEARCH_LOG.md`)
 
 ---
 
@@ -363,6 +364,19 @@ preserved as evidence for later reviewed incorporation.
   given Lab Runner has no persistence/action interface to check a spoken
   claim against. Surfaced during the B3/D1/C3 design review; not yet
   decided. See "Next safest step" above.
+- **A general epistemic/information-availability contract** (how
+  deterministic Scout systems and a replaceable reasoning model
+  communicate known/unavailable/observed/inferred information without the
+  model owning truth), prompted by Qwen's B2 fabrication but scoped
+  generally. Investigated read-only; a universal six-state enum was
+  proposed and rejected (mixed semantic axes); a typed-structure direction
+  (facts/observations/inferences/capabilities/action-results) is the
+  leading direction, with exact schemas left unresolved. Existing boolean
+  `capability_availability` is unchanged; a permanent-vs-temporary
+  capability distinction remains deferred, not demonstrated as needed by
+  any current fixture. B2 remains unchanged as the RAW zero-grounding
+  honesty test. Full findings recorded in `RESEARCH_LOG.md` (2026-08-29
+  entry) — a research conclusion, not an ADR or implemented schema.
 
 ## Awaiting ChatGPT review
 
@@ -432,6 +446,16 @@ documentation update recording that approved review is new work as of
 this entry and has not yet had its own independent ChatGPT pass on its
 exact wording — pending review like any other commit's own wording,
 though the scoring decision itself is not newly at issue.
+
+The **epistemic/information-availability contract investigation**
+(RESEARCH_LOG.md, 2026-08-29) went through multiple read-only rounds
+already independently reviewed by ChatGPT within this same cycle,
+including one correction (an earlier overstatement that D3 demonstrated
+a need for permanent-vs-temporary capability distinction was corrected —
+D3 demonstrates only that TinyLlama disregarded an already-sufficient
+explicit signal). This documentation commit recording the final,
+corrected conclusions is new work as of this entry and has not yet had
+its own independent ChatGPT pass on its exact wording.
 
 ## Next safest step
 
