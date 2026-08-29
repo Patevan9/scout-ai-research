@@ -508,3 +508,36 @@ recorded as-is. This result file and the accompanying update to
 `SCOUT_AI_STATUS.md` are pending independent ChatGPT review before any
 scoring, interpretation, or further benchmark step. No model other than
 TinyLlama was run; `Patevan9/Scout` was not touched.
+
+**MILESTONE** — First full 9-fixture RAW baseline run executed for
+candidate model Qwen2.5-1.5B-Instruct under Benchmark Profile v1
+(2026-08-29). Built on the already-reviewed `QwenAdapter` implementation
+(`c45e3b6`) and its generation-settings correction (`f3930bb`, aligning
+`default_generation_settings()` with Qwen's own authoritative
+`generation_config.json` rather than Benchmark Profile v1's controls),
+and on a single already-reviewed B2-only proof run (checkpoint
+`f3930bb`, no repository change). All 9 currently committed RAW
+fixtures — `B1`, `B2`, `B3`, `C2`, `C3`, `D1`, `D2`, `D3`, `F1` — were
+run once each through the unchanged approved pipeline
+(`render_canonical_context()` → `RenderedContext` →
+`QwenAdapter.format_prompt()` → the existing `TinyLlamaBackend`, reused
+unchanged), using Benchmark Profile v1's fixed settings supplied
+explicitly (temperature 0, 1 run/fixture, `max_tokens` 150, `n_ctx`
+2048, `repeat_penalty` 1.0) — confirmed absent from every actual
+`create_completion()` call was `QwenAdapter.default_generation_settings()`
+(temperature 0.7/top_p 0.8/top_k 20/repeat_penalty 1.1), which remains
+correctly unused for this controlled comparison. No prompt, parameter,
+or fixture changes; no retries; no fixture rerun based on response
+quality. The model artifact's size (1,117,320,736 bytes) and SHA-256
+(`6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e`)
+were re-verified immediately before the run and matched exactly. Every
+`raw_response` was preserved verbatim in
+`benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`.
+`system_verdict` and `brain_verdict` are recorded as `NOT_TESTED`
+throughout — raw evidence only; no pass/fail scoring has been applied or
+authorized. `F1` is recorded as `SIMULATED_FUTURE`; `C3`'s record makes
+no persistence claim. This result file and the accompanying update to
+`SCOUT_AI_STATUS.md` are pending independent ChatGPT review before any
+scoring, interpretation, or comparison against the TinyLlama result set
+is authorized. No model other than Qwen was run in this step (TinyLlama
+was not rerun); `Patevan9/Scout` was not touched.
