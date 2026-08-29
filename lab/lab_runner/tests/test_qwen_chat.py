@@ -14,7 +14,9 @@ from __future__ import annotations
 
 import unittest
 
+from lab_runner.mock_backend import MockBackend
 from lab_runner.renderer import render_canonical_context
+from lab_runner.runner import run_case
 from lab_runner.qwen_chat import QwenAdapter
 from lab_runner.tinyllama_chatml import SYSTEM_INSTRUCTION as TINYLLAMA_SYSTEM_INSTRUCTION
 
@@ -91,22 +93,38 @@ class TestQwenChatFormatting(unittest.TestCase):
         # the trailing generation prefix must NOT be closed with <|im_end|>
         self.assertFalse(result.endswith("<|im_end|>\n"))
 
-    def test_default_generation_settings_reuses_benchmark_profile_v1_values(
+    def test_default_generation_settings_returns_qwen_documented_defaults(
         self,
     ) -> None:
-        # No real Scout on-device reference exists for Qwen (unlike
-        # TinyLlama) -- this must reuse Benchmark Profile v1's own
-        # already-approved values, not invent a new Qwen-specific default.
+        # Authoritative Qwen/Qwen2.5-1.5B-Instruct generation_config.json
+        # values (transformers_version 4.37.0): temperature 0.7, top_p
+        # 0.8, top_k 20, repetition_penalty 1.1 -- the last translated to
+        # this project's own interface key `repeat_penalty`. These are
+        # Qwen's own model defaults, not Benchmark Profile v1's controls.
         settings = self.adapter.default_generation_settings()
         self.assertEqual(
             settings,
             {
-                "n_ctx": 2048,
-                "max_tokens": 150,
-                "temperature": 0,
-                "repeat_penalty": 1.0,
+                "temperature": 0.7,
+                "top_p": 0.8,
+                "top_k": 20,
+                "repeat_penalty": 1.1,
             },
         )
+
+    def test_default_generation_settings_does_not_return_benchmark_profile_v1_values(
+        self,
+    ) -> None:
+        # Explicit negative check: Benchmark Profile v1's temperature=0
+        # and repeat_penalty=1.0 must never appear as this adapter's own
+        # "documented defaults" -- those are benchmark controls, supplied
+        # explicitly by the runner during an actual benchmark run, never
+        # this method's job to reproduce.
+        settings = self.adapter.default_generation_settings()
+        self.assertNotEqual(settings.get("temperature"), 0)
+        self.assertNotEqual(settings.get("repeat_penalty"), 1.0)
+        self.assertNotIn("n_ctx", settings)
+        self.assertNotIn("max_tokens", settings)
 
     def test_stop_sequences_returns_qwen_im_end(self) -> None:
         # "<|im_end|>" is Qwen2.5's real, GGUF-verified chat-end token
@@ -194,6 +212,69 @@ class TestQwenCanonicalContextSection(unittest.TestCase):
             "MARKER_PASS_FAIL_SHOULD_NOT_LEAK",
         ):
             self.assertNotIn(marker, result)
+
+
+class TestQwenBenchmarkProfileAuthority(unittest.TestCase):
+    """Confirms Benchmark Profile v1's explicitly-supplied settings
+    remain authoritative when run through run_case() with QwenAdapter --
+    QwenAdapter.default_generation_settings() (now Qwen's own documented
+    sampling defaults: temperature 0.7/top_p 0.8/top_k 20/repeat_penalty
+    1.1 -- not Benchmark Profile v1's values) must never leak in
+    underneath an explicit profile. Same guarantee already proven for
+    TinyLlamaChatMLAdapter in test_runner.py's
+    TestRunnerStopSequenceMerge; no runner.py change was needed or made
+    to support this -- its existing merge logic is already adapter-
+    agnostic. MockBackend only -- no real inference."""
+
+    def test_benchmark_profile_v1_settings_override_qwen_defaults(self) -> None:
+        profile_settings = {
+            "max_tokens": 150,
+            "temperature": 0,
+            "repeat_penalty": 1.0,
+        }
+        adapter = QwenAdapter()
+        backend = MockBackend()
+        handle = backend.load(model_path="not-a-real-file.gguf")
+        canonical_context = {"test_id": "T", "current_user_input": "hi"}
+
+        run_case(
+            canonical_context, adapter, backend, handle, sampling_params=profile_settings
+        )
+
+        # Benchmark Profile v1's explicit values reached the backend...
+        self.assertEqual(backend.last_sampling_params["temperature"], 0)
+        self.assertEqual(backend.last_sampling_params["repeat_penalty"], 1.0)
+        self.assertEqual(backend.last_sampling_params["max_tokens"], 150)
+        # ...and QwenAdapter's own documented defaults never leaked in
+        # underneath them -- not the differing temperature/repeat_penalty
+        # values, and not top_p/top_k, which the profile doesn't specify
+        # at all.
+        self.assertNotEqual(backend.last_sampling_params["temperature"], 0.7)
+        self.assertNotEqual(backend.last_sampling_params["repeat_penalty"], 1.1)
+        self.assertNotIn("top_p", backend.last_sampling_params)
+        self.assertNotIn("top_k", backend.last_sampling_params)
+        # only the adapter-owned stop sequence was folded in additionally
+        self.assertEqual(backend.last_sampling_params["stop"], ["<|im_end|>"])
+
+    def test_no_explicit_sampling_params_falls_back_to_qwen_documented_defaults(
+        self,
+    ) -> None:
+        # sampling_params=None -- the pre-existing fallback path -- picks
+        # up QwenAdapter's own documented defaults plus its stop sequence,
+        # matching the same fallback behavior already proven for
+        # TinyLlamaChatMLAdapter.
+        adapter = QwenAdapter()
+        backend = MockBackend()
+        handle = backend.load(model_path="not-a-real-file.gguf")
+        canonical_context = {"test_id": "T", "current_user_input": "hi"}
+
+        run_case(canonical_context, adapter, backend, handle, sampling_params=None)
+
+        self.assertEqual(backend.last_sampling_params["temperature"], 0.7)
+        self.assertEqual(backend.last_sampling_params["top_p"], 0.8)
+        self.assertEqual(backend.last_sampling_params["top_k"], 20)
+        self.assertEqual(backend.last_sampling_params["repeat_penalty"], 1.1)
+        self.assertEqual(backend.last_sampling_params["stop"], ["<|im_end|>"])
 
 
 if __name__ == "__main__":

@@ -121,23 +121,53 @@ class QwenAdapter(ModelAdapter):
         return "".join(parts)
 
     def default_generation_settings(self) -> dict[str, Any]:
-        """Unlike TinyLlamaChatMLAdapter, there is no verified real
-        Scout on-device reference setting for Qwen to reproduce here --
-        Qwen has never run on a real Scout device under this project.
-        Rather than invent a new Qwen-specific default, this returns
-        Benchmark Profile v1's own already-approved fixed values
-        (temperature 0, max_tokens 150, n_ctx 2048, repeat_penalty 1.0)
-        as the only currently-approved generation settings applicable to
-        any candidate model under this profile. This method exists only
-        as a defined fallback if ever called without an explicit
-        sampling_params override -- a real benchmark run always supplies
-        Benchmark Profile v1's settings explicitly (see runner.py).
+        """Qwen2.5-1.5B-Instruct's own documented sampling defaults, per
+        the ModelAdapter contract ("this model's own documented default
+        sampling settings" -- adapter.py). Retrieved from the
+        authoritative `Qwen/Qwen2.5-1.5B-Instruct` `generation_config.json`
+        (transformers_version 4.37.0):
+
+            temperature = 0.7
+            top_p = 0.8
+            top_k = 20
+            repetition_penalty = 1.1
+
+        `repetition_penalty` is Hugging Face's/`transformers`' name for
+        the same parameter this project's own interface calls
+        `repeat_penalty` (llama.cpp's naming, already established by
+        TinyLlamaBackend/TinyLlamaChatMLAdapter) -- translated to that
+        key here, same value, same semantics, no other change.
+
+        `do_sample` (true in the same config) is deliberately NOT
+        represented here -- `llama_cpp.Llama.create_completion()` has no
+        `do_sample` parameter at all (verified directly against its
+        signature); for this backend, sampling behavior is expressed
+        entirely through temperature/top_p/top_k/repeat_penalty, so a
+        separate boolean would have no code path to affect and is not
+        invented.
+
+        `bos_token_id`/`pad_token_id`/`eos_token_id` from the same
+        config are not sampling settings and are not represented here --
+        the relevant one (EOS) is already correctly owned by
+        `stop_sequences()` below, per the adapter-owned-stop-sequence
+        boundary (ADR-0006).
+
+        These are Qwen's own model defaults, NOT Benchmark Profile v1's
+        controls (temperature 0, max_tokens 150, n_ctx 2048,
+        repeat_penalty 1.0) -- deliberately absent from this dict, since
+        conflating the two was exactly the issue this correction fixes.
+        A real benchmark run always supplies Benchmark Profile v1's
+        settings explicitly via `sampling_params` (see runner.py),
+        which remain authoritative over this fallback; `n_ctx` and
+        `max_tokens` are Benchmark Profile v1/load-time controls, not
+        part of Qwen's own documented generation defaults, so neither
+        appears here either.
         """
         return {
-            "n_ctx": 2048,
-            "max_tokens": 150,
-            "temperature": 0,
-            "repeat_penalty": 1.0,
+            "temperature": 0.7,
+            "top_p": 0.8,
+            "top_k": 20,
+            "repeat_penalty": 1.1,
         }
 
     def stop_sequences(self) -> list[str]:

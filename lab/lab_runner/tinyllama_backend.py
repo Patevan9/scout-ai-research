@@ -38,6 +38,16 @@ first-real-inference step). Deliberately narrow:
     penalty to logits *before* greedy selection, so it is not a no-op
     parameter under temperature 0). Both are now supplied only via
     `sampling_params`, never invented here.
+  - Extended (still model-neutral) to also pass through `top_p`/`top_k`
+    when a caller's `sampling_params` supplies them -- needed to
+    faithfully represent QwenAdapter's own documented sampling defaults,
+    which use both. Same pass-through discipline as `repeat_penalty`:
+    forwarded unchanged when present, never invented when absent.
+    `do_sample` is deliberately NOT handled anywhere in this backend --
+    `llama_cpp.Llama.create_completion()` has no such parameter (verified
+    directly against its signature); sampling behavior here is expressed
+    entirely through temperature/top_p/top_k/repeat_penalty, so there is
+    no code path a `do_sample` flag could affect.
 
 Model file discipline: the .gguf file itself is never committed to this
 repository (see lab/models/.gitignore, lab/models/README.md) -- this
@@ -84,13 +94,14 @@ class TinyLlamaBackend(InferenceBackend):
         already-formatted prompt string.
 
         Reads only generation-level settings from `sampling_params`
-        (`max_tokens`, `temperature`, `repeat_penalty`, `stop`). `n_ctx`
-        is a load()-time model setting, not a per-run generation
-        setting, and is never read here -- consistent with the approved
-        renderer/adapter/backend responsibility split (ADR-0006).
+        (`max_tokens`, `temperature`, `repeat_penalty`, `top_p`, `top_k`,
+        `stop`). `n_ctx` is a load()-time model setting, not a per-run
+        generation setting, and is never read here -- consistent with
+        the approved renderer/adapter/backend responsibility split
+        (ADR-0006).
 
-        This backend invents neither a `repeat_penalty` nor a `stop`
-        value:
+        This backend invents neither a `repeat_penalty`, `top_p`,
+        `top_k`, nor a `stop` value:
 
         - `repeat_penalty` is a tunable Benchmark Profile decision (see
           benchmarks/benchmark-profile-v1.md), never a backend fallback
@@ -100,11 +111,16 @@ class TinyLlamaBackend(InferenceBackend):
           change output. If `sampling_params` doesn't supply one, this
           backend passes nothing and llama-cpp-python's own library
           default applies -- never a Scout-AI-chosen number.
-        - `stop` is TinyLlama ChatML template knowledge, owned by
-          TinyLlamaChatMLAdapter.stop_sequences() and supplied here only
-          via `sampling_params` (run_case() folds it in). If absent,
-          this backend does not substitute `</s>` or any other value
-          itself.
+        - `top_p`/`top_k` are likewise passed through unchanged only
+          when present -- e.g. QwenAdapter's own documented sampling
+          defaults use both; TinyLlamaChatMLAdapter's do not. This
+          backend has no opinion on either and never substitutes a
+          value of its own.
+        - `stop` is model-specific chat-template knowledge, owned by
+          each adapter's own `stop_sequences()` (e.g. TinyLlama's `</s>`,
+          Qwen's `<|im_end|>`) and supplied here only via
+          `sampling_params` (run_case() folds it in). If absent, this
+          backend does not substitute any value itself.
         """
         max_tokens = sampling_params.get("max_tokens", 150)
         temperature = sampling_params.get("temperature", 0.0)
@@ -116,6 +132,10 @@ class TinyLlamaBackend(InferenceBackend):
         }
         if "repeat_penalty" in sampling_params:
             completion_kwargs["repeat_penalty"] = sampling_params["repeat_penalty"]
+        if "top_p" in sampling_params:
+            completion_kwargs["top_p"] = sampling_params["top_p"]
+        if "top_k" in sampling_params:
+            completion_kwargs["top_k"] = sampling_params["top_k"]
         stop = sampling_params.get("stop")
         if stop:
             completion_kwargs["stop"] = stop

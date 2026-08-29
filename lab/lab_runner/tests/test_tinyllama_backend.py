@@ -98,6 +98,44 @@ class TestTinyLlamaBackendRun(unittest.TestCase):
         _, kwargs = handle.create_completion.call_args
         self.assertNotIn("repeat_penalty", kwargs)
 
+    def test_run_forwards_top_p_when_supplied(self) -> None:
+        # Needed to faithfully represent QwenAdapter's own documented
+        # sampling defaults (top_p 0.8) -- passed through unchanged, same
+        # discipline as repeat_penalty.
+        backend = TinyLlamaBackend()
+        handle = self._fake_handle()
+
+        backend.run(handle, "prompt", {"max_tokens": 150, "temperature": 0.7, "top_p": 0.8})
+
+        handle.create_completion.assert_called_once_with(
+            prompt="prompt", max_tokens=150, temperature=0.7, top_p=0.8
+        )
+
+    def test_run_forwards_top_k_when_supplied(self) -> None:
+        # Needed to faithfully represent QwenAdapter's own documented
+        # sampling defaults (top_k 20) -- passed through unchanged, same
+        # discipline as repeat_penalty.
+        backend = TinyLlamaBackend()
+        handle = self._fake_handle()
+
+        backend.run(handle, "prompt", {"max_tokens": 150, "temperature": 0.7, "top_k": 20})
+
+        handle.create_completion.assert_called_once_with(
+            prompt="prompt", max_tokens=150, temperature=0.7, top_k=20
+        )
+
+    def test_run_does_not_invent_top_p_or_top_k_when_absent(self) -> None:
+        # TinyLlamaChatMLAdapter's own settings never specify either --
+        # this backend must not substitute a value of its own for either.
+        backend = TinyLlamaBackend()
+        handle = self._fake_handle()
+
+        backend.run(handle, "prompt", {"max_tokens": 150, "temperature": 0})
+
+        _, kwargs = handle.create_completion.call_args
+        self.assertNotIn("top_p", kwargs)
+        self.assertNotIn("top_k", kwargs)
+
     def test_run_does_not_invent_stop_sequence_when_absent(self) -> None:
         # "</s>" is TinyLlama ChatML template knowledge, owned by
         # TinyLlamaChatMLAdapter -- this backend must never hard-code or
@@ -109,6 +147,37 @@ class TestTinyLlamaBackendRun(unittest.TestCase):
 
         _, kwargs = handle.create_completion.call_args
         self.assertNotIn("stop", kwargs)
+
+    def test_run_passes_qwen_documented_generation_settings(self) -> None:
+        # QwenAdapter.default_generation_settings() -- temperature 0.7,
+        # top_p 0.8, top_k 20, repeat_penalty 1.1, plus its own stop
+        # sequence -- all flow through this same generic backend
+        # unchanged, confirming it is reusable across adapters without
+        # any Qwen-specific code here.
+        backend = TinyLlamaBackend()
+        handle = self._fake_handle()
+
+        backend.run(
+            handle,
+            "<|im_start|>system\n...\n<|im_start|>assistant\n",
+            {
+                "temperature": 0.7,
+                "top_p": 0.8,
+                "top_k": 20,
+                "repeat_penalty": 1.1,
+                "stop": ["<|im_end|>"],
+            },
+        )
+
+        handle.create_completion.assert_called_once_with(
+            prompt="<|im_start|>system\n...\n<|im_start|>assistant\n",
+            max_tokens=150,
+            temperature=0.7,
+            repeat_penalty=1.1,
+            top_p=0.8,
+            top_k=20,
+            stop=["<|im_end|>"],
+        )
 
     def test_run_uses_documented_defaults_when_sampling_params_sparse(self) -> None:
         backend = TinyLlamaBackend()
