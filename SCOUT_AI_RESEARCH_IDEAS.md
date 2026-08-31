@@ -157,6 +157,31 @@ model given prose context, to learn what information/structure actually
 helps reasoning — not to prove a larger model wins. See "Proposed
 Experiments" below.
 
+### Scout-specific model evaluation
+**Status:** OPEN. **Recorded:** 2026-08-29.
+
+Future Scout AI brain candidates should eventually be evaluated on more
+than tokens per second or parameter count. Candidate dimensions to
+investigate: instruction following, hallucination rate, tool/routing
+accuracy, memory-grounding accuracy, time-to-first-token, overall latency,
+RAM/resource use, model/storage size, reliability/consistency, and
+conversational quality.
+
+Also investigate **architecture leverage / grounding benefit**: how much a
+smaller model improves when Scout supplies clean, structured, trustworthy
+context — directly connected to the Structured Perception/Vision and
+Coordination-of-existing-specialized-systems ideas above. A larger model
+should not automatically be considered an upgrade if a smaller model,
+supported by better Scout architecture, achieves comparable useful
+behavior with substantially lower latency, memory, storage, or hardware
+requirements.
+
+**Explicitly not decided by recording this idea:** these are candidate
+evaluation dimensions only. This does not modify the existing benchmark,
+scoring methodology, fixtures, or approved Benchmark Profile v1 in any
+way. How these dimensions should actually be measured and weighted is
+itself future research, not decided here.
+
 ---
 
 ## Proposed Experiments
