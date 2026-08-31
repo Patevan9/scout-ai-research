@@ -1,0 +1,355 @@
+name: Transfer Teacher Model to Release
+
+# Narrowly scoped, manually-triggered infrastructure workflow.
+#
+# Purpose: download the official Qwen3-8B-Q8_0 GGUF teacher model, verify it
+# byte-for-byte against a known-good size and SHA-256, split it into
+# llama.cpp-compatible shards, and upload those shards directly from this
+# GitHub-hosted runner to the existing `qwen3-8b-q8_0-teacher` prerelease.
+#
+# This exists solely to work around large-file upload failures from a
+# Windows client. It does NOT touch Patevan9/Scout, and it does NOT modify
+# Scout AI architecture, benchmarks, fixtures, scoring, or research
+# decisions. See docs/teacher-model-transfer.md for the full design writeup.
+#
+# Disk-space strategy: the runner never holds the original file and the full
+# shard set at once. gguf-split writes shards strictly sequentially, each
+# fully closed before the next begins (confirmed by reading
+# tools/gguf-split/gguf-split.cpp upstream), so each shard is verified,
+# uploaded, and deleted from local disk as soon as it is confirmed complete
+# -- keeping peak local disk usage to roughly the original file plus two
+# shards, not the original plus a full 13-shard set.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+env:
+  OWNER: ${{ github.repository_owner }}
+  REPO: ${{ github.event.repository.name }}
+  TAG: qwen3-8b-q8_0-teacher
+  GH_TOKEN: ${{ github.token }}
+  SRC_FILE: Qwen3-8B-Q8_0.gguf
+  SRC_URL: https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q8_0.gguf
+  EXPECTED_SIZE: "8709518112"
+  EXPECTED_SHA256: "408b955510e196121c1c375201744783b5c9a43c7956d73fc78df54c66e883d6"
+  SPLIT_MAX_SIZE: 700M
+  # Empirically validated locally by the repo owner against this exact file
+  # and split size. Treated as a verification target below, not an
+  # assumption: the workflow hard-fails if the real split produces a
+  # different count.
+  EXPECTED_SHARD_COUNT: "13"
+  MANIFEST: SHA256SUMS.txt
+
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Preflight -- confirm release exists and check real disk space
+        run: |
+          set -euo pipefail
+
+          release_id=$(gh release view "$TAG" --repo "$OWNER/$REPO" --json databaseId --jq .databaseId)
+          if [ -z "$release_id" ]; then
+            echo "::error::Could not resolve release id for tag $TAG in $OWNER/$REPO."
+            exit 1
+          fi
+          echo "RELEASE_ID=$release_id" >> "$GITHUB_ENV"
+          echo "Resolved release '$TAG' -> id $release_id"
+
+          # Peak need under the interleaved strategy: original file + at most
+          # two in-flight shards (one just-closed awaiting upload, one being
+          # written) + a safety margin. NOT original + full shard set.
+          shard_bytes=$(( $(numfmt --from=iec 700M) ))
+          required=$(( EXPECTED_SIZE + 2 * shard_bytes + 2 * 1000 * 1000 * 1000 ))
+          avail=$(df --output=avail -B1 . | tail -1 | tr -d ' ')
+
+          echo "Required (est. peak, interleaved strategy): $required bytes"
+          echo "Available on runner filesystem:              $avail bytes"
+
+          if [ "$avail" -lt "$required" ]; then
+            echo "::error::Insufficient disk space on runner: need ~$required bytes, have $avail bytes available. Aborting before downloading anything."
+            exit 1
+          fi
+
+      - name: Download official source and verify size + SHA-256 BEFORE use
+        run: |
+          set -euo pipefail
+
+          curl -L --fail --retry 3 --retry-delay 5 -o "$SRC_FILE" "$SRC_URL"
+
+          actual_size=$(stat -c%s "$SRC_FILE")
+          if [ "$actual_size" != "$EXPECTED_SIZE" ]; then
+            echo "::error::Downloaded file size ($actual_size bytes) does not match the official expected size ($EXPECTED_SIZE bytes). Refusing to proceed."
+            rm -f "$SRC_FILE"
+            exit 1
+          fi
+
+          actual_sha=$(sha256sum "$SRC_FILE" | awk '{print $1}')
+          if [ "$actual_sha" != "$EXPECTED_SHA256" ]; then
+            echo "::error::Downloaded file SHA-256 ($actual_sha) does not match the official expected hash ($EXPECTED_SHA256). Refusing to proceed."
+            rm -f "$SRC_FILE"
+            exit 1
+          fi
+
+          echo "Source verified: size and SHA-256 both match the official values."
+
+      - name: Obtain llama.cpp gguf-split tool
+        run: |
+          set -euo pipefail
+
+          GGUF_SPLIT=""
+          LLAMA_TAG=""
+          LLAMA_COMMIT=""
+
+          # Prefer a prebuilt Linux binary from the latest llama.cpp release,
+          # but never trust it blindly -- self-check with --help before use.
+          latest_tag=$(gh api repos/ggml-org/llama.cpp/releases/latest --jq .tag_name || true)
+          if [ -n "$latest_tag" ]; then
+            asset_url=$(gh api repos/ggml-org/llama.cpp/releases/latest \
+              --jq '.assets[] | select(.name | test("ubuntu.*x64"; "i")) | .browser_download_url' \
+              | head -1 || true)
+            if [ -n "$asset_url" ]; then
+              if curl -L --fail -o llama-bin.zip "$asset_url"; then
+                mkdir -p llama-bin
+                unzip -oq llama-bin.zip -d llama-bin || true
+                candidate=$(find llama-bin -type f \( -name 'llama-gguf-split' -o -name 'gguf-split' \) | head -1 || true)
+                if [ -n "$candidate" ]; then
+                  chmod +x "$candidate"
+                  if "$candidate" --help >/dev/null 2>&1; then
+                    GGUF_SPLIT="$candidate"
+                    LLAMA_TAG="$latest_tag"
+                    LLAMA_COMMIT=$(gh api "repos/ggml-org/llama.cpp/git/ref/tags/$latest_tag" --jq .object.sha 2>/dev/null || echo "unknown")
+                    echo "Using prebuilt gguf-split from llama.cpp release $latest_tag."
+                  fi
+                fi
+              fi
+            fi
+          fi
+
+          # Fallback: build just the gguf-split target from source.
+          if [ -z "$GGUF_SPLIT" ]; then
+            echo "No usable prebuilt binary found; building gguf-split from source."
+            sudo apt-get update -y
+            sudo apt-get install -y cmake build-essential libcurl4-openssl-dev
+            git clone --depth 1 https://github.com/ggml-org/llama.cpp.git llama-src
+            LLAMA_COMMIT=$(git -C llama-src rev-parse HEAD)
+            LLAMA_TAG="source-build-$(git -C llama-src rev-parse --short HEAD)"
+            cmake -S llama-src -B llama-src/build -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=OFF
+            cmake --build llama-src/build --target llama-gguf-split -j"$(nproc)" \
+              || cmake --build llama-src/build --target gguf-split -j"$(nproc)"
+            candidate=$(find llama-src/build -type f -executable \( -name 'llama-gguf-split' -o -name 'gguf-split' \) | head -1)
+            if [ -z "$candidate" ]; then
+              echo "::error::Built llama.cpp from source but could not locate the gguf-split executable."
+              exit 1
+            fi
+            GGUF_SPLIT="$candidate"
+          fi
+
+          if ! "$GGUF_SPLIT" --help >/dev/null 2>&1; then
+            echo "::error::gguf-split tool at $GGUF_SPLIT failed its self-check (--help)."
+            exit 1
+          fi
+
+          echo "GGUF_SPLIT=$GGUF_SPLIT" >> "$GITHUB_ENV"
+          echo "LLAMA_TAG=$LLAMA_TAG" >> "$GITHUB_ENV"
+          echo "LLAMA_COMMIT=$LLAMA_COMMIT" >> "$GITHUB_ENV"
+          echo "Recorded llama.cpp source: tag/ref=$LLAMA_TAG commit=$LLAMA_COMMIT"
+
+      - name: Split and interleave upload/verify/delete per shard
+        run: |
+          set -uo pipefail  # not -e: this loop handles its own failures explicitly
+
+          upload_shard() {
+            local file="$1"
+            local name local_size local_sha existing existing_size existing_digest uploaded up_state up_size up_digest
+
+            name=$(basename "$file")
+            local_size=$(stat -c%s "$file")
+            local_sha=$(sha256sum "$file" | awk '{print $1}')
+
+            existing=$(gh api "repos/$OWNER/$REPO/releases/$RELEASE_ID/assets" \
+              --jq ".[] | select(.name==\"$name\")" 2>/dev/null || true)
+
+            if [ -n "$existing" ]; then
+              existing_size=$(echo "$existing" | jq -r '.size')
+              existing_digest=$(echo "$existing" | jq -r '.digest // empty')
+              if [ "$existing_size" = "$local_size" ] && [ "$existing_digest" = "sha256:$local_sha" ]; then
+                echo "Shard $name already present on the release with matching size and digest. Skipping re-upload."
+                echo "$local_sha  $name" >> "$MANIFEST"
+                rm -f "$file"
+                return 0
+              else
+                echo "::error::Existing release asset '$name' does not match the local shard (existing size=$existing_size digest=$existing_digest ; local size=$local_size digest=sha256:$local_sha). Refusing to overwrite or delete it. Manual resolution required."
+                return 1
+              fi
+            fi
+
+            echo "Uploading $name ..."
+            if ! gh release upload "$TAG" "$file" --repo "$OWNER/$REPO"; then
+              echo "::error::Upload failed for $name."
+              return 1
+            fi
+
+            uploaded=$(gh api "repos/$OWNER/$REPO/releases/$RELEASE_ID/assets" \
+              --jq ".[] | select(.name==\"$name\")" 2>/dev/null || true)
+            up_state=$(echo "$uploaded" | jq -r '.state // empty')
+            up_size=$(echo "$uploaded" | jq -r '.size // empty')
+            up_digest=$(echo "$uploaded" | jq -r '.digest // empty')
+
+            if [ "$up_state" != "uploaded" ]; then
+              echo "::error::Post-upload check failed for $name: state='$up_state' (expected 'uploaded')."
+              return 1
+            fi
+            if [ "$up_size" != "$local_size" ]; then
+              echo "::error::Post-upload check failed for $name: size mismatch (expected $local_size, got $up_size)."
+              return 1
+            fi
+            if [ "$up_digest" != "sha256:$local_sha" ]; then
+              echo "::error::Post-upload check failed for $name: digest mismatch (expected sha256:$local_sha, got $up_digest)."
+              return 1
+            fi
+
+            echo "Verified $name on the release (state=uploaded, size=$up_size, digest=$up_digest)."
+            echo "$local_sha  $name" >> "$MANIFEST"
+            rm -f "$file"
+            echo "Deleted local copy of $name after verified upload."
+          }
+
+          mkdir -p split_output
+          : > "$MANIFEST"
+
+          "$GGUF_SPLIT" --split --split-max-size "$SPLIT_MAX_SIZE" "$SRC_FILE" "split_output/Qwen3-8B-Q8_0" &
+          split_pid=$!
+
+          # Extracts the shard's own numeric index from its filename (e.g.
+          # "...-00003-of-00013.gguf" -> 3). This is required rather than
+          # using each file's position in a sorted listing: once earlier
+          # shards are deleted after upload, remaining files shift down in
+          # that listing, so a position-based index silently drifts out of
+          # sync with the real shard number (confirmed by local simulation
+          # before relying on this in the real workflow).
+          parse_idx() {
+            local name="$1"
+            if [[ "$name" =~ -([0-9]+)-of-([0-9]+)\.gguf$ ]]; then
+              echo "$((10#${BASH_REMATCH[1]}))"
+              return 0
+            fi
+            return 1
+          }
+
+          declare -A done_idx
+          processed=0
+
+          while true; do
+            if kill -0 "$split_pid" 2>/dev/null; then
+              splitter_running=true
+            else
+              splitter_running=false
+            fi
+
+            mapfile -t shard_files < <(find split_output -maxdepth 1 -name '*-of-*.gguf' | sort)
+
+            declare -A present_idx=()
+            for f in "${shard_files[@]}"; do
+              idx=$(parse_idx "$(basename "$f")") || continue
+              present_idx[$idx]="$f"
+            done
+
+            for idx in "${!present_idx[@]}"; do
+              [ -n "${done_idx[$idx]:-}" ] && continue
+
+              ready=false
+              if [ "$idx" -lt "$EXPECTED_SHARD_COUNT" ] && [ -n "${present_idx[$((idx + 1))]:-}" ]; then
+                # The next shard's file already exists on disk, which is only
+                # possible once this shard's ofstream has been fully written
+                # and closed (gguf-split writes shards strictly sequentially).
+                ready=true
+              elif [ "$idx" -eq "$EXPECTED_SHARD_COUNT" ] && [ "$splitter_running" = false ]; then
+                # No "next shard" signal exists for the final shard; only
+                # safe to treat it as complete once the splitter process
+                # itself has exited.
+                ready=true
+              fi
+
+              if [ "$ready" = true ]; then
+                if ! upload_shard "${present_idx[$idx]}"; then
+                  echo "::error::Aborting after failure handling shard index $idx."
+                  wait "$split_pid" 2>/dev/null || true
+                  exit 1
+                fi
+                done_idx[$idx]=1
+                processed=$((processed + 1))
+              fi
+            done
+
+            if [ "$splitter_running" = false ]; then
+              # The final shard (if any) was already handled above in this
+              # same iteration, using the splitter_running value just
+              # computed. Any shard still unprocessed here is a real
+              # anomaly, not a timing gap -- the count check right after
+              # this loop reports it rather than spinning forever.
+              break
+            fi
+            sleep 5
+          done
+
+          wait "$split_pid"
+          split_exit=$?
+          if [ "$split_exit" -ne 0 ]; then
+            echo "::error::gguf-split exited with non-zero status $split_exit."
+            exit 1
+          fi
+
+          if [ "$processed" -ne "$EXPECTED_SHARD_COUNT" ]; then
+            echo "::error::Expected exactly $EXPECTED_SHARD_COUNT shards, but processed $processed. This does not match the locally-validated split plan -- treating as a splitter anomaly rather than silently continuing."
+            exit 1
+          fi
+
+          leftover=$(find split_output -maxdepth 1 -name '*-of-*.gguf' 2>/dev/null | wc -l)
+          if [ "$leftover" -ne 0 ]; then
+            echo "::error::$leftover shard file(s) remain on disk after processing; refusing to finish silently."
+            exit 1
+          fi
+
+          echo "All $EXPECTED_SHARD_COUNT shards verified on the release and removed locally."
+
+      - name: Upload manifest and finalize release description
+        run: |
+          set -euo pipefail
+
+          if [ ! -s "$MANIFEST" ]; then
+            echo "::error::$MANIFEST is missing or empty; refusing to finalize."
+            exit 1
+          fi
+
+          # The manifest is small, fully regenerated derived output (not an
+          # original binary the user is protecting from silent overwrite),
+          # so it is safe to overwrite on every successful run.
+          gh release upload "$TAG" "$MANIFEST" --repo "$OWNER/$REPO" --clobber
+
+          asset_count=$(gh api "repos/$OWNER/$REPO/releases/$RELEASE_ID/assets" --jq 'length')
+          echo "Release '$TAG' now has $asset_count asset(s)."
+
+          notes=$(printf '%s\n' \
+            "This release carries the official Qwen3-8B-Q8_0 GGUF teacher model, split" \
+            "into $EXPECTED_SHARD_COUNT llama.cpp-compatible GGUF shards (--split-max-size" \
+            "$SPLIT_MAX_SIZE) for distribution as GitHub release assets." \
+            "" \
+            "Source: Qwen/Qwen3-8B-GGUF, file Qwen3-8B-Q8_0.gguf" \
+            "Original size: $EXPECTED_SIZE bytes" \
+            "Original SHA-256: $EXPECTED_SHA256" \
+            "" \
+            "Split with llama.cpp gguf-split, tag/ref: $LLAMA_TAG, commit: $LLAMA_COMMIT" \
+            "" \
+            "Per-shard SHA-256 digests are recorded in $MANIFEST, attached below, and" \
+            "also verified server-side against each asset's GitHub-reported digest at" \
+            "upload time." \
+            "" \
+            "Reassemble with: llama-gguf-split --merge <first-shard> <output.gguf>," \
+            "then verify the merged file's SHA-256 against the original hash above.")
+          gh release edit "$TAG" --repo "$OWNER/$REPO" --notes "$notes"
+          echo "Release description updated to describe the $EXPECTED_SHARD_COUNT-shard plan."
