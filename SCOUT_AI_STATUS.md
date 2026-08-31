@@ -32,7 +32,11 @@ When information conflicts, resolve in this order — highest first:
 3. Approved benchmark definitions in `benchmarks/`
 4. This file (`SCOUT_AI_STATUS.md`)
 5. `RESEARCH_LOG.md`
-6. Old conversation history
+6. `SCOUT_AI_RESEARCH_IDEAS.md` — a durable backlog of ideas/questions not
+   yet investigated, so they aren't lost across conversations. Even less
+   authoritative than `RESEARCH_LOG.md`: an idea listed there is not a
+   finding and not a decision, only intent to investigate later.
+7. Old conversation history
 
 **Old conversations must never silently override a newer approved project
 decision.** If something from a past conversation contradicts what's written
