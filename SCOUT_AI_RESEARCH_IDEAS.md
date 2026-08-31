@@ -182,6 +182,75 @@ scoring methodology, fixtures, or approved Benchmark Profile v1 in any
 way. How these dimensions should actually be measured and weighted is
 itself future research, not decided here.
 
+### Habit learning from independent episodes
+**Status:** OPEN. **Recorded:** 2026-08-31.
+
+Inspired by reviewing the open-source [ADA Pi project](https://github.com/nazirlouis/ada-pi)
+— an external research reference only, not a dependency Scout intends to
+integrate. Core takeaway: one continuous behavior should count as one
+occurrence; repeated *independent* occurrences over time are what
+constitute evidence of a possible habit. This targets a real failure
+mode — continuous sensor polling (e.g. many camera frames of someone
+drinking coffee for five minutes) must not silently inflate into
+hundreds of separate habit occurrences. That continuous activity is one
+episode; a new occurrence should only become possible after the observed
+condition ends/resets and recurs later.
+
+Related concepts to preserve as OPEN, none decided or schema'd:
+
+1. **Episode identity / latching** — once an event has contributed an
+   occurrence, further observations of the same continuous event must
+   not contribute additional occurrences until a reset/end condition
+   occurs.
+2. **Independent evidence across time** — repeated episodes across
+   different times/days may be stronger habit evidence than repeated
+   observations within one continuous event.
+3. **Confidence before recording** — distinguish uncertain observation /
+   sufficiently supported episode / recorded habit occurrence; a weak
+   perception result should not automatically become habit evidence.
+4. **Evidence-level correction / invalidation** — whether an incorrectly
+   attributed occurrence could be invalidated so it stops contributing
+   to a learned pattern, rather than only ever adding a new
+   contradictory statement (e.g. "that's Diana's coffee, not mine").
+5. **Habit confidence / lifecycle** — ADA Pi progresses habits through
+   repeated-evidence states. Scout might have analogous states (e.g.
+   candidate → emerging → established → fading), but **none of ADA
+   Pi's states or numerical thresholds are adopted here** — lifecycle
+   design remains fully open.
+6. **Decay / staleness** — whether learned patterns should weaken
+   without continued independent supporting evidence; no decay
+   algorithm is approved or implied.
+7. **Structured habit retrieval** — if Scout eventually maintains
+   structured habit evidence, the model should reason from that
+   supplied evidence rather than inventing a pattern from conversational
+   history — the same "the model does not determine what Scout knows"
+   principle already recorded in `RESEARCH_LOG.md` (2026-08-29
+   epistemic-contract entry).
+8. **Structured perception connection** — a possible, purely conceptual
+   flow: sensor observations → possible episode → evidence/confidence
+   validation → one independent occurrence → accumulated evidence across
+   time → possible learned pattern → structured context supplied to
+   Scout AI. Not an approved pipeline; connects to the Structured
+   Perception/Vision idea above.
+9. **Teacher-model connection** — a possible future experiment comparing
+   a small local model given vague prose describing a supposed habit
+   against the same model given structured evidence instead, to learn
+   whether/how structure improves reasoning about habits specifically.
+   Connects to the Qwen3-8B teacher/reference-model idea above.
+
+**Central research question:** *Can Scout distinguish a single
+continuous behavioral episode from genuinely independent recurrences,
+and if so, what minimal evidence/confidence model is needed before
+treating something as a learned habit at all?*
+
+**Explicitly not decided by recording this idea:** any Habit Store
+schema, lifecycle states, thresholds, or decay algorithm; whether ADA
+Pi's approach is adopted in any form; how this interacts with
+`memory_habit_payload` (still deferred, see "Rejected or Deferred
+Ideas" below) or the canonical fixture schema. ADA Pi is preserved here
+purely as an external research influence that prompted these questions,
+not as something Scout is committed to depending on or resembling.
+
 ---
 
 ## Proposed Experiments
