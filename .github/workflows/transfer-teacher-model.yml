@@ -42,6 +42,15 @@ env:
   # different count.
   EXPECTED_SHARD_COUNT: "13"
   MANIFEST: SHA256SUMS.txt
+  # Pinned rather than "latest": the repo owner's locally-validated 13-shard
+  # split was produced with this exact llama.cpp build (Windows CPU release
+  # asset). Reproducing those exact shard bytes -- not merely "a" valid
+  # split -- requires the exact same tool version, not whatever is newest
+  # on the day the workflow happens to run. See docs/teacher-model-transfer.md
+  # for the reproducibility investigation (source-level read of gguf-split's
+  # write path, plus an empirical repeat-run determinism test) that this
+  # pin is based on.
+  LLAMA_CPP_TAG: b10700
 
 jobs:
   transfer:
@@ -97,47 +106,66 @@ jobs:
 
           echo "Source verified: size and SHA-256 both match the official values."
 
-      - name: Obtain llama.cpp gguf-split tool
+      - name: Obtain llama.cpp gguf-split tool (pinned to ${{ env.LLAMA_CPP_TAG }})
         run: |
           set -euo pipefail
 
           GGUF_SPLIT=""
-          LLAMA_TAG=""
-          LLAMA_COMMIT=""
+          GGUF_SPLIT_LIBDIR=""
 
-          # Prefer a prebuilt Linux binary from the latest llama.cpp release,
-          # but never trust it blindly -- self-check with --help before use.
-          latest_tag=$(gh api repos/ggml-org/llama.cpp/releases/latest --jq .tag_name || true)
-          if [ -n "$latest_tag" ]; then
-            asset_url=$(gh api repos/ggml-org/llama.cpp/releases/latest \
-              --jq '.assets[] | select(.name | test("ubuntu.*x64"; "i")) | .browser_download_url' \
-              | head -1 || true)
-            if [ -n "$asset_url" ]; then
-              if curl -L --fail -o llama-bin.zip "$asset_url"; then
-                mkdir -p llama-bin
-                unzip -oq llama-bin.zip -d llama-bin || true
-                candidate=$(find llama-bin -type f \( -name 'llama-gguf-split' -o -name 'gguf-split' \) | head -1 || true)
-                if [ -n "$candidate" ]; then
-                  chmod +x "$candidate"
-                  if "$candidate" --help >/dev/null 2>&1; then
-                    GGUF_SPLIT="$candidate"
-                    LLAMA_TAG="$latest_tag"
-                    LLAMA_COMMIT=$(gh api "repos/ggml-org/llama.cpp/git/ref/tags/$latest_tag" --jq .object.sha 2>/dev/null || echo "unknown")
-                    echo "Using prebuilt gguf-split from llama.cpp release $latest_tag."
-                  fi
-                fi
+          # Resolve the exact commit behind the pinned tag independently of
+          # which path below is used to obtain the binary, so the recorded
+          # commit is always real rather than a placeholder. Prefer the
+          # peeled ref (annotated tag -> commit) and fall back to a direct
+          # ref (lightweight tag).
+          LLAMA_COMMIT=$(git ls-remote https://github.com/ggml-org/llama.cpp.git \
+            "refs/tags/${LLAMA_CPP_TAG}^{}" | awk '{print $1}')
+          if [ -z "$LLAMA_COMMIT" ]; then
+            LLAMA_COMMIT=$(git ls-remote https://github.com/ggml-org/llama.cpp.git \
+              "refs/tags/${LLAMA_CPP_TAG}" | awk '{print $1}')
+          fi
+          if [ -z "$LLAMA_COMMIT" ]; then
+            echo "::error::Could not resolve tag $LLAMA_CPP_TAG to a commit on ggml-org/llama.cpp."
+            exit 1
+          fi
+
+          # Prefer the prebuilt Linux CPU binary published for this exact
+          # tag (verified to exist and to contain llama-gguf-split as of
+          # this workflow's design), but never trust it blindly -- extract
+          # and self-check with --help before use. Its shared libraries
+          # ship alongside it in the same archive, so the whole directory
+          # (not just the binary) is kept, and LD_LIBRARY_PATH points at it.
+          asset_name="llama-${LLAMA_CPP_TAG}-bin-ubuntu-x64.tar.gz"
+          asset_url="https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_CPP_TAG}/${asset_name}"
+
+          if curl -L --fail -o llama-bin.tar.gz "$asset_url"; then
+            mkdir -p llama-bin
+            tar -xzf llama-bin.tar.gz -C llama-bin
+            candidate=$(find llama-bin -type f -name 'llama-gguf-split' | head -1 || true)
+            if [ -n "$candidate" ]; then
+              chmod +x "$candidate"
+              libdir=$(dirname "$candidate")
+              if LD_LIBRARY_PATH="$libdir:${LD_LIBRARY_PATH:-}" "$candidate" --help >/dev/null 2>&1; then
+                GGUF_SPLIT="$candidate"
+                GGUF_SPLIT_LIBDIR="$libdir"
+                echo "Using prebuilt gguf-split from llama.cpp release $LLAMA_CPP_TAG ($asset_name)."
               fi
             fi
           fi
 
-          # Fallback: build just the gguf-split target from source.
+          # Fallback: build just the gguf-split target from source, at the
+          # exact same pinned tag (not master), so the fallback path is
+          # just as reproducible as the prebuilt path.
           if [ -z "$GGUF_SPLIT" ]; then
-            echo "No usable prebuilt binary found; building gguf-split from source."
+            echo "Prebuilt binary unavailable or failed its self-check; building gguf-split from source at tag $LLAMA_CPP_TAG."
             sudo apt-get update -y
             sudo apt-get install -y cmake build-essential libcurl4-openssl-dev
-            git clone --depth 1 https://github.com/ggml-org/llama.cpp.git llama-src
-            LLAMA_COMMIT=$(git -C llama-src rev-parse HEAD)
-            LLAMA_TAG="source-build-$(git -C llama-src rev-parse --short HEAD)"
+            git clone --branch "$LLAMA_CPP_TAG" --depth 1 https://github.com/ggml-org/llama.cpp.git llama-src
+            built_commit=$(git -C llama-src rev-parse HEAD)
+            if [ "$built_commit" != "$LLAMA_COMMIT" ]; then
+              echo "::error::Source checkout of tag $LLAMA_CPP_TAG resolved to commit $built_commit, which does not match the independently-resolved commit $LLAMA_COMMIT. Refusing to proceed on an ambiguous pin."
+              exit 1
+            fi
             cmake -S llama-src -B llama-src/build -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=OFF
             cmake --build llama-src/build --target llama-gguf-split -j"$(nproc)" \
               || cmake --build llama-src/build --target gguf-split -j"$(nproc)"
@@ -146,30 +174,65 @@ jobs:
               echo "::error::Built llama.cpp from source but could not locate the gguf-split executable."
               exit 1
             fi
+            libdir=$(dirname "$candidate")
+            if ! LD_LIBRARY_PATH="$libdir:${LD_LIBRARY_PATH:-}" "$candidate" --help >/dev/null 2>&1; then
+              echo "::error::Source-built gguf-split at $candidate failed its self-check (--help)."
+              exit 1
+            fi
             GGUF_SPLIT="$candidate"
-          fi
-
-          if ! "$GGUF_SPLIT" --help >/dev/null 2>&1; then
-            echo "::error::gguf-split tool at $GGUF_SPLIT failed its self-check (--help)."
-            exit 1
+            GGUF_SPLIT_LIBDIR="$libdir"
           fi
 
           echo "GGUF_SPLIT=$GGUF_SPLIT" >> "$GITHUB_ENV"
-          echo "LLAMA_TAG=$LLAMA_TAG" >> "$GITHUB_ENV"
+          echo "GGUF_SPLIT_LIBDIR=$GGUF_SPLIT_LIBDIR" >> "$GITHUB_ENV"
+          echo "LLAMA_TAG=$LLAMA_CPP_TAG" >> "$GITHUB_ENV"
           echo "LLAMA_COMMIT=$LLAMA_COMMIT" >> "$GITHUB_ENV"
-          echo "Recorded llama.cpp source: tag/ref=$LLAMA_TAG commit=$LLAMA_COMMIT"
+          echo "Recorded llama.cpp source: tag=$LLAMA_CPP_TAG commit=$LLAMA_COMMIT"
 
       - name: Split and interleave upload/verify/delete per shard
         run: |
           set -uo pipefail  # not -e: this loop handles its own failures explicitly
 
+          # Known-good SHA-256 for each shard, from the repo owner's locally
+          # validated split of this exact source file using this exact
+          # llama.cpp build (b10700) and --split-max-size 700M. Reproducing
+          # these exact bytes on the runner -- not just producing *a* valid
+          # 13-shard split -- is the point of pinning LLAMA_CPP_TAG above.
+          declare -A EXPECTED_SHARD_SHA256=(
+            [1]="0050a1c014f88a65679cfb6dd98640853eb8f3846e89a9b141f081b74308db59"
+            [2]="cad2eaefa3611b159bd43c0096f438ffd16b1812281bd9b2350b4801d9f70767"
+            [3]="b42dec2d52587d30a2ea927963fe5b6d8dc55f7dd1dbbd9a8eb64ec428607a9f"
+            [4]="ec86f890116a6650b5636597ec64d4a65b3a7b31421f53b80bf8c75fec050602"
+            [5]="60d172f51486cab1f31c8e387e9a05f6854917be90ecec49624a630a7873f245"
+            [6]="7eabc0ebff6e236bed09687fbe37fb3bf90152fbec2e12b26c078eb62b083a39"
+            [7]="b9e45cc5990fb4a0e44d168b37a9122b1358d222b4a883135095f45a0299b529"
+            [8]="ee7f2474be81cd3337ab314090fac2271e8e82236c02eaf9846029aa868ad5ca"
+            [9]="f16ac9fe8f60892b6d5b2c281a7a8403ea260f8505613ce3d111f52440f99dbe"
+            [10]="21fb78cd7864921065d04d0556710bc217b8a2779e79d56262ee37989a85bb3c"
+            [11]="b012a730a0e9721d07dd2ee7cf78ff7df4d9da12b6d57ffc134c41004258ef7c"
+            [12]="38b55a1be69bea55fc8df8a0375a5d8a82106fda7779b0f824c5bde530014063"
+            [13]="18b3174fda8a493bfd4ba99e006d80930b1aff074c14aa609fc6a52efa397930"
+          )
+
           upload_shard() {
             local file="$1"
-            local name local_size local_sha existing existing_size existing_digest uploaded up_state up_size up_digest
+            local idx="$2"
+            local name local_size local_sha expected_sha existing existing_size existing_digest uploaded up_state up_size up_digest
 
             name=$(basename "$file")
             local_size=$(stat -c%s "$file")
             local_sha=$(sha256sum "$file" | awk '{print $1}')
+
+            expected_sha="${EXPECTED_SHARD_SHA256[$idx]:-}"
+            if [ -z "$expected_sha" ]; then
+              echo "::error::No known-good SHA-256 recorded for shard index $idx; refusing to upload an unverified shard."
+              return 1
+            fi
+            if [ "$local_sha" != "$expected_sha" ]; then
+              echo "::error::Shard $name (index $idx) does not match the known-good local-split SHA-256. Expected $expected_sha, got $local_sha. This means the GitHub-side split diverged from the repo owner's validated split -- refusing to upload it."
+              return 1
+            fi
+            echo "Shard $name (index $idx) matches the known-good SHA-256. Proceeding to upload."
 
             existing=$(gh api "repos/$OWNER/$REPO/releases/$RELEASE_ID/assets" \
               --jq ".[] | select(.name==\"$name\")" 2>/dev/null || true)
@@ -222,7 +285,8 @@ jobs:
           mkdir -p split_output
           : > "$MANIFEST"
 
-          "$GGUF_SPLIT" --split --split-max-size "$SPLIT_MAX_SIZE" "$SRC_FILE" "split_output/Qwen3-8B-Q8_0" &
+          LD_LIBRARY_PATH="$GGUF_SPLIT_LIBDIR:${LD_LIBRARY_PATH:-}" \
+            "$GGUF_SPLIT" --split --split-max-size "$SPLIT_MAX_SIZE" "$SRC_FILE" "split_output/Qwen3-8B-Q8_0" &
           split_pid=$!
 
           # Extracts the shard's own numeric index from its filename (e.g.
@@ -276,7 +340,7 @@ jobs:
               fi
 
               if [ "$ready" = true ]; then
-                if ! upload_shard "${present_idx[$idx]}"; then
+                if ! upload_shard "${present_idx[$idx]}" "$idx"; then
                   echo "::error::Aborting after failure handling shard index $idx."
                   wait "$split_pid" 2>/dev/null || true
                   exit 1
@@ -343,7 +407,12 @@ jobs:
             "Original size: $EXPECTED_SIZE bytes" \
             "Original SHA-256: $EXPECTED_SHA256" \
             "" \
-            "Split with llama.cpp gguf-split, tag/ref: $LLAMA_TAG, commit: $LLAMA_COMMIT" \
+            "Split with llama.cpp gguf-split, pinned tag: $LLAMA_TAG, commit: $LLAMA_COMMIT" \
+            "" \
+            "Each shard's SHA-256 was verified against the repo owner's" \
+            "known-good, locally-validated split of this exact file with this" \
+            "exact llama.cpp build before it was uploaded, in addition to the" \
+            "post-upload verification against GitHub's own reported digest." \
             "" \
             "Per-shard SHA-256 digests are recorded in $MANIFEST, attached below, and" \
             "also verified server-side against each asset's GitHub-reported digest at" \
