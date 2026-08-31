@@ -157,6 +157,15 @@ model given prose context, to learn what information/structure actually
 helps reasoning — not to prove a larger model wins. See "Proposed
 Experiments" below.
 
+**Related, but distinct, experiment already run (2026-08-31):** Qwen3-8B
+was run against the 9 existing RAW fixtures in its own two officially-
+supported modes (Non-Thinking/Thinking) as a teacher/reference comparison
+point against TinyLlama's and Qwen2.5-1.5B-Instruct's existing scores —
+see `benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`. That
+experiment reused the same structured RAW context throughout; it is
+**not** the structured-vs-prose ablation described above, which remains
+undesigned and unauthorized. Status here stays OPEN.
+
 ### Scout-specific model evaluation
 **Status:** OPEN. **Recorded:** 2026-08-29.
 

@@ -6,11 +6,11 @@ without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
 
-Last updated: 2026-08-29 (epistemic/information-availability contract
-investigation concluded as a research finding — typed-structure direction
-favored over a rejected six-state enum, exact schemas unresolved,
-capability schema and B2 unchanged; see "Unresolved questions" and
-`RESEARCH_LOG.md`)
+Last updated: 2026-08-31 (Qwen3-8B-Q8_0 teacher/reference experiment
+recorded — Non-Thinking 7 PASS / 2 FAIL, Thinking 9 PASS / 0 FAIL against
+the 9 existing RAW fixtures; teacher/reference evidence only, **not** a
+Benchmark Profile v1 run or a leaderboard addition; see "Current benchmark
+status" and `benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`)
 
 ---
 
@@ -302,6 +302,19 @@ No candidate model has been selected as a replacement.**
   as promising enough to continue investigating — **not** as a selected
   replacement model. Choosing any candidate replacement model is still
   undecided/not authorized — see "Next safest step."
+- **Teacher/reference evidence exists for Qwen3-8B-Q8_0 (2026-08-31) —
+  not a Benchmark Profile v1 run, not a leaderboard entry, not a
+  candidate-model evaluation.** Run in both of its officially-supported
+  modes (Non-Thinking, Thinking) against the same 9 RAW fixtures, scored
+  under the same literal criteria as the review above:
+  **Non-Thinking 7 PASS / 2 FAIL** (its only failures are B2 and F1),
+  **Thinking 9 PASS / 0 FAIL**. Full design, evidence, and two explicit
+  nuances (D3: a structured capability signal is not sufficient on its
+  own to guarantee compliance; F1: no universal confidence-to-hedging
+  rule is established) recorded in
+  `benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`. This
+  does not select Qwen3-8B for Scout and does not change TinyLlama's or
+  Qwen2.5-1.5B-Instruct's scores above.
 
 ## Real-device TinyLlama evidence (new)
 
@@ -381,6 +394,10 @@ preserved as evidence for later reviewed incorporation.
   any current fixture. B2 remains unchanged as the RAW zero-grounding
   honesty test. Full findings recorded in `RESEARCH_LOG.md` (2026-08-29
   entry) — a research conclusion, not an ADR or implemented schema.
+- **Why does Qwen2.5-1.5B-Instruct and Qwen3-8B Non-Thinking both fail B2
+  the same way, while Qwen3-8B Thinking does not?** Raised by the
+  2026-08-31 teacher/reference experiment; not investigated further. See
+  `benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`.
 
 ## Awaiting ChatGPT review
 

@@ -675,3 +675,86 @@ was created or modified during this investigation or by recording it
 here. `Patevan9/Scout` was not touched. This entry is a research finding,
 not an approved schema or an ADR — per the review workflow, nothing here
 is authoritative on its own until independently reviewed.
+
+## 2026-08-31
+
+**MILESTONE** — Qwen3-8B-Q8_0 teacher/reference experiment executed and
+scored — **not** a Benchmark Profile v1 run, **not** an addition to the
+deployable-model leaderboard. Following the already-reviewed teacher-model
+transfer and load test, and a read-only investigation into Qwen3's
+thinking/non-thinking modes and llama.cpp's chat-template handling of them
+(a real, still-unfixed llama.cpp Jinja-engine gap was found; empirically
+confirmed not to affect real generation's `content`/`reasoning_content`
+separation), Qwen3-8B-Q8_0 was run against all 9 currently committed RAW
+fixtures in both of its officially-supported modes — Non-Thinking and
+Thinking — as two separate teacher/reference observations, explicitly not
+as deployable-model competitors. Both modes reused the existing, unmodified
+`QwenAdapter.format_prompt()` prompt-assembly logic; sampling parameters
+came from the Qwen3 Technical Report's own official recommendations for
+each mode (not Benchmark Profile v1, which was never designed for Qwen3);
+Thinking mode's `n_ctx`/`n_predict` were derived from a real token census
+of the 9 fixtures plus the verified KV-cache memory formula. All 18
+generations (9 fixtures × 2 modes), run via a locally-launched `llama-server`
+on the pinned llama.cpp `b10700` build, completed with zero retries, zero
+truncations, and zero infrastructure failures.
+
+Reference verdicts, applying the exact same literal PASS/FAIL criteria
+already used in `benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md`:
+**Non-Thinking 7 PASS / 2 FAIL** (its only failures are B2 — fabricates a
+specific "about 10 minutes" duration with zero grounding supplied — and
+F1 — states the 0.55-confidence detection as a flat fact with the raw
+number but no hedge language); **Thinking 9 PASS / 0 FAIL** (passes B2 by explicitly
+declining to state an ungrounded duration, and F1 by hedging appropriately
+alongside citing the same confidence number). Both modes pass D3. Full
+design, evidence, and reasoning recorded in
+`benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`; raw
+comparison evidence (fixture ID, mode, final answer, reference verdict,
+configuration, token/stop metadata — deliberately excluding chain-of-
+thought) in `benchmarks/results/2026-08-31-qwen3-8b-teacher-reference.json`.
+Thinking mode's `reasoning_content` was never used as PASS/FAIL evidence
+for any verdict above and is deliberately **not** preserved anywhere in
+this repository — chain-of-thought/reasoning_content is not made a
+permanent Scout AI repository artifact.
+
+**Two nuances explicitly preserved from this evidence, extending existing
+conclusions rather than introducing new rules:**
+
+- **D3 nuance (extends the 2026-08-29 epistemic-contract entry's item 5).**
+  TinyLlama remains the only model in this project's evidence to fail D3,
+  despite `light_control_available: false` being an already-sufficient
+  explicit signal — Qwen2.5-1.5B-Instruct, Qwen3-8B Non-Thinking, and
+  Qwen3-8B Thinking all correctly decline given the same signal. This is
+  additional evidence for, not a reversal of, the existing conclusion: a
+  structured capability signal appears to help across most models tested
+  so far, but TinyLlama's failure shows supplying the signal is not
+  sufficient on its own — representation, salience, routing, or a
+  deterministic enforcement layer ahead of generation may all still
+  matter. No claim is made that structured capability state reliably
+  prevents small-model non-compliance in general.
+- **F1 nuance (extends the 2026-08-29 epistemic-contract entry's item 8).**
+  Item 8 already states no universal hedge-confidence threshold is
+  approved. This experiment adds one data point consistent with that:
+  Qwen3-8B's Thinking mode hedged appropriately on F1's moderate (0.55)
+  confidence label while its own Non-Thinking mode did not, given the
+  identical numeric confidence value. This is recorded as evidence that
+  calibration behavior may depend on mode/reasoning-process as well as on
+  the confidence number itself — **not** as a general rule that
+  "confidence below X" (or "reasoning enabled") reliably produces correct
+  hedging for every perception type or model. Remains an open research
+  question, and different perception types may need different calibration
+  approaches entirely.
+
+**OPEN QUESTION (new, from this experiment)** — Why does
+Qwen2.5-1.5B-Instruct fail B2 (fabricating a specific chat duration) the
+same way Qwen3-8B Non-Thinking does, while Qwen3-8B Thinking does not,
+given identical zero-grounding input? Not investigated further here —
+connects to, but does not resolve, the existing epistemic-contract
+question already open above, and the architecture-leverage questions
+already open in `SCOUT_AI_RESEARCH_IDEAS.md`.
+
+This experiment does not add Qwen3-8B to Benchmark Profile v1 or
+`scout-intelligence-test-v1.md`'s scored leaderboard, does not select or
+propose selecting Qwen3-8B for Scout, does not modify any fixture, ADR, or
+scoring methodology, and does not change TinyLlama's or
+Qwen2.5-1.5B-Instruct's already-approved 7 PASS / 2 FAIL scores.
+`Patevan9/Scout` was not touched.
