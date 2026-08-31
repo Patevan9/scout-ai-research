@@ -28,6 +28,19 @@ research underway or done, no decision yet), **PROMOTED** (a finding or
 decision now lives elsewhere — pointer given), or **REJECTED/DEFERRED**
 (considered and set aside, with the reason — never silently deleted).
 
+## Keeping this file small — maintenance rule
+
+**This file must stay a working, intentionally small and scannable
+backlog — not an attic or basement where every idea lives forever.**
+Periodically evaluate active ideas for promotion, consolidation, deferral,
+or removal from active consideration, based on: evidence gathered so far,
+usefulness to Scout, complexity, resource/hardware cost, redundancy with
+other ideas already here, and current relevance. When an idea is removed
+from active consideration, **preserve only enough history or a pointer**
+to understand a significant rejected/deferred direction later (see
+"Rejected or Deferred Ideas" below for the intended level of detail) —
+not the full original reasoning restated in full.
+
 ---
 
 ## Ideas / Questions to Investigate
@@ -112,6 +125,28 @@ state eventually supply Scout AI with similarly clean, typed context
 instead of prose? Not investigated yet; likely overlaps significantly with
 the typed-structure direction already noted as a research conclusion in
 `RESEARCH_LOG.md`.
+
+### Coordination of existing specialized systems
+**Status:** OPEN. **Recorded:** 2026-08-29.
+
+Investigate how much Scout AI can improve Scout by making existing
+specialized components work better together, rather than replacing them.
+Examples: vision/object detection, face recognition/identity, memory/Room
+data, capabilities/state, and the local LLM/runtime. Open questions:
+whether structured interfaces, confidence handling, cross-checking between
+sources, temporal context, selective routing, and avoiding unnecessary
+computation can increase overall intelligence and reliability without
+requiring larger individual models.
+
+**Central question:** *How much capability can Scout gain by improving
+coordination between existing specialized systems, before increasing model
+size or hardware requirements?*
+
+**Explicitly not decided by recording this idea:** this is an investigation
+idea only, not approval of a monolithic architecture. Specialized
+components should remain independently replaceable — Scout AI potentially
+coordinates their information rather than absorbing every technology into
+one model.
 
 ### Qwen3-8B (or similar) as a teacher/reference model for structured-vs-prose context
 **Status:** OPEN. **Recorded:** 2026-08-29.
