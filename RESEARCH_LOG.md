@@ -758,3 +758,44 @@ propose selecting Qwen3-8B for Scout, does not modify any fixture, ADR, or
 scoring methodology, and does not change TinyLlama's or
 Qwen2.5-1.5B-Instruct's already-approved 7 PASS / 2 FAIL scores.
 `Patevan9/Scout` was not touched.
+
+## 2026-09-01
+
+**VERIFIED (against `Patevan9/Scout` main
+`4cd7c92df4736078a99b3e48152b0b36976a4534`, read-only, 2026-09-01)** — Two
+pieces of current, live Scout infrastructure are directly relevant to
+Scout AI's presence/ambient-awareness research and had not previously
+been cross-referenced here.
+
+1. `ScoutCompanionMomentsEngine`
+   (`app/src/main/java/com/example/scoutface/brain/ScoutCompanionMomentsEngine.kt`)
+   is real and live — `MainActivity` calls it to decide whether Scout
+   emits a small, self-initiated Companion Moment. It is hard-gated by a
+   shared proactive-remark cooldown, a daily moment budget, a confidence
+   threshold, and separate per-category cooldowns. Its own source
+   explicitly treats `evaluate()` returning `null` as the common,
+   expected outcome, stating plainly that silence is not a failure state
+   but the default.
+2. `AwarenessState`
+   (`app/src/main/java/com/example/scoutface/brain/AwarenessState.kt`)
+   and `AwarenessHistoryDb`
+   (`app/src/main/java/com/example/scoutface/AwarenessHistoryDb.kt`) are
+   real and live but intentionally narrow: Phase 1 tracks only charging
+   state and connectivity state, both nullable until observed —
+   presence, orientation, direct-address tier, broader physical state,
+   and brightness are not represented today. `AwarenessState` is updated
+   from real system signals, while `AwarenessHistoryDb` records the
+   corresponding edge-triggered charging/connectivity events; neither
+   currently has a downstream reader/consumer of that awareness data —
+   a verified current-state fact, not a defect, and not an instruction
+   that Scout AI should wire them up.
+
+**The research connection:** current Scout already has a live,
+restrained proactive-expression mechanism (1) alongside a small,
+grounded, currently-unconsumed awareness-collection path (2) — making
+the boundary between sensing, interpretation, and selective expression a
+concrete existing Scout research seam, not a purely hypothetical one,
+relevant to the **Physical presence and active perception** idea in
+`SCOUT_AI_RESEARCH_IDEAS.md`. No schema, wiring plan, API, or
+implementation is proposed here. `Patevan9/Scout` was read-only
+inspected and not modified.

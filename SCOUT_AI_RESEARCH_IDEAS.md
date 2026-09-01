@@ -408,6 +408,13 @@ expression state machine; any pan/tilt hardware or control scheme; any
 "Scout Noticed" component, class, or pipeline — that name is a working
 label for this discussion only, not an approved component.
 
+**2026-09-01 note:** Scout's sense of presence may also depend on how
+speech is delivered — calm pacing, natural pauses, and restrained use of
+brief acknowledgment sounds, avoiding constant verbal output — an open
+presence dimension alongside gaze, expression, and movement, with no TTS
+engine, prosody parameters, specific phrases, or speech pipeline decided
+here.
+
 ### Repurposed consumer hardware as a physical form factor
 **Status:** OPEN. **Recorded:** 2026-09-01.
 
@@ -613,6 +620,14 @@ capability discovery, and safety permissions.
 packet format, command grammar, controller board, safety algorithm, or
 obstacle-avoidance algorithm; any transport selection; any hardware work
 or use of Patrick's kit.
+
+**2026-09-01 note:** Physical movement research should also treat the
+presence of pets as relevant to movement safety and comfort — for
+example, reduced speed, reduced noise, greater clearance, or choosing
+not to move when appropriate — none of it a decided detection model,
+threshold, speed limit, or motion policy. This is a product/safety goal
+only; current Project Scout does not implement pet-aware physical
+movement behavior as of the 2026-09-01 source verification.
 
 **2026-09-01 note — external research precedent (Pollen Robotics'
 Microduck, a real open-source robot implementation):** independently
