@@ -191,6 +191,18 @@ scoring methodology, fixtures, or approved Benchmark Profile v1 in any
 way. How these dimensions should actually be measured and weighted is
 itself future research, not decided here.
 
+**2026-09-01 note:** The 2026-08-31 Qwen3-8B teacher/reference experiment
+(Qwen3 Thinking reference-passed all 9 fixtures; Qwen3 Non-Thinking
+reproduced the same B2/F1 failure pattern seen elsewhere — see
+`benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`) is
+additional motivation for the architecture-leverage question above, not a
+claim that Qwen3 should be Scout's model. The research question remains
+how much of that larger-model behavior can be reproduced by a smaller
+local model through better deterministic grounding, structured context,
+confidence handling, temporal information, memory retrieval, routing, and
+guardrails — architecture-leverage research, not model-selection
+authorization.
+
 ### Habit learning from independent episodes
 **Status:** OPEN. **Recorded:** 2026-08-31.
 
@@ -259,6 +271,177 @@ Pi's approach is adopted in any form; how this interacts with
 Ideas" below) or the canonical fixture schema. ADA Pi is preserved here
 purely as an external research influence that prompted these questions,
 not as something Scout is committed to depending on or resembling.
+
+### Personal continuity: a private world model, unfinished threads, and time awareness
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term vision for Scout AI, distilled as: *"Scout knows less about
+the world, but more about your world."* Most assistants effectively
+behave like Ask -> Answer -> Disappear. Investigate whether Scout could
+instead move toward something closer to Lives with the user -> learns ->
+remembers -> notices -> connects -> occasionally speaks when useful —
+without dumping large conversation histories into an LLM on every turn.
+
+This bundles three related research threads, kept as one entry because
+they depend on each other:
+
+1. **A private, structured representation of the user's world** (people,
+   relationships, places, possessions, routines, events, preferences,
+   important facts, habits, unfinished/open threads). Illustrative only,
+   not a schema: conceptually `Patrick -> father of -> Elijah`,
+   `Elijah -> has -> dentist appointment`, `dentist appointment -> occurs
+   -> Thursday at 3 PM`. **This is not a schema, database, class, or
+   graph implementation, and not an ADR.** It overlaps substantially with
+   the typed-structure direction already recorded as a research
+   conclusion in `RESEARCH_LOG.md` (2026-08-29 epistemic-contract entry,
+   item 2) and with the still-open "whether/how a future spatial/
+   world-state layer should relate to TruthDb" question (`RESEARCH_LOG.md`,
+   2026-08-26) — any future design work here should treat those as the
+   starting point, not reinvent them under a new name.
+2. **Time awareness across past/present/future** — understanding that
+   something happened yesterday, is happening today, is expected
+   tomorrow, recurs on a schedule, or hasn't happened yet. Directly
+   extends the still-open Working Memory design question (see
+   `SCOUT_AI_STATUS.md`, "Unresolved questions") to a longer horizon than
+   one conversation.
+3. **Unresolved/open threads, explicitly distinct from a formal
+   reminder.** Statements such as "I need batteries sometime," "maybe we
+   should paint the bedroom," "I'm waiting to hear back from someone,"
+   "don't let me forget," or "I was thinking about..." should not
+   automatically become a scheduled reminder, permanent Truth, or an
+   established habit merely because Scout heard them. The research
+   question is how Scout might preserve the *unresolved nature/status* of
+   such information — something between "said once and forgotten" and
+   "permanently promoted into another knowledge category" — without
+   prematurely promoting it into Truth, a reminder, or a habit. **No
+   storage mechanism, lifecycle, confidence threshold, or promotion rule
+   is proposed here.**
+
+**Illustrative example (not a spec):** a family member's dentist
+appointment is mentioned on Monday; a Thursday grocery trip is mentioned
+Tuesday; a sufficiently grounded future Scout might connect the two on
+Thursday morning, and later — combined with the physical-presence idea
+below — might notice the person's return and know the appointment is now
+in the past. The research value is in *why* Scout would know that
+connection was relevant, not in producing the sentence itself.
+
+**Central research question:** *What is the smallest safe architectural
+experiment toward true continuity that builds on what Scout already
+has?*
+
+**Explicitly not decided by recording this idea:** any Personal World
+Model schema, database, or graph structure; any Working Memory design;
+any rule for when, or whether, an unresolved thread is ever promoted to
+Truth, a habit, or a reminder, or when it expires. "Personal World Model"
+and "unfinished thread" are working labels for this discussion only, not
+names of approved Scout AI components.
+
+### Physical presence and active perception (stationary awareness, not navigation)
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+Second phrase from the same long-term vision: *"Alive before it even
+speaks."* The long-term physical goal is for Scout to become more than
+an Android app on a screen — a phone could eventually act as Scout's
+face and local computing platform inside or attached to a physical base.
+Envisioned behaviors include natural gaze shifts, tracking a person
+moving through the room, briefly orienting toward someone entering,
+reacting subtly to a door opening or a meaningful sound, gaze settling
+before responding, blinking/micro-expression, and eventually a pan/tilt
+head — all of which would need to be grounded in real perception/state,
+never a random animation pretending Scout noticed something it didn't.
+
+This is a lighter-weight, stationary-awareness concept, distinct from
+the existing "Autonomous/spatial Scout" idea (`RESEARCH_LOG.md`,
+2026-08-26 — mapping, localizing, navigating between rooms, docking/
+charging). It does not require locomotion and should be investigated
+separately from it, though the two would likely share underlying
+perception/state concepts.
+
+Directly connects to, and must not duplicate:
+
+- The Charter's existing "Presence, awareness, and expression" section —
+  Scout should feel present through awareness and expression, not
+  constant talking; silence can still be communication; gaze/eyes/
+  eyebrows/mouth are already-named expressive output channels. This idea
+  is about grounding those existing expressive outputs in real
+  perception state, not inventing new ones.
+- The existing **Expression decision trichotomy** (`RESEARCH_LOG.md`,
+  2026-08-26 — SPEAK / EXPRESS SILENTLY / DO NOTHING). Conceptual
+  response levels here (e.g. ignore, subtle gaze/micro-movement,
+  expression/orientation, brief acknowledgement, speech/conversation,
+  eventually physical action) are a possible future elaboration of that
+  same trichotomy, **not a replacement or an approved state machine.**
+- The **Structured Perception/Vision** idea's existing point 7:
+  "safety-critical movement must remain deterministic, never directly
+  controlled by an LLM" — restated here as a governing constraint, not a
+  new rule.
+- The **Habit learning from independent episodes** idea's point 8
+  (structured perception connection) — repeated observation frames from
+  active perception must not silently become repeated habit evidence;
+  no new threshold or lifecycle proposed here.
+
+**Ambient-curiosity research questions** (explicitly failure modes to
+design against, not solutions): how to avoid constant staring, twitchy
+gaze, repetitive reactions, excessive speech, falsely implying Scout
+perceived something it did not, and creepy/intrusive behavior. A working
+principle for this discussion: *"Notice often. Move subtly. Speak
+selectively."*
+
+**Social-continuity illustration (not a spec):** combined with the
+personal-continuity idea above, a future Scout might visually recognize
+someone returning from an appointment, know from its own state that the
+appointment is now in the past, acknowledge the person physically first,
+and only then decide whether asking about it is appropriate. The
+research question this raises is how deterministic/specialized systems
+(identity, event state, time, perception, memory retrieval, confidence,
+relevance) could supply that grounding so the language model is
+responsible for reasoning and natural expression, not for inventing
+world state — the same "the model does not determine what Scout knows"
+principle already established (`RESEARCH_LOG.md`, 2026-08-29).
+
+**Central research question:** *How much perceived intelligence and
+presence can Scout gain from grounded micro-behaviors and continuity
+before requiring a larger language model?*
+
+**Explicitly not decided by recording this idea:** any gaze/orientation/
+expression state machine; any pan/tilt hardware or control scheme; any
+"Scout Noticed" component, class, or pipeline — that name is a working
+label for this discussion only, not an approved component.
+
+### Repurposed consumer hardware as a physical form factor
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A possible long-term differentiator: making sophisticated personal AI
+useful on ordinary or second-hand Android hardware rather than requiring
+an expensive proprietary robot — conceptually, an old/second-hand
+Android phone acting as Scout's face and computing platform, plus
+eventual inexpensive physical base/body hardware, as a private local
+household companion. Connects to, and should stay bounded by, the
+Charter's existing hardware-independence, chassis-independence, and
+affordable-by-design principles, and the existing **Builder's Workbench**
+idea (`RESEARCH_LOG.md`, 2026-08-26) — this is a candidate low-cost
+physical form factor, not a replacement for that toggle concept or a
+hardware specification.
+
+**Explicitly not decided by recording this idea:** any specific phone
+model, base/body design, purchasing recommendation, or bill of
+materials.
+
+### The offline magic demonstration
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term demonstration goal, not a benchmark or fixture proposal:
+with Scout's device in airplane mode, demonstrate some combination of
+recognizing household members, accessing relationships/personal facts,
+using local memory, understanding relevant routines, using local vision,
+conversing locally, maintaining continuity, making grounded useful
+connections, and showing physical awareness/presence — no cloud
+dependency required for Scout's core identity/personal continuity. The
+goal is a viewer asking "how is that phone doing all of this offline?" —
+potentially more central to Scout's identity than beating cloud models on
+general-knowledge benchmarks. Consistent with the Charter's existing
+"local-first and offline-capable" principle; this is a demonstration
+goal, not itself a new principle, benchmark, or fixture.
 
 ---
 
