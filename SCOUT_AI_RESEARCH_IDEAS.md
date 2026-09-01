@@ -614,6 +614,55 @@ packet format, command grammar, controller board, safety algorithm, or
 obstacle-avoidance algorithm; any transport selection; any hardware work
 or use of Patrick's kit.
 
+**2026-09-01 note — external research precedent (Pollen Robotics'
+Microduck, a real open-source robot implementation):** independently
+inspected directly against its own source and design documentation
+(`github.com/pollen-robotics/microduck`), not assumed from secondhand
+description. Microduck did not originate the goal/execution/result
+separation above, and Scout AI is not adopting Microduck's architecture
+— it is cited here only as independent external evidence that this kind
+of separation is achievable in a real system, reinforcing an idea Scout
+AI had already recorded, not introducing a new one. Verified,
+narrowly-scoped observations worth preserving:
+
+1. Microduck's higher-level clients send intentions/targets (e.g. a
+   velocity or an orientation target) while its own control daemon
+   retains responsibility for what is actually executable — the same
+   goal-vs-execution shape already recorded above.
+2. Motor access is structurally restricted so higher layers cannot
+   write to motors directly. Preserved here only as one illustrative
+   external example that such an execution boundary can be enforced,
+   **not** as a mechanism Scout has chosen or a technique Scout AI is
+   adopting.
+3. State/observations are reported back separately from commands — its
+   fall detection is explicitly described as a report, not a rule that
+   automatically gates behavior. This is the same observation-vs-
+   inference separation already recorded in **Structured Perception/
+   Vision**, point 2, not a new principle.
+4. A "deadman" behavior — commanded velocity returns to zero when
+   movement intents stop arriving — is one concrete existing precedent
+   relevant to this entry's own already-open "loss of connection"
+   question, not a decision to use that specific behavior.
+5. Microduck's own actual command surface (continuous movement/
+   orientation targets, plus a handful of discrete calls) demonstrates
+   that an intent/execution boundary existing does **not** by itself
+   imply any particular action vocabulary shape, discrete or
+   continuous — it is independent evidence against assuming one, not
+   evidence for either.
+
+**Explicitly NOT selected, approved, or implied by this note:** any
+Scout action vocabulary or command grammar (discrete or continuous);
+any motor protocol, controller, or transport (Bluetooth, USB, Wi-Fi, or
+otherwise); any specific execution-boundary enforcement technique; any
+multi-embodiment architecture; a generic Scout tool architecture; or
+Microduck's own reinforcement-learning/ONNX locomotion technology, which
+is implementation-specific to Microduck's own movement problem and is
+not proposed for Scout. This note also does not use or endorse any of
+"Action Bridge," "Reflective Layer," "Proposal Sandbox," or "Safety
+Gate" as Scout AI component names — none of these are Microduck's own
+terminology either, and none are approved architecture here or
+elsewhere.
+
 ### Scout-to-Scout / multi-node communication
 **Status:** OPEN. **Recorded:** 2026-09-01.
 
