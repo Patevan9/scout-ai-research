@@ -443,6 +443,300 @@ general-knowledge benchmarks. Consistent with the Charter's existing
 "local-first and offline-capable" principle; this is a demonstration
 goal, not itself a new principle, benchmark, or fixture.
 
+### Calendar as grounded temporal context
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term capability: Scout should eventually be able to READ from, and
+when explicitly requested by the user, ADD/UPDATE information in the
+user's own calendar — e.g. "What do I have Thursday?" answered by
+consulting an actual authorized calendar rather than conversational
+memory or a guess, or "Scout, add Elijah's dentist appointment Thursday
+at 3" interpreted and, eventually, turned into an authorized deterministic
+calendar action. Both **read** and **write** remain OPEN research here,
+not a designed capability.
+
+Directly extends the existing grounded-request architecture already
+recorded for weather and named as eventually extending to calendar (see
+**Deterministic tools beyond weather**, `RESEARCH_LOG.md`, 2026-08-26) —
+this entry elaborates that already-recorded direction, it does not compete
+with it. Also connects to **Grounded web retrieval**'s established rule
+(`RESEARCH_LOG.md`, 2026-08-26) that retrieved/tool-provided information is
+temporary evidence for that turn, not automatically Truth or permanent
+memory, until it passes through Scout's own memory rules — the same
+applies to anything read from a calendar. Directly connects to, and must
+be designed together with, the **Personal continuity** idea above.
+
+**Governing principle:** *"Calendar state is grounded external
+information; the model interprets it but does not invent it."* The LLM
+may help interpret what the user means; the calendar/system-of-record
+determines what events actually exist. An attempted calendar write must
+not be treated as successful merely because the model generated language
+saying it succeeded.
+
+**The existing distinction between an unfinished/open thread, a formal
+reminder, a calendar event, Truth, and a habit must remain conceptually
+important and is not collapsed by this idea.** Calendar awareness must
+not cause every conversational intention or unfinished thread to become
+a calendar event — "I need batteries sometime" is not the same kind of
+thing as an appointment with a specific day and time, and **no automatic
+promotion rule between any of these categories is proposed or approved
+here.**
+
+**Illustrative flow only, NOT an approved pipeline or architecture:**
+user request -> interpretation -> deterministic validation/action
+boundary -> authorized calendar system -> actual result -> grounded
+Scout response.
+
+Research should eventually consider, none of it decided here: read
+access, explicit user-requested creation, updating/rescheduling,
+deletion/cancellation, ambiguity resolution, permissions/authorization,
+calendar availability/unavailability, actual action-result confirmation,
+and this idea's relationship to Personal Continuity and time awareness.
+
+**Explicitly not decided by recording this idea:** any calendar provider,
+API, schema, permission model, or authorization mechanism; any rule for
+when or whether an unfinished thread, reminder, or habit is promoted into
+a calendar event, or vice versa; whether this is ever built.
+
+### Grounded household actions through an existing smart-home compatibility layer
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term capability: investigate whether Scout can safely interact
+with existing household devices — starting conceptually with low-risk
+devices such as **lights and ordinary smart switches** — through a
+deterministic, grounded action boundary, using an established smart-home
+platform such as Home Assistant as a candidate device-compatibility
+layer. For example, "Scout, turn off the living room light": Scout AI
+could help interpret the requested action and target, but the language
+model should not directly issue unrestricted arbitrary commands to
+household devices — a deterministic/safe action boundary would need to
+resolve and validate what action is allowed and what real device is
+targeted, with the actual integration performed by the compatibility
+layer.
+
+**Home Assistant is a candidate integration/compatibility layer being
+investigated here, not a selected or mandatory Scout dependency** —
+consistent with the Charter's existing hardware-independence and
+chassis-independence principles. No vendor, platform, or protocol choice
+is made by recording this idea.
+
+Directly extends the existing **CAPABILITY vs. action-result** distinction
+already recorded in `RESEARCH_LOG.md`'s 2026-08-29 epistemic-contract
+entry (item 3: the model must never be allowed to promote "a failed or
+unconfirmed action into a success claim"; item 4: "capability availability
+and action result are separate concepts... must never be collapsed into
+one shared value") — this idea is a concrete application of that
+already-established principle to real household devices, not a new
+concept. **D3** (`benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md`
+— "turn off the lights" with `light_control_available: false`, where
+TinyLlama falsely claimed success) is the existing concrete precedent for
+exactly the risk this idea is meant to guard against.
+
+**Companion principle to "the model does not determine what Scout
+knows":** *"The model does not determine whether a real-world action
+succeeded."* The actual device/control system's reported state
+determines success, not the model's generated language — e.g. Home
+Assistant reports the light's state OFF before Scout may acknowledge
+success; if it reports unavailable or failure, Scout's response must stay
+grounded in that result rather than saying "Done."
+
+**Safety/scope — a hard boundary of this entry, not a suggestion:**
+locks, doors, garage doors, ovens, security systems, and physical robot
+movement are **not implicitly authorized by this research entry** and
+would require substantially stronger safety/authorization research of
+their own; no such safety architecture is designed here.
+
+**Central research question:** *Can Scout safely interact with existing
+household devices through a deterministic, grounded action boundary while
+using an established smart-home platform as the device compatibility
+layer?*
+
+**Explicitly not decided by recording this idea:** any command grammar,
+action schema, permission system, API, protocol, or universal
+`ACTION_RESULT` structure; any specific smart-home platform as a required
+dependency; any authorization beyond low-risk lights/switches.
+
+### Physical movement / robot control (transport-independent)
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term capability: Scout eventually being able to physically move.
+Patrick already owns a robot kit, not yet assembled — that hardware may
+eventually be useful for experimentation, but **recording this idea does
+not authorize hardware work now and does not make that kit reference
+hardware.** The durable research concept here is meant to stay
+**transport-independent**.
+
+**Preserve the conceptual distinction between three separate layers:**
+1. the movement/navigation *goal* (e.g. "go to the kitchen") —
+   already the scope of the existing **Autonomous/spatial Scout** idea
+   (`RESEARCH_LOG.md`, 2026-08-26) and **Autonomous charging/docking**
+   (`RESEARCH_LOG.md`, 2026-08-23);
+2. deterministic/safety-controlled motion *execution* — the layer this
+   entry is actually about, sitting between a chosen goal and the
+   physical hardware; and
+3. the actual physical result/state that comes back — grounded action
+   reporting, per the Charter's "Grounded action and honesty" principle
+   (*"If Scout attempts a physical action and cannot verify it
+   succeeded, it must not claim success"*).
+
+This entry is also distinct from, and should be read alongside, **Physical
+presence and active perception (stationary awareness, not navigation)**
+above — that idea is explicitly non-locomotive; this one is about
+locomotion/actuation itself. None of these four ideas should be collapsed
+into one another.
+
+**Illustrative flow only, NOT an approved pipeline or architecture:**
+Scout AI interprets/chooses a movement goal -> deterministic/
+safety-controlled motion layer -> robot controller -> motors/servos ->
+actual motion/state result -> grounded Scout state/response.
+
+**Preserves the existing rule, restated here as a governing constraint,
+not a new one:** safety-critical movement must remain deterministic and
+never directly controlled by an LLM (already recorded in **Structured
+Perception/Vision**, point 7, and the Charter's grounded-action and
+chassis/body-independence principles — the latter also governing that no
+single robot body or kit becomes a hard dependency).
+
+Possible Android-to-robot transports worth investigating later — kept as
+a flat, unselected list, with **no transport preferred or chosen**:
+Bluetooth, USB/serial, local Wi-Fi/network, or other suitable local
+transports.
+
+Research questions to remain OPEN, none decided here: movement commands
+vs. low-level motor control, the motor/servo controller boundary,
+obstacle detection, emergency/stopping behavior, collision avoidance,
+docking/charging, orientation/pan-tilt vs. locomotion, confirmation that
+commanded motion actually occurred, loss of connection, hardware
+capability discovery, and safety permissions.
+
+**Explicitly not decided by recording this idea:** any motor protocol,
+packet format, command grammar, controller board, safety algorithm, or
+obstacle-avoidance algorithm; any transport selection; any hardware work
+or use of Patrick's kit.
+
+### Scout-to-Scout / multi-node communication
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term capability: Scout eventually being able to communicate with
+other Scout devices/nodes — for example, multiple Scout devices around
+one home, or multiple physical Scout bodies. Nothing in this repository
+currently addresses multiple Scout nodes in any form; this is new
+research territory.
+
+Research questions to remain OPEN, none decided here: whether one Scout
+node can share useful household context with another; whether presence
+or conversation can be handed off between rooms/devices; whether one
+node can report a grounded observation to another; how identity and
+household memory should remain consistent across nodes; which node/
+system is authoritative for shared state; how conflicting observations
+are resolved; what information should remain local to one node versus
+shared; how privacy and authorization should work; what happens when a
+node is offline; whether nodes can communicate entirely over the local
+network without cloud dependency; and how device replacement or
+migration would preserve Scout continuity.
+
+**Candidate research wording only, NOT an approved Charter principle
+unless existing documentation independently supports it:** *"Multiple
+Scout devices should not become multiple conflicting versions of
+Scout."*
+
+**An explicit distinction to preserve, conceptual only — no
+synchronization rule is designed by drawing it:**
+- **(A)** The Charter's existing "Individual Scouts may gradually
+  develop subtle differences" principle (Scout Constitution section) —
+  legitimate personality divergence **between different households'**
+  Scouts (more playful vs. reserved, etc.).
+- **(B)** This idea's concern — multiple **trusted nodes participating in
+  one household's** Scout continuity should not casually drift into
+  contradictory representations of shared state.
+
+(A) and (B) describe different axes and are not in tension, but must not
+be conflated: (A) is expected and desirable; (B) is a research question
+about consistency this entry raises, not yet answered.
+
+**Preserves the existing model-independence principle** (Charter,
+"Model-replaceable": Scout's identity, Truth, memory, and personality
+continuity live in Scout's own deterministic stores and persist across
+any brain swap) as the foundation this idea would need to extend toward
+device/node continuity — not yet designed.
+
+**Related, but distinct, existing idea:** `RESEARCH_LOG.md`'s 2026-08-23
+**"Remote communication / photo exchange"** concerns an authorized family
+member communicating with Scout while away from the local network —
+person-to-Scout, not Scout-to-Scout. Cited here for its already-established
+discipline (no transport/protocol chosen; privacy/local-first as "a
+controlling constraint on however this eventually gets designed"), not
+as the same problem.
+
+**Local-first/privacy remains a controlling constraint** on however any
+of this eventually gets designed, consistent with the Charter's
+local-first principle and the offline-magic-demonstration idea above —
+not an afterthought to reconcile later.
+
+**Explicitly not decided by recording this idea:** any networking
+protocol, synchronization algorithm, database replication scheme, leader
+election system, authority/conflict-resolution algorithm, or cloud
+service.
+
+### Remote view / "what Scout sees"
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+A long-term capability: an authorized user eventually being able to
+remotely see what Scout currently sees. **This should be understood as an
+extension of the existing "Remote communication / photo exchange" idea
+(`RESEARCH_LOG.md`, 2026-08-23), not a separate architecture** — that
+entry already covers "requesting a camera image, and Scout returning an
+image only when explicitly permitted," and already states Scout is "not
+being designated as a security or surveillance system" by that idea; both
+carry over here unchanged.
+
+Possible future forms, research possibilities only, none selected or
+designed: a user-requested snapshot, a short-lived live camera view, a
+requested short clip, or event-linked image sharing.
+
+**Privacy/safety principles this idea must preserve, none of them
+mechanisms yet:**
+- Remote viewing must require explicit authorization.
+- Scout must not silently stream camera video.
+- People physically near Scout should have a clear indication when remote
+  viewing is active.
+- Access should be limited to the requested scope and duration.
+- Local-first/privacy constraints remain controlling, per the Charter's
+  local-first principle and the same discipline already established in
+  "Remote communication / photo exchange."
+
+**Central research question:** *How could Scout provide useful trusted
+remote vision while preserving strong household privacy and clear
+consent/awareness?*
+
+**Explicitly not decided by recording this idea:** any cloud streaming
+provider or protocol; any recording/retention policy; any remote-camera
+API; which of the possible forms above (if any) is ever pursued.
+
+### Shared pattern across calendar, household actions, and physical movement (research connection only)
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+Calendar actions, household actions, and physical movement follow the
+same shape: interpret/reason -> controlled deterministic boundary ->
+real external system/hardware -> actual result/state -> grounded
+response/state — calendar: interpret request -> calendar action -> actual
+calendar result; smart home: interpret request -> validated device action
+-> actual device result; movement: interpret/choose goal -> deterministic
+motion layer -> actual motion/state result. **This is a research
+connection worth preserving, not an approved generic Scout tool
+architecture** — it is not a decision to build one shared "tool"
+abstraction, one shared schema, or one shared permission model covering
+these domains. **Repetition of this pattern across more domains does not
+by itself increase its architectural approval status.**
+
+Scout-to-Scout/multi-node communication is **related coordination
+research**, not merely another instance of this same pipeline — its
+problems (shared state, synchronization, authority, conflict resolution,
+handoff) are sufficiently different from a single interpret-act-report
+cycle that folding it into this pattern would understate what it
+actually requires. It is mentioned here only to note the relationship,
+not to claim it fits the same shape.
+
 ---
 
 ## Proposed Experiments
