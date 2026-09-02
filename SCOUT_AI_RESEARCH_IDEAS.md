@@ -203,6 +203,16 @@ confidence handling, temporal information, memory retrieval, routing, and
 guardrails — architecture-leverage research, not model-selection
 authorization.
 
+**2026-09-01 note (B2 explicit-unavailable experiment):** a narrowly-scoped
+related experiment has been run and recorded — one explicit
+`retrieved_facts` grounding fact ("Conversation start time is
+unavailable.") tested against B2's unchanged zero-grounding control,
+scored under a rule frozen before generation. See
+`benchmarks/2026-09-01-b2-explicit-unavailable-experiment.md` for full
+results and the explicit narrow-interpretation qualification. This
+entry's broader question about systematic Scout-specific model
+evaluation remains open and is not resolved by that one experiment.
+
 ### Habit learning from independent episodes
 **Status:** OPEN. **Recorded:** 2026-08-31.
 

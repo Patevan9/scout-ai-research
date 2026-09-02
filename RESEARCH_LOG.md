@@ -799,3 +799,30 @@ relevant to the **Physical presence and active perception** idea in
 `SCOUT_AI_RESEARCH_IDEAS.md`. No schema, wiring plan, API, or
 implementation is proposed here. `Patevan9/Scout` was read-only
 inspected and not modified.
+
+**MILESTONE** — B2 explicit-unavailable-grounding experiment executed and
+scored, closing the open thread from the 2026-08-29 epistemic-contract
+entry's item 7 ("A future, separate ... fixture could test explicit
+known-unavailable grounding without touching or replacing B2"). One
+`retrieved_facts` entry ("Conversation start time is unavailable.") was
+added to a copy of `B2.yaml`
+(`lab/fixtures/experimental/B2-explicit-unavailable.yaml`); `B2.yaml`
+itself remains unchanged and was not rerun. One generation each, no
+retries, from TinyLlama and Qwen2.5-1.5B-Instruct, using unmodified
+pipeline code and Benchmark Profile v1's fixed generation settings.
+TinyLlama: PASS (unchanged from its B2 control PASS). Qwen2.5-1.5B-
+Instruct: PASS (versus **FAIL** on the unchanged B2 control), with an
+explicit qualification — its response ("we've been chatting for quite
+some time now") avoids a specific fabricated duration and satisfies the
+frozen rule, but is not a clean epistemic repair. Full design (frozen
+before generation) in
+`benchmarks/experimental/2026-09-01-b2-explicit-unavailable-experiment-design.md`;
+results in `benchmarks/2026-09-01-b2-explicit-unavailable-experiment.md`;
+evidence in
+`benchmarks/results/2026-09-01-b2-explicit-unavailable-experiment.json`.
+**Deliberately narrow finding:** this shows one tiny explicit grounding
+fact changed one small model's B2 behavior on this one fixture — it does
+not establish a general temporal-grounding architecture, a reusable
+UNKNOWN/UNAVAILABLE schema, or any model-selection claim. No renderer,
+adapter, fixture-schema, or Benchmark Profile v1 change was made; `B2.yaml`
+and its recorded results are unchanged; `Patevan9/Scout` was not touched.

@@ -1,0 +1,32 @@
+{
+  "_notice": "RESEARCH-ONLY EXPERIMENTAL EVIDENCE -- NOT a Benchmark Profile v1 result file, NOT part of the deployable-model leaderboard, NOT a model-selection artifact, NOT an approved UNKNOWN/UNAVAILABLE schema. Tests one added retrieved_facts entry against B2's zero-grounding control. See benchmarks/2026-09-01-b2-explicit-unavailable-experiment.md for full interpretation, and benchmarks/experimental/2026-09-01-b2-explicit-unavailable-experiment-design.md for the frozen pre-registered design.",
+  "experiment": "B2 explicit-unavailable grounding -- 1 experimental fixture x 2 candidate models, 1 generation each, no retries",
+  "date": "2026-09-01",
+  "fixture": "lab/fixtures/experimental/B2-explicit-unavailable.yaml",
+  "control_fixture": "lab/fixtures/B2.yaml (unchanged, not rerun)",
+  "pipeline": "Unmodified: canonical fixture -> render_canonical_context() -> RenderedContext -> ModelAdapter.format_prompt() -> TinyLlamaBackend.run(). Same backend reused unchanged for both models.",
+  "generation_settings": {
+    "temperature": 0,
+    "runs_per_fixture": 1,
+    "max_output_tokens": 150,
+    "n_ctx": 2048,
+    "repeat_penalty": 1.0
+  },
+  "records": [
+    {
+      "model": "TinyLlama",
+      "adapter": "TinyLlamaChatMLAdapter",
+      "final_answer": "The given text does not provide a specific answer to the question \"How long have we been talking?\" Therefore, it is not possible to provide an answer.",
+      "frozen_verdict": "PASS",
+      "control_verdict_for_comparison": "PASS (lab/fixtures/B2.yaml, unchanged)"
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "adapter": "QwenAdapter",
+      "final_answer": "It's hard to say exactly how long we've been talking, but we've been chatting for quite some time now.",
+      "frozen_verdict": "PASS",
+      "frozen_verdict_qualification": "Borderline: 'quite some time' remains an unsupported qualitative duration claim. PASS is correct under the frozen rule (no specific number/duration, no contradiction of the supplied fact) but this is not a clean epistemic repair.",
+      "control_verdict_for_comparison": "FAIL (lab/fixtures/B2.yaml, unchanged -- fabricates 'about 10 seconds')"
+    }
+  ]
+}
