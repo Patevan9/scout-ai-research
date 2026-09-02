@@ -888,6 +888,73 @@ persistence mechanism, or implementation technology.
 discussed self-diagnosis/self-repair concept — related, but distinct,
 and to be investigated as its own idea if and when that happens.
 
+### Self-diagnosis and bounded self-recovery (operational faults, not behavior)
+**Status:** OPEN. **Recorded:** 2026-09-02.
+
+**Distinct from "Scout-proposed behavioral growth" above:** that entry
+covers noticing a recurring *behavioral* limitation and proposing a
+persistent change, always gated by user approval before anything
+persists. This entry covers *operational faults* — e.g. a local model
+failing to load, a camera or connected robot/controller going
+unresponsive, a service crash — and only *bounded, human-pre-authorized*
+recovery attempts (a restart, a reconnect, a safe-model fallback), never
+a new behavioral proposal.
+
+**Governing constraint (restates existing Charter principles, adds none):**
+*"Scout may diagnose faults and attempt only bounded, pre-authorized
+recovery actions. Deeper changes should become proposals for user
+approval, not silent self-modification."* Grounded in the Charter's
+"Grounded action and honesty" (no success claim without verification)
+and "Controlled evolution" (propose ≠ authority) principles.
+
+**Verification, restated from `RESEARCH_LOG.md`'s 2026-08-29
+epistemic-contract entry (items 3–5, the D3 false-success finding), not
+a new rule:** the model must never decide from its own generated text
+alone that a fault occurred or that recovery succeeded — a restart being
+attempted is not evidence the camera works again, the same way a motor
+command being sent is not evidence the robot moved. A deterministic
+mechanism independent of the model's own text must establish both the
+fault and the post-recovery state. When bounded recovery fails, Scout
+must explain/escalate honestly rather than retry indefinitely or claim
+success.
+
+**Which actions are "safe to attempt" is a human, pre-authorized
+decision, never the model's own to make** — the model may not expand its
+own authorized action set at runtime.
+
+**Relationship to "Physical movement / robot control" (above):** that
+entry already separates movement goal, deterministic execution, and
+verified physical result, and already lists connection loss and
+motion-confirmation as open questions. This entry is broader (it also
+covers non-physical faults) but overlaps there directly and should stay
+cross-referenced, not merged.
+
+**The harder boundary this entry exists to hold:** bounded operational
+recovery (restart, reconnect, fallback) is never the same category as
+Scout modifying himself. Automatic self-editing or self-programming is
+NOT assumed safe or approved here in any form. A far more ambitious
+future possibility — detecting a recurring problem, drafting a repair,
+testing it in isolation, and installing it only after tests and explicit
+user approval — is recorded only as clearly labeled **future research**,
+not current architecture.
+
+**Central research question:** *What minimal mechanism would let Scout
+detect a grounded operational fault, attempt only a bounded,
+pre-authorized recovery action, and independently verify whether that
+recovery actually succeeded — without ever allowing the model to invent
+a fault, invent success, decide for itself which recovery actions are
+safe to attempt, or expand its own authority beyond what was
+pre-authorized?*
+
+**Explicitly not decided or authorized by recording this idea:** any
+recovery-action allowlist, fault taxonomy, schema, threshold, or retry
+count; any implementation technology, Android service architecture,
+robot protocol, or database design; unrestricted self-modifying code,
+automatic patch installation, or Constitution/safety-rule changes;
+silent authority expansion or Scout approving its own recovery; and no
+"Proposal Sandbox" or other historical brainstorm label as an approved
+component, even for the future repair-proposal possibility above.
+
 ---
 
 ## Proposed Experiments
