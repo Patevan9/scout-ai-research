@@ -801,6 +801,83 @@ cycle that folding it into this pattern would understate what it
 actually requires. It is mentioned here only to note the relationship,
 not to claim it fits the same shape.
 
+### Scout-proposed behavioral growth (continual, user-approved learning)
+**Status:** OPEN. **Recorded:** 2026-09-01.
+
+**Governing constraint — already approved, quoted here rather than
+restated as a new principle:** the Charter's existing "Controlled
+evolution" principle: *"Scout may eventually learn from experience and
+propose changes to himself, but proposing a change and having authority
+to make it are always kept separate."* This idea does not add to or
+reword that principle — it investigates what would sit underneath it.
+
+**The product goal:** Scout should not necessarily remain behaviorally
+identical to the Scout installed on day one. Through experience, Scout
+may eventually be able to notice recurring limitations, opportunities,
+corrections, preferences, or ways its non-safety-critical behavior could
+improve, and formulate a proposed improvement to ask the user about. **A
+proposal is not permission, and it is not already-learned truth.**
+
+**This is explicitly distinct from, and should not be conflated with:**
+- **TruthDb / remembering facts** — a taught fact is stored information,
+  not Scout noticing something about its own behavior and proposing a
+  change.
+- **`HabitLayer` and episode-based habit/pattern evidence** (see "Habit
+  learning from independent episodes" above) — accumulating independent
+  occurrences into pattern evidence is a passive observation process
+  with no proposal step and no user-approval step; it answers "is this a
+  habit," not "should Scout ask about changing something."
+- **Conversational/working context** (see "Personal continuity..."
+  above) — within- or across-conversation state, not persistent
+  behavioral change.
+- **`CLAUDE.md`'s narrower "Behavior Learning" concept** — a real,
+  already-described Approve/Not Now/Never-Suggest-This-Again mechanism,
+  but explicitly scoped there to SharedPreferences-level app-setting
+  tuning, not to model behavior, reasoning, or learned knowledge more
+  broadly. That narrower concept is a useful existing precedent for an
+  approval-gated suggestion UI, not a stand-in for this broader research
+  question.
+
+**Illustrative conceptual sequence only — NOT approved architecture, a
+pipeline, or a state machine:** experience -> notice possible
+improvement -> formulate proposal -> user review -> approved-only
+persistence.
+
+**Illustrative examples only — not features, requirements, schemas, or
+implementation decisions:** learning a user's preferred interpretation
+of something; noticing a repeated correction; recognizing that a
+recurring interaction could be handled better; proposing a useful
+learned behavior; proposing refinement of a non-safety-critical personal
+behavior.
+
+**The distinction this idea exists to preserve:** *Scout may propose its
+own growth. Scout must not silently approve its own growth.*
+
+**Whether habit evidence could eventually inform a future proposal is
+itself an open research relationship, not a decided one** — accumulated
+habit evidence is not stated here to automatically create, trigger, or
+authorize a proposal; whether/how the two might someday connect is left
+entirely open.
+
+**Central research question:** *What minimal mechanism would let Scout
+notice a recurring limitation or opportunity, formulate it as a
+proposal, and have persistence depend on genuine user approval — without
+ever letting the model treat its own suggestion as already true or
+already adopted?*
+
+**Explicitly not decided or authorized by recording this idea:**
+"Proposal Sandbox" or any other named proposal component; self-modifying
+source code; model-weight modification; Constitution modification;
+silent safety-rule changes; unrestricted capability/tool creation;
+arbitrary code execution; Scout approving its own proposal; automatic
+promotion from habit evidence into behavior; any storage schema,
+proposal schema, lifecycle, state machine, confidence threshold,
+persistence mechanism, or implementation technology.
+
+**Related but explicitly out of scope for this entry:** a separately
+discussed self-diagnosis/self-repair concept — related, but distinct,
+and to be investigated as its own idea if and when that happens.
+
 ---
 
 ## Proposed Experiments
