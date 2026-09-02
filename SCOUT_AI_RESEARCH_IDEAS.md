@@ -213,6 +213,26 @@ results and the explicit narrow-interpretation qualification. This
 entry's broader question about systematic Scout-specific model
 evaluation remains open and is not resolved by that one experiment.
 
+**2026-09-02 note (Spark-X2.5-1.7B, external candidate to watch):**
+iFLYTEK/XHToken's Spark-X2.5-1.7B (Apache 2.0, thinking/non-thinking
+modes, released ~Sept. 2026) is a size-class-relevant future benchmark
+candidate, noted here for tracking only — not evaluated, not run, and
+not selected. As of this note, the official Spark-X2.5 instructions use
+a dedicated llama.cpp fork (`XHToken/llama.cpp`); upstream work has
+begun via `ggml-org/llama.cpp` draft PR #27868 ("Add Spark2_5 Model"),
+which should not be read as complete, merged, Android-ready, or
+production-ready support. No Android deployment evidence was found in
+this investigation. The published benchmark results reviewed in this
+investigation were manufacturer-reported; no independent evaluation was
+found in this pass. Per this entry's existing architecture-leverage
+question and the 2026-08-31 Qwen3 experiment's own lesson, none of
+this — including thinking/non-thinking behavior, RAM, time-to-first-
+token, tokens/sec, grounding, unavailable-information handling,
+tool/action behavior, or false-success resistance — can be assessed for
+Scout without an actual run against existing fixtures; the advertised
+1M-token context is not a Scout requirement. Not authorized or
+scheduled by this note.
+
 ### Habit learning from independent episodes
 **Status:** OPEN. **Recorded:** 2026-08-31.
 
