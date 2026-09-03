@@ -1027,6 +1027,78 @@ any household permissions or authority system; any new identity schema;
 any change to `PeopleDb`, `TruthDb`, or `HabitLayer`; whether this is
 ever built.
 
+### Episodic / shared-experience memory (distinct from facts, habits, and open threads)
+**Status:** OPEN. **Recorded:** 2026-09-03.
+
+**Purpose:** investigate whether and how Scout could durably represent
+that a specific past shared experience occurred — who was involved, what
+happened, and how it was resolved — as its own kind of grounded
+information, distinct from a static TruthDb fact, an aggregate
+HabitLayer pattern, or an unresolved open thread, without assuming any
+particular storage mechanism and without letting a fluent,
+plausible-sounding narrative substitute for evidence that the event
+actually occurred.
+
+**Central research question:** *What minimal research direction would
+let Scout represent that a specific past shared experience occurred —
+who was involved, what happened, and with what confidence — as its own
+kind of grounded information distinct from a TruthDb fact, a HabitLayer
+pattern, or an unfinished thread, without letting a fluent narrative
+substitute for evidence that the event actually occurred?*
+
+**Conceptual distinctions this idea exists to preserve:**
+- Fact is not episode. Habit/pattern is not episode. Unfinished thread
+  is not episode.
+- One meaningful occurrence may deserve episodic representation without
+  being evidence of a habit.
+- A resolved open thread does not automatically become an episode.
+- Not every interaction deserves permanent retention.
+- A fluent or plausible narrative is **not** evidence that an event
+  occurred.
+- The model must not manufacture missing participants, actions,
+  outcomes, timing, or other details.
+- Observed information and later-reported information must remain
+  conceptually distinguishable.
+- Partial or uncertain evidence must be allowed to remain partial or
+  uncertain rather than being narratively completed by the model.
+- People may disagree about what happened; this entry does not
+  establish a rule for resolving those disagreements.
+- Local-first/privacy principles apply particularly strongly to
+  retained household experiences.
+
+**Real-Scout precedent — cited narrowly, read-only verified against
+`Patevan9/Scout` at commit `2f7f60df644c76dcf5daeed104cf98385dce4fa0`:**
+`JournalDb` is a real, persistent SQLite store, and a separate real-Scout
+code comment characterizes it as a *"durable narrative store, no
+retention policy."* It contains historical scaffolding associated with
+an unfinished Memory Reel direction, including `entry_type`, `subject`,
+`weight`, and `reel_id` fields, with declared/reserved values such as
+`first_met`, `milestone`, and `freeform`.
+
+**However, current implemented behavior does not demonstrate narrative
+or episodic memory.** The verified implementation primarily contains
+diagnostic/system-event notes, fixed-template fact-teaching/correction
+records, and Companion Moment novelty/cooldown bookkeeping. Several
+Memory Reel-related declared types are never actually written; `reel_id`
+is never populated or read; JournalDb does not preserve the
+participant/activity/outcome/confidence/observed-vs-reported structure
+this idea's central question requires; JournalDb content is not
+supplied to the reasoning model; and Scout cannot conversationally
+recall a JournalDb entry through any verified current path. JournalDb is
+therefore recorded here only as historical/current precedent showing
+that an earlier Memory Reel-like direction was partially scaffolded —
+**not** as a working or partial implementation of episodic/
+shared-experience memory, and not as architecture this research adopts.
+
+**Explicitly not decided or authorized by recording this idea:** any
+database design, schema, JournalDb adoption or extension, or "Memory
+Reel" resurrection as an approved architecture component; any
+timeline/event-log design; any vector storage or embeddings; any
+summarization technology; any retention period or confidence threshold;
+any automatic open-thread-to-episode promotion rule; any
+disagreement-resolution rule; any model selection; whether this is ever
+built.
+
 ---
 
 ## Proposed Experiments
