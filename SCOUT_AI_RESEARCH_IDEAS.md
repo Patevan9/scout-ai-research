@@ -1309,6 +1309,75 @@ Distinct from, and not restating, "Speaker identity and confidence,"
 sharing," "Self-diagnosis and bounded self-recovery," the still-open
 Working Memory question, and any local speech/TTS research.
 
+### Natural local speech delivery (pacing, variety, and expressiveness within on-device constraints)
+**Status:** OPEN. **Recorded:** 2026-09-03.
+
+**Purpose:** investigate what would make Scout's spoken responses feel
+like a natural household companion rather than text merely being read
+aloud, including pacing and delivery beyond a single pre-utterance
+pause, appropriate response variety for generated as well as
+deterministic speech, and whether restrained nonverbal vocal delivery
+could ever have a useful place, while remaining practical on local
+Android-class hardware and truthful about what the speech-rendering
+system actually provides.
+
+**Central research question:** *What would meaningfully improve how
+natural Scout's speech feels in pacing, variety, timing, and restrained
+expressiveness, without assuming unlimited local hardware capability,
+without conflating good generated wording with good spoken delivery,
+and without requiring Scout to claim or simulate human subjective
+emotion in order to sound natural?*
+
+**Conceptual distinctions this idea exists to preserve:**
+- Good generated wording ≠ good spoken delivery.
+- Voice quality ≠ conversational timing.
+- Expressive delivery ≠ evidence of subjective emotion.
+- Emotionally meaningful words ≠ proof that Scout experiences the
+  emotion expressed by those words.
+- Variation ≠ random personality drift.
+- Deterministic phrase variety ≠ generated-response variety.
+- A short acknowledgment ≠ a full conversational response.
+- Speech generation ≠ speech delivery.
+- Speech delivery ≠ TTS state.
+- TTS state ≠ conversation state.
+- Natural speech ≠ natural interruption.
+- Local/private speech ≠ automatically natural speech.
+- Faster speech ≠ necessarily lower perceived conversational latency.
+- A technically high-quality voice ≠ practical local performance.
+
+**Real-Scout precedent — cited narrowly, read-only verified against
+`Patevan9/Scout` at commit `2f7f60df644c76dcf5daeed104cf98385dce4fa0`:**
+Project Scout explicitly requests the installed Google Android TTS
+engine package rather than bundling its own speech model — its
+runtime/network behavior beyond that was not independently verified
+here and is not characterized further. Project Scout has persistent
+pitch/speed customization with live preview and a reset control;
+`MainActivity` and `SettingsActivity` currently contain different
+literal fallback/default values for those same preferences, recorded
+here only as implementation precedent/evidence, not as something this
+research is authorized to fix. Project Scout has a real pre-utterance
+pacing mechanism, and `Phrases.kt` has a real cooldown-based
+anti-repetition mechanism for deterministic phrase pools — that
+mechanism does not establish equivalent anti-repetition behavior for
+LLM-generated responses. No corresponding mechanism was found in the
+inspected repository or in existing Scout AI research addressing
+laughter, chuckles, sighs, breaths, hesitation sounds, or other
+nonverbal vocal delivery. The existing Tap-to-interrupt mechanism
+remains useful and belongs to the separate interruption research
+problem, not this one.
+
+**Explicitly not decided or authorized by recording this idea:** any
+TTS engine, speech model, or audio library selection; any SSML/prosody
+markup design or specific pitch/rate/prosody parameters; any
+phrase-pool redesign or generated-response variation architecture; any
+chunking/streaming architecture; any laughter/nonverbal vocal behavior
+— whether laughter, sighs, breaths, hesitation sounds, or other
+nonverbal vocal delivery belong in Scout at all remains OPEN, not
+decided here; any emotion architecture or claim that Scout feels
+emotion; any cloud speech, hardware requirement, or latency threshold;
+any interruption architecture, conversation-state schema, or Working
+Memory schema; any change to Project Scout or to Scout AI architecture.
+
 ---
 
 ## Proposed Experiments
