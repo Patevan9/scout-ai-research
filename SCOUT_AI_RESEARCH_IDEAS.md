@@ -975,6 +975,58 @@ silent authority expansion or Scout approving its own recovery; and no
 "Proposal Sandbox" or other historical brainstorm label as an approved
 component, even for the future repair-proposal possibility above.
 
+### Speaker identity and confidence (who is talking, not just who is known)
+**Status:** OPEN. **Recorded:** 2026-09-02.
+
+**Purpose:** investigate how Scout should represent who is currently
+speaking — including confidence and unknown speakers — as a concern
+distinct from visual face recognition or stored identity.
+
+**Central research question:** *How should Scout represent and reason
+about who is currently speaking, including uncertainty and unknown
+speakers, without conflating audio speaker identity with visual face
+recognition or silently granting an unverified speaker a known
+household member's authority?*
+
+**Boundaries this idea exists to preserve:**
+- A known person is not automatically the current speaker.
+- Stored owner identity must not be substituted for live speaker
+  identity.
+- Visual identity evidence and audio speaker identity evidence are
+  separate concerns; neither silently substitutes for the other.
+- Unknown or uncertain speaker identity must remain representable —
+  Scout must not be forced to guess.
+- Identity confidence and action authority are related but distinct
+  concerns.
+- The language model must not manufacture speaker identity merely to
+  make conversation sound more natural or personal.
+
+**Historical precedent — cited narrowly:** `CLAUDE.md` records a real
+historical failure where `ENTITY_USER_PRIMARY` (registered owner) was
+conflated with "whoever is currently speaking," leaking Patrick's name
+into `HabitLayer` entries for unverified faces. This is evidence for the
+importance of identity-confidence-before-attribution generally — it does
+**not** establish that audio speaker recognition was involved; the
+record describes a visual/face-verification failure, not a voice
+one, and this idea does not expand that claim beyond what is recorded.
+
+**Relates to, without duplicating:** the "the model does not determine
+what Scout knows" principle (`RESEARCH_LOG.md`, 2026-08-29
+epistemic-contract entry), applied here to identity rather than fact;
+and **Structured Perception/Vision**'s existing rule that observations
+come from the perception system rather than being manufactured by the
+model. Real Scout's existing face-recognition threshold+runner-up-margin
+discipline (cited as design inspiration in ADR-0004) is noted only as
+precedent that confidence-based identity handling already exists in one
+form today — not adopted as a requirement for speaker identity here.
+
+**Explicitly not decided or authorized by recording this idea:** any
+speaker-recognition design, biometric voice technology, or model
+selection; any face/voice fusion architecture; any confidence threshold;
+any household permissions or authority system; any new identity schema;
+any change to `PeopleDb`, `TruthDb`, or `HabitLayer`; whether this is
+ever built.
+
 ---
 
 ## Proposed Experiments
