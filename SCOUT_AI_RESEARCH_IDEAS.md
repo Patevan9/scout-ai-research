@@ -1099,6 +1099,43 @@ any automatic open-thread-to-episode promotion rule; any
 disagreement-resolution rule; any model selection; whether this is ever
 built.
 
+### Grounded web retrieval — authority, privacy, source-trust, and persistence boundaries
+**Status:** OPEN. **Recorded:** 2026-09-03.
+
+**Purpose:** investigate what boundaries Scout would need before ever
+requesting or using external web information — who may authorize a
+lookup versus merely suggest one, what Scout-local information may or
+may not be disclosed outward to perform a lookup, how retrieved
+information's source and reliability should be represented rather than
+flattened into unattributed apparent truth, how retrieved external-world
+information stays a distinct epistemic domain from household/personal
+knowledge, and when (if ever) retrieved information could become
+durable — without designing a browser, search provider, query
+mechanism, filtering system, or promotion rule.
+
+**Central research question:** *What minimal boundaries would let Scout
+request and use current external web information — under real user
+authority, without disclosing sensitive local context outward, with
+retrieved information's source and reliability kept visible rather than
+flattened, and without ever letting the model invent successful
+retrieval or promote external information into household Truth or
+memory on its own — while keeping Scout's core identity, memory, and
+companion behavior fully independent of that capability?*
+
+**Explicitly not decided or authorized by recording this idea:** any web
+architecture, search provider, API, or browser engine selection; any
+query-generation design; any source-ranking algorithm; any
+privacy-filter or redaction implementation; any content-filter policy
+engine; any permission schema; any persistence/promotion rule; any
+generic tool framework; unrestricted autonomous browsing, account
+creation, purchasing, or remote execution; any change to Scout's actual
+application. This idea reuses, and does not restate or replace, the
+existing "retrieved evidence is temporary, not automatically Truth"
+DESIGN IDEA (`RESEARCH_LOG.md`, 2026-08-26), the capability-vs-
+action-result distinction, "the model does not determine what Scout
+knows," and the false-success discipline already established elsewhere
+in this project.
+
 ---
 
 ## Proposed Experiments
