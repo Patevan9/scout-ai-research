@@ -1136,6 +1136,83 @@ action-result distinction, "the model does not determine what Scout
 knows," and the false-success discipline already established elsewhere
 in this project.
 
+### Developer observability, diagnostics, and user-authorized support sharing
+**Status:** OPEN. **Recorded:** 2026-09-03.
+
+**Purpose:** investigate how Scout's growing set of interacting systems
+— perception, identity evidence, memory, grounded context, model
+reasoning, capabilities/actions, verification, and speech — could be
+made traceable for debugging locally and, when explicitly shared, to
+developers, without normal diagnostic sharing becoming a surveillance
+record of household life and without an eventual richer
+developer-diagnostics mode being confused with broader authority over
+Scout.
+
+**Central research question:** *What minimal boundaries between
+ordinary privacy-conscious diagnostic evidence and an explicitly
+enabled, person-independent enhanced developer mode would let Scout's
+failures be traceable by stage, without exposing household content in
+normal sharing, without conflating "Scout can produce diagnostic
+evidence" with "that evidence may leave the device," and without
+granting developer authority by recognizing any particular person?*
+
+**Conceptual distinctions this idea exists to preserve:**
+- Collect diagnostics is not the same as share diagnostics.
+- Scout diagnosing a fault is not the same as Scout being authorized to
+  transmit diagnostic information.
+- Developer reviewing evidence is distinct from Scout diagnosing or
+  recovering from a fault.
+- Richer developer diagnostics do not automatically authorize richer
+  external sharing.
+- Local-only diagnostics can still create privacy risk through
+  retention/device access.
+- Diagnostic usefulness should come from structured technical evidence
+  where practical rather than unnecessary private household content.
+- Normal/customer diagnostics and enhanced developer diagnostics may
+  legitimately have different privacy/exposure boundaries.
+- Developer/admin diagnostic authority must not be inferred from a
+  person's name, email address, face, voice, or household identity.
+- A configurable companion name is unrelated to diagnostic authority.
+- "Scout" may legitimately appear as a product/default name; do not
+  treat that as hard-coded personal identity.
+
+**Real-Scout precedent — cited narrowly, read-only verified against
+`Patevan9/Scout` at commit `2f7f60df644c76dcf5daeed104cf98385dce4fa0`:**
+the normal diagnostic report uses structured technical events and
+device/runtime metadata rather than conversation or memory content; its
+automatically-collected `DiagnosticDb` and `scout_crash.txt` paths
+exclude private household content by construction, with the crash file
+verified to contain only bounded technical metadata (thread name,
+sanitized exception class name, app version — no exception message,
+cause text, stack trace, paths, speech, memories, prompts, model
+replies, names, URLs, secrets, or vision content); optional "User
+Notes" are separate user-authored free text added deliberately at
+sharing time, not automatically collected; generating the report,
+writing it locally, opening Android's share chooser, and actually
+transmitting it are separate operations; the pre-filled support email
+address serves only as a contact convenience, not an authority check;
+sharing is voluntary and user-initiated; a richer on-device diagnostic
+view exists that may contain real conversation/personal facts but is
+never written into the normal report and has no share/export path; and
+a device-local developer unlock precedent exists that does not rely on
+recognizing a particular person. This precedent is evidence that
+tiered observability/privacy separation can work — it is **not**
+architecture that Scout AI automatically adopts.
+
+**Explicitly not decided or authorized by recording this idea:** any
+diagnostic schema, logging framework, telemetry/analytics system, or
+analytics vendor; any developer-mode unlock mechanism or decision on who
+may enable it; any persistence-across-restart behavior; any exact
+enhanced data captured, including whether raw audio, images, or
+biometrics are ever captured; any retention policy, encryption/storage
+policy, report format, or transmission mechanism; any automatic
+reporting, cloud telemetry, or permission system; any privacy/redaction
+implementation; any change to Project Scout or to Scout AI architecture;
+any hard-coded personal-identity authority mechanism. Distinct from, and
+not restating, "Self-diagnosis and bounded self-recovery," "Speaker
+identity and confidence," "Episodic / shared-experience memory," and
+"Grounded web retrieval" above.
+
 ---
 
 ## Proposed Experiments
