@@ -1213,6 +1213,102 @@ not restating, "Self-diagnosis and bounded self-recovery," "Speaker
 identity and confidence," "Episodic / shared-experience memory," and
 "Grounded web retrieval" above.
 
+### Natural conversational interruption / barge-in (distinct from stopping speech)
+**Status:** OPEN. **Recorded:** 2026-09-03.
+
+**Purpose:** investigate what would let Scout be naturally,
+conversationally interruptible — recognizing that a person has
+redirected the conversation while Scout was speaking, responding to
+the new direction, and not later behaving as though an interrupted
+response was fully delivered — without becoming falsely triggered by
+television, other household conversation, coughs, laughter, or Scout's
+own voice, and without collapsing audio activity, recognized words,
+speech addressed to Scout, and genuine interruption intent into one
+signal.
+
+**Central research question:** *What minimal boundaries and mechanisms
+would let Scout distinguish audio activity, recognized speech, speech
+actually addressed to Scout, and genuine interruption intent from
+ordinary household sound and Scout's own voice — while preserving
+enough conversational state about an interrupted response that Scout
+does not later act as though it had been fully spoken — without
+becoming hypersensitive to every sound in the room?*
+
+**Conceptual distinctions this idea exists to preserve:**
+- Audio activity ≠ interruption.
+- Recognized speech ≠ speech addressed to Scout.
+- Speech addressed to Scout ≠ request to stop the current response.
+- Stopping TTS ≠ successfully handling a conversational interruption.
+- Generation completed ≠ response fully communicated.
+- An interrupted response must not later be treated as though it was
+  fully spoken.
+- Speaker identity ≠ conversational addressee.
+- Speaker identity ≠ interruption intent.
+- Speaker identity ≠ action authority.
+- Conversational interruption should not automatically erase useful
+  context from the interrupted turn.
+- Listening for conversational interaction ≠ retaining ambient
+  household audio.
+- The configured companion name is unrelated to interruption authority.
+- "Scout" may legitimately be a product/default name and is not a
+  permanent required runtime name.
+
+**Real-Scout precedent — cited narrowly, read-only verified against
+`Patevan9/Scout` at commit `2f7f60df644c76dcf5daeed104cf98385dce4fa0`:**
+current Project Scout deliberately does not start normal listening
+while TTS is active, and a second guard discards a recognition result
+that arrives while Scout is speaking or inside TTS/mic lockout before
+recognized text is routed — Project Scout therefore does not implement
+acoustic conversational barge-in today. Tap-to-interrupt v1 is real and
+useful: a screen gesture can cancel pending speech or stop audible TTS.
+Project Scout distinguishes a `NATURAL` completion from a
+`USER_INTERRUPTED` one, and `USER_INTERRUPTED` does not mean the
+interrupted answer was fully delivered; after a user interruption,
+listening is restarted, but the interruption itself does not provide
+the complete semantics of a new spoken request. Current courtesy
+handling deterministically distinguishes several acknowledgment phrases
+from ordinary routed queries, and "yeah"/"yes"/"no"/"sure" are
+deliberately not treated as generic disposable acknowledgments because
+they may carry actual conversational meaning. Project Scout has a
+self-echo text heuristic motivated by TTS bleed into the microphone
+without hardware echo cancellation; it has no application-level
+classifier for coughs, laughter, television, or side conversation —
+such audio only becomes actionable to Scout if the platform recognizer
+produces text that then survives Scout's existing gates. The
+vision-based direct-address heuristic itself acknowledges that seeing a
+person facing Scout does not prove that person is the speaker. Current
+Project Scout reads the configured companion name from persistent
+knowledge with "Scout" as fallback; the literal default name is not the
+authority mechanism. The existing tap-to-interrupt mechanism is proven,
+useful behavior, not obsolete — it could remain useful even if natural
+acoustic interruption is later investigated further.
+
+**What a genuine interruption raises as open questions, without
+prescribing any field, timestamp, transcript fragment, schema, or
+storage:** retaining that the previous response was interrupted rather
+than naturally completed; that some of the generated response may
+never have been communicated; that the conversation itself may still
+be active; and that the user's next utterance may redirect the
+interrupted topic.
+
+**Privacy boundary:** this idea does not authorize permanent ambient
+audio recording or retention. Listening for conversational interaction
+and retaining household audio are separate questions.
+
+**Explicitly not decided or authorized by recording this idea:** any
+acoustic interruption algorithm, audio classifier, confidence
+threshold, or interruption threshold; any speech model, STT engine, TTS
+engine, audio library, or echo-cancellation technology; any
+speaker-recognition mechanism; any conversation-state or Working Memory
+schema; any wake-word/addressee redesign; any ambient audio recording
+or retention; any cloud speech; any permission or action-authority
+system; any change to Project Scout or to Scout AI architecture;
+whether acoustic barge-in is ultimately practical on target hardware.
+Distinct from, and not restating, "Speaker identity and confidence,"
+"Developer observability, diagnostics, and user-authorized support
+sharing," "Self-diagnosis and bounded self-recovery," the still-open
+Working Memory question, and any local speech/TTS research.
+
 ---
 
 ## Proposed Experiments
