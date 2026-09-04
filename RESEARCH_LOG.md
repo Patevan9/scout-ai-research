@@ -826,3 +826,63 @@ not establish a general temporal-grounding architecture, a reusable
 UNKNOWN/UNAVAILABLE schema, or any model-selection claim. No renderer,
 adapter, fixture-schema, or Benchmark Profile v1 change was made; `B2.yaml`
 and its recorded results are unchanged; `Patevan9/Scout` was not touched.
+
+## 2026-09-04
+
+**OPEN QUESTION (external research lead, not yet triaged)** — Zeroth
+Robotics / `zeroth-bot` (https://github.com/zeroth-robotics/zeroth-bot) is
+preserved here as a research lead, not as a new idea, architecture
+decision, or schema. The interesting part is not Zeroth's motors, servos,
+humanoid body, reinforcement learning, or physical hardware — it is the
+general shape of structured information entering and leaving an
+intelligence layer:
+
+grounded systems / perception / memory / current state → structured
+context or observations → Scout AI reasoning → structured intention →
+deterministic capability / authority / safety / execution → verified
+result → Scout AI
+
+This pipeline sketch is recorded only to preserve the question it raises,
+**not** adopted as a Scout AI architecture, data flow, or component
+design. The question it raises: could deterministic systems supplying
+grounded structure (rather than requiring a small local model to
+reconstruct important state from ambiguous prose) make that model
+substantially more reliable, grounded, model-independent, and useful —
+and could Scout AI expressing bounded intentions, rather than
+implementation-specific commands, make it safer and more
+model-independent? Two illustrative fragments (`person_present = true` /
+`objects = [cup, table]` on the perception side, `LOOK_AT_PERSON` on the
+intention side) are recorded purely as examples of the shape of the
+question — **not** as a proposed format, schema, enum, or field name.
+
+This question is not new in kind — it relates to, without yet being
+shown to duplicate or resolve, several already-established Scout AI
+research principles and OPEN entries: "the model does not determine what
+Scout knows" (2026-08-29 epistemic-contract entry, this log); observation
+≠ inference; known fact ≠ temporary evidence; intention ≠ authorization;
+authorization ≠ execution; execution ≠ verified success; speaker identity
+≠ action authority (`SCOUT_AI_RESEARCH_IDEAS.md`, Speaker identity and
+confidence); model reasoning ≠ deterministic safety; and Scout AI
+identity/continuity not depending on one replaceable LLM (Model-
+replaceable, `SCOUT_AI_CHARTER.md`). Whether "structured grounded context
+in / structured intention out" is already adequately covered by these
+existing principles and entries taken together, only partially
+established and fragmented across them, or genuinely missing as its own
+research question, is **not decided here** — that determination is left
+to a future Scout AI research inventory/reconciliation pass.
+
+**Historical caution:** an earlier Zeroth-related research summary
+references the old five-part Scout concept (Working Memory, Habit Store,
+Truth DB, Proposal Sandbox, Reflective Layer). That five-component list is
+**not** current Scout AI architecture. Any useful intentions from those
+older concepts have already been reconciled separately elsewhere in this
+research, and their exact component/storage structure is not
+automatically inherited by recording this lead.
+
+**Explicitly not decided or authorized by this entry:** any new OPEN
+entry in `SCOUT_AI_RESEARCH_IDEAS.md` (to be decided only after the
+reconciliation pass above, if at all); any architecture, data flow, or
+component design; any schema, enum, field name, or message format; any
+capability registry or intention-dispatch design; any model selection or
+evaluation; any change to Project Scout. `Patevan9/Scout` was not
+touched.
