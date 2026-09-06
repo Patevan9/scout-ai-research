@@ -1,4 +1,4 @@
-# Scout AI Research
+# Patevan AI Research
 
 A parallel, groundwork-only research and design track for a future Scout-specific
 local AI brain — substantially better at *being Scout* than TinyLlama is today.
@@ -44,5 +44,5 @@ demonstrably beat.
 
 ---
 
-Project Scout / Scout AI Research
+Project Scout / Patevan AI Research
 Copyright © 2026 Patrick Evan Lippy. All rights reserved.
