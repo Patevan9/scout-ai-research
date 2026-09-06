@@ -1,7 +1,7 @@
-# Scout AI — Current Status
+# Patevan AI — Current Status
 
 **This is the handoff document.** Read this first in any new Claude or ChatGPT
-session on Scout AI — it should be enough to recover where the project stands
+session on Patevan AI — it should be enough to recover where the project stands
 without needing prior conversation history. Keep this concise; update it only
 at meaningful milestones or before a long-conversation handoff, not after
 every message (see Handoff Rule below).
@@ -16,11 +16,11 @@ status" and `benchmarks/2026-08-31-qwen3-8b-teacher-reference-experiment.md`)
 
 ## Repository boundary — always in force
 
-- **`Patevan9/scout-ai-research`** (this repo) — where all Scout AI research,
+- **`Patevan9/scout-ai-research`** (this repo) — where all Patevan AI research,
   design, and documentation lives.
 - **`Patevan9/Scout`** (the real app) — **reference-only.** Read to verify
   claims about real architecture and real problems. Never modify, branch,
-  commit, or open a PR against it from Scout AI work. Current Scout app
+  commit, or open a PR against it from Patevan AI work. Current Patevan app
   development always takes precedence and is never interrupted for this.
 
 ## Source-of-truth priority
@@ -329,8 +329,8 @@ preserved as evidence for later reviewed incorporation.
 
 (Full detail with sourcing lives in `RESEARCH_LOG.md`; headlines only here.)
 
-- Scout has no Working Memory today — no conversation-start timestamp exists
-  anywhere in the app; this is an acknowledged gap in Scout's own docs, not a
+- Patevan has no Working Memory today — no conversation-start timestamp exists
+  anywhere in the app; this is an acknowledged gap in Patevan's own docs, not a
   bug.
 - "Memory Import" does not exist as a working feature — as of Scout PR #65,
   both Settings rows are placeholders ("coming in a future release"). Only
@@ -348,10 +348,10 @@ preserved as evidence for later reviewed incorporation.
   that interface; Gemini's own prompt explicitly states it receives no live
   camera/scene data at all. No brain — TinyLlama or Gemini — reasons over
   vision data in any form today.
-- Scout's speech pipeline reads only the single top STT hypothesis
+- Patevan's speech pipeline reads only the single top STT hypothesis
   (`RESULTS_RECOGNITION.firstOrNull()`) — no confidence score, no n-best list,
   ever used downstream.
-- A Constitution-shaped pattern already exists in Scout, just scattered and
+- A Constitution-shaped pattern already exists in Patevan, just scattered and
   unnamed: multiple deterministic guards (`ScoutIntentRouter`,
   `ScoutMemoryGate`, `ScoutVisionGate`, `TeachExtractor`, a retention-claim
   output guard) intercept decisions before or check outputs after a model's
@@ -361,11 +361,11 @@ preserved as evidence for later reviewed incorporation.
 
 - What specific stronger small open-weight model (if any) is worth evaluating
   against TinyLlama — deliberately not decided yet, per explicit instruction.
-- What a real Working Memory design should look like for Scout.
+- What a real Working Memory design should look like for Patevan.
 - How a future brain would ever receive real-time vision confidence/position
-  data — would require a Scout-side architecture change, which is out of
-  scope for Scout AI to touch directly; needs eventual coordination, not a
-  Scout AI-side workaround.
+  data — would require a Patevan-side architecture change, which is out of
+  scope for Patevan AI to touch directly; needs eventual coordination, not a
+  Patevan AI-side workaround.
 - Where `CLAUDE.md` (this repo's pre-existing session-notes file) ranks
   relative to this new structure — it predates the Charter/Status/Decisions
   system and hasn't been reconciled with it yet. Flagged, not resolved.
@@ -382,7 +382,7 @@ preserved as evidence for later reviewed incorporation.
   claim against. Surfaced during the B3/D1/C3 design review; not yet
   decided. See "Next safest step" above.
 - **A general epistemic/information-availability contract** (how
-  deterministic Scout systems and a replaceable reasoning model
+  deterministic Patevan systems and a replaceable reasoning model
   communicate known/unavailable/observed/inferred information without the
   model owning truth), prompted by Qwen's B2 fabrication but scoped
   generally. Investigated read-only; a universal six-state enum was
@@ -545,5 +545,5 @@ proceeding on the stale claim.
 
 ---
 
-Project Scout / Scout AI Research
+Patevan / Patevan AI Research
 Copyright © 2026 Patrick Evan Lippy. All rights reserved.
