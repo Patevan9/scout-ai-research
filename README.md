@@ -1,22 +1,22 @@
 # Patevan AI Research
 
-A parallel, groundwork-only research and design track for a future Scout-specific
-local AI brain — substantially better at *being Scout* than TinyLlama is today.
+A parallel, groundwork-only research and design track for a future Patevan-specific
+local AI brain — substantially better at *supporting Patevan* than TinyLlama is today.
 
 This is **not** a general-purpose or frontier-AI project. The goal is narrow and
 specific: a small local model (plus the deterministic systems around it) that
 understands household conversation, context, people, memory, vision information,
-habits, and Scout's own tools better than the current baseline — not one that
+habits, and Patevan's own tools better than the current baseline — not one that
 competes with ChatGPT or Claude.
 
-## Relationship to Project Scout
+## Relationship to Patevan
 
-The real Scout app lives at [Patevan9/Scout](https://github.com/Patevan9/Scout) —
+The real Patevan app lives at [Patevan9/Scout](https://github.com/Patevan9/Scout) —
 a private, local-first AI companion for Android, currently in its stability-first,
 pre-launch phase.
 
-**This repo does not touch that one.** Project Scout builds today's Scout safely;
-this repo explores what Scout could eventually become. Current Scout development —
+**This repo does not touch that one.** The Patevan app is built safely today;
+this repo explores what Patevan could eventually become. Current Patevan development —
 launch priorities, real-device testing, approved PR work — always takes precedence
 and is never interrupted or refactored for anything discussed here.
 
@@ -44,5 +44,5 @@ demonstrably beat.
 
 ---
 
-Project Scout / Patevan AI Research
+Patevan / Patevan AI Research
 Copyright © 2026 Patrick Evan Lippy. All rights reserved.
