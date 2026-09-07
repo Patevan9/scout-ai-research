@@ -1453,6 +1453,152 @@ the current baseline/candidate; any ModelAdapter/backend
 implementation; any GGUF download; any benchmark run; any llama.cpp
 version change in Project Patevan or in this repository's lab tooling.
 
+### Grounded household awareness and context continuity
+**Status:** OPEN. **Recorded:** 2026-09-07.
+
+Synthesizes a completed 2026-09-07 read-only investigation into how
+Patevan could become meaningfully more aware of household context over
+time — who is present, what recently happened, what was said about
+plans — without inventing facts, becoming overly chatty, or giving the
+reasoning model authority over truth or state. This entry records the
+synthesis and the specific new gaps that investigation found; it does
+**not** restate the existing related entries it draws on, and does not
+duplicate their own boundaries:
+
+- **Structured Perception/Vision** and **Structured context beyond
+  vision** (above) — the general "structured evidence in, not prose"
+  principle this idea also depends on.
+- **Personal continuity: a private world model, unfinished threads, and
+  time awareness** (above) — already holds the "Patrick said he was
+  going to pick up Elijah"-shaped unresolved-thread concept and the
+  still-open time-awareness question this entry's temporal primitives
+  extend.
+- **Physical presence and active perception** (above) — the existing
+  stationary-awareness/expression-grounding research this idea's
+  speak/don't-speak question extends.
+- **Speaker identity and confidence** (above) — the existing
+  confidence/uncertainty discipline this idea's presence-confidence
+  question reuses rather than reinvents.
+- **Episodic / shared-experience memory** (above) — the existing
+  "fluent narrative is not evidence" and no-manufactured-detail rules
+  this idea's variety-without-hallucination question reuses directly.
+- **Calendar as grounded temporal context** (above) — the existing
+  "state is grounded external information; the model interprets it but
+  does not invent it" principle, which this idea's "expected soon"
+  question depends on and does not restate.
+- **Habit learning from independent episodes** (above) — the existing
+  episode-identity/confidence-before-recording discipline, relevant to
+  any future arrival/departure event but not re-derived here.
+- **Coordination of existing specialized systems** (above) — the same
+  "improve coordination before increasing model size" framing this idea
+  fits inside.
+- **Natural conversational interruption / barge-in** and **Natural
+  local speech delivery** (above) — existing engagement/delivery
+  research this idea's speak-gate question would need to stay
+  consistent with, not duplicate.
+- **The 2026-09-04 Zeroth Robotics reconciliation question**
+  (`RESEARCH_LOG.md`) — that entry's own "grounded systems → structured
+  context → reasoning → structured intention → deterministic execution
+  → verified result" pipeline sketch, and its explicit note that
+  whether this is already adequately covered by existing principles or
+  is a genuinely missing question was left to "a future Patevan AI
+  research inventory/reconciliation pass." This entry is that pass, or
+  a substantial part of it, for the household-awareness slice of that
+  question specifically.
+
+**Key conclusion: Patevan does not appear to need a new overall
+architecture for this capability.** Existing narrow components already
+provide useful seams — `PeopleDb`, `TruthDb`/`HabitLayer`,
+`AwarenessState`/`AwarenessHistoryDb`, `ScoutCompanionMomentsEngine`,
+the existing deterministic-guard pattern (`ScoutIntentRouter` and
+siblings), and this repository's own `RenderedContext` typed-block
+architecture (ADR-0006). The missing work is primarily **integration**
+plus a small number of genuinely new primitives, not a rewrite of
+anything above.
+
+**Minimum temporal/context primitives, recorded as research concepts
+only — NOT a schema decision:** event vs. current state; observed-at
+timestamp; evidence/source kind; confidence / verification tier;
+validity window / staleness; person-relative identity binding. No
+field, type, enum, or storage shape for any of these is proposed here.
+
+**Two genuinely new safety gaps this investigation found — neither
+already covered by an existing entry:**
+
+1. **Staleness.** There is currently no defined rule for when old
+   presence/state evidence must stop influencing behavior. This is a
+   real gap, not an oversight to fold into an existing entry.
+2. **Conflict resolution.** There is currently no defined deterministic
+   mechanism for handling contradictory observations or states about
+   the same person or event. The model must not resolve such conflicts
+   by guessing — but no resolution mechanism, deterministic or
+   otherwise, exists or is proposed here.
+
+**Person-presence finding:** `PeopleDb.last_seen` is only a recognition
+snapshot and is **not** sufficient evidence for statements such as
+"Patrick is here," "Elijah just got home," or "Diana left a little
+while ago." Those require explicit, fresh presence *state* and/or
+verified *transition* events — neither of which exists today. This is a
+factual finding about current `PeopleDb` behavior, not a proposal to
+change it.
+
+**Speak/silence finding:** `ScoutCompanionMomentsEngine` already
+provides the strongest existing precedent for a future deterministic
+speak/don't-speak gate — cooldown, daily budget, confidence threshold,
+per-category cooldowns, and `null`/silence as a normal, expected
+outcome rather than a failure state. Future research would need to
+extend this concept with semantic novelty (recognizing that two
+differently-worded remarks express the same idea), event-level
+repetition tracking (distinct from today's category-level cooldowns),
+engagement/interruption awareness (no such signal exists today),
+material-change detection (no diffing against prior state exists
+today), and person-specific repetition suppression. **No
+implementation is selected by recording this.**
+
+**Grounding rule this idea depends on, restated rather than
+reinvented:** the deterministic system establishes the event/state and
+whether it is eligible to be expressed at all; the reasoning model may
+vary wording, but must not add unsupported participants, actions,
+outcomes, timing, relationships, or other facts. This keeps the
+existing architectural principle intact: *"Database/system determines
+what Patevan knows; AI determines how Patevan says it."*
+
+**Illustrative example only, NOT a schema:**
+
+```
+verified event:
+  person = Elijah
+  event = arrived
+  observed_at = recent
+  confidence = sufficient
+```
+
+Allowed kinds of expression: "Hey Elijah, welcome home." / "Looks like
+Elijah's back." Unsupported additions such as "School went well," "The
+drive was safe," or "You had a good day" must not appear unless
+independently grounded — the same "fluent narrative is not evidence"
+discipline already established in the Episodic/shared-experience memory
+idea above, applied here to a different information kind.
+
+**The simplest future proof-of-concept worth testing — NOT AUTHORIZED
+by recording this idea:** a simulated presence/arrival event stream,
+outside the real Android app, feeding a Lab-Runner-style grounded
+context fixture, to test whether a small local model can narrate a
+verified arrival naturally without inventing unsupported details,
+scored under the same PASS/FAIL discipline as the existing fixtures.
+This would reuse existing benchmark infrastructure and require no real
+app or production change — but it is **not authorized here**. Recording
+this idea authorizes no `presence_block`, schema, ModelAdapter/backend
+work, Android sensing work, event database, calendar integration, or
+production change of any kind.
+
+**Explicitly not decided or authorized by recording this idea:** any
+event/state schema, field, type, or enum; any staleness threshold or
+conflict-resolution algorithm; any presence-sensing implementation on
+Android or elsewhere; any `RenderedContext` block addition; any
+ModelAdapter/backend work; any Lab Runner fixture, code, or benchmark
+run; any change to `Patevan9/Scout`; any model selection.
+
 ---
 
 ## Proposed Experiments
