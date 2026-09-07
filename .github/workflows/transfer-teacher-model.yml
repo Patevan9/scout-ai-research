@@ -9,7 +9,7 @@ name: Transfer Teacher Model to Release
 #
 # This exists solely to work around large-file upload failures from a
 # Windows client. It does NOT touch Patevan9/Scout, and it does NOT modify
-# Scout AI architecture, benchmarks, fixtures, scoring, or research
+# Patevan AI architecture, benchmarks, fixtures, scoring, or research
 # decisions. See docs/teacher-model-transfer.md for the full design writeup.
 #
 # Disk-space strategy: the runner never holds the original file and the full

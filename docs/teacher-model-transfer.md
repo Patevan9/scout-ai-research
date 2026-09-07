@@ -1,6 +1,6 @@
 # Teacher-Model Transfer Workflow
 
-**This is an infrastructure/ops tool, not a Scout AI research finding or
+**This is an infrastructure/ops tool, not a Patevan AI research finding or
 architecture decision.** It does not touch `docs/decisions/`,
 `RESEARCH_LOG.md`, `SCOUT_AI_STATUS.md`, `SCOUT_AI_RESEARCH_IDEAS.md`,
 benchmarks, fixtures, or scoring, and it never touches `Patevan9/Scout`.
@@ -133,5 +133,5 @@ request.
 
 ---
 
-Project Scout / Scout AI Research
+Patevan / Patevan AI Research
 Copyright © 2026 Patrick Evan Lippy. All rights reserved.
