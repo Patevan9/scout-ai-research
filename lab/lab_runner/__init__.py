@@ -1,4 +1,4 @@
-"""Scout AI Lab Runner v0.1 -- architecture plumbing package.
+"""Patevan AI Lab Runner v0.1 -- architecture plumbing package.
 
 Step 2 status: proves the approved
 

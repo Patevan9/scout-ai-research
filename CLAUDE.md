@@ -16,7 +16,7 @@ local AI brain. Not a frontier/general-purpose AI project. The goal:
 This could eventually combine: a stronger small local base model, real Working
 Memory, Patevan's existing Truth/Habit systems, semantic understanding/routing,
 vision and environmental context, controlled autonomy, learning from experience,
-reflection and proposed improvements, a Scout Constitution governing what the
+reflection and proposed improvements, a Patevan Constitution governing what the
 autonomous AI may do or change, and Patevan-specific fine-tuning if it eventually
 proves worthwhile.
 

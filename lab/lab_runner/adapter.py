@@ -1,4 +1,4 @@
-"""Approved ModelAdapter interface (Scout AI Lab Runner v0.1 design,
+"""Approved ModelAdapter interface (Patevan AI Lab Runner v0.1 design,
 section 2; Option B boundary, Step 5).
 
 Responsibility -- and ONLY this responsibility:

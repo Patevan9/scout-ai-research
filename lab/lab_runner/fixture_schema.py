@@ -1,4 +1,4 @@
-"""Canonical RAW benchmark fixture schema (Scout AI Lab Runner v0.1
+"""Canonical RAW benchmark fixture schema (Patevan AI Lab Runner v0.1
 design, section 4).
 
 A fixture describes INFORMATION only -- the exact facts a case permits a

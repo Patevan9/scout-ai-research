@@ -1,5 +1,5 @@
 """RenderedContext -- the model-neutral output container for the
-Canonical Context Renderer (Scout AI Lab Runner v0.1, Option B).
+Canonical Context Renderer (Patevan AI Lab Runner v0.1, Option B).
 
 Data shape only. This module defines the container that
 render_canonical_context() populates, and that ModelAdapter receives

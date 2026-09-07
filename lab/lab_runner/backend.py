@@ -1,4 +1,4 @@
-"""Approved InferenceBackend interface (Scout AI Lab Runner v0.1 design, section 2).
+"""Approved InferenceBackend interface (Patevan AI Lab Runner v0.1 design, section 2).
 
 Responsibility -- and ONLY this responsibility:
     - loading a model

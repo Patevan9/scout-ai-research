@@ -1,5 +1,5 @@
 """render_canonical_context() -- the deterministic Canonical Context
-Renderer (Scout AI Lab Runner v0.1, Option B).
+Renderer (Patevan AI Lab Runner v0.1, Option B).
 
 Converts a validated canonical-context dict into a RenderedContext.
 Assumes the dict has already passed fixture_schema.validate_fixture()

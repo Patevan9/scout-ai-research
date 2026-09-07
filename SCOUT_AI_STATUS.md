@@ -71,7 +71,7 @@ review has since been performed and approved: **TinyLlama and
 Qwen2.5-1.5B-Instruct are tied at 7 PASS / 2 FAIL** on the 9 committed
 fixtures, with differing failure profiles (see "Current benchmark
 status"). This makes Qwen promising enough to continue investigating —
-it does **not** select Qwen as a replacement model. The approved Scout AI
+it does **not** select Qwen as a replacement model. The approved Patevan AI
 Lab Runner v0.1 design continues to be built in small, individually
 authorized steps (see `lab/`).
 
@@ -112,7 +112,7 @@ automated test suite exercises it.
   the pipeline is real, committed code. See
   [ADR-0006](docs/decisions/0006-canonical-context-renderer.md) for the
   decision record and "Last completed step" below for the actual commits.
-- **[DESIGNED]** **Scout AI Lab Runner v0.1 design** (standalone PC test
+- **[DESIGNED]** **Patevan AI Lab Runner v0.1 design** (standalone PC test
   harness, the ModelAdapter/InferenceBackend boundary, fixture and result
   schemas, the Benchmark Profile process) — reviewed by ChatGPT and
   approved as a design. Being implemented in small, individually authorized
