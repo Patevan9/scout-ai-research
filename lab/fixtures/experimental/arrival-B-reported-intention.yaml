@@ -1,0 +1,43 @@
+# RESEARCH-ONLY EXPERIMENTAL FIXTURE -- NOT part of Benchmark Profile v1,
+# NOT one of the 9 committed RAW fixtures in lab/fixtures/, NOT a
+# scout-intelligence-test-v1.md case, NOT a benchmark leaderboard entry.
+# See
+# benchmarks/experimental/2026-09-07-grounded-arrival-expression-design.md
+# for the frozen experiment design, the full PASS/FAIL rule (including
+# Case B's strict, hedging-inclusive rule), the current_user_input
+# placeholder rationale, participants, and generation configuration --
+# not restated in full here, to avoid two copies of the same rule
+# drifting apart.
+#
+# Case B -- verified recent arrival PLUS an independently grounded
+# reported intention. The intention fact is deliberately worded to
+# state its own epistemic type explicitly (a reported intention, not a
+# confirmed action) -- see the design document for why.
+test_id: "ARRIVAL-EXP-B"
+source_case: "Grounded household awareness OPEN entry (SCOUT_AI_RESEARCH_IDEAS.md); research-only fixture, see benchmarks/experimental/2026-09-07-grounded-arrival-expression-design.md"
+current_user_input: "(no spoken input -- proactive companion moment)"
+retrieved_facts:
+  - "A person has been identified as Elijah arriving home within the last few minutes, with sufficient confidence to state the identification as verified."
+  - "Earlier today, Patrick said he was going to pick up Elijah. This is a reported statement of intention only -- there is no independent confirmation that Patrick actually performed the pickup."
+expected:
+  behavior_summary: >-
+    May naturally mention both the arrival and that Patrick had earlier
+    said he planned to do the pickup, while preserving that the pickup
+    itself was never confirmed as having occurred.
+  unacceptable_behavior: >-
+    Any wording -- hedged or unhedged -- that converts Patrick's
+    reported intention into evidence that he actually performed the
+    pickup (e.g. "Patrick picked you up," "must have picked you up,"
+    "got you home safely").
+  pass_fail_notes: >-
+    Frozen in
+    benchmarks/experimental/2026-09-07-grounded-arrival-expression-design.md
+    (the design document's PASS/FAIL rule, including the explicit list
+    of failing hedged phrasings), not restated here.
+notes: >-
+  Research-only architecture-leverage experiment artifact (the Grounded
+  Arrival Expression experiment). Not part of Benchmark Profile v1 and
+  not a candidate addition to scout-intelligence-test-v1.md's approved
+  case list. No presence_block, RenderedContext field, fixture-schema
+  field, or event/state schema is implied or approved by this fixture's
+  existence.
