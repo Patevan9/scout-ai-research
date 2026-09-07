@@ -1378,6 +1378,81 @@ emotion; any cloud speech, hardware requirement, or latency threshold;
 any interruption architecture, conversation-state schema, or Working
 Memory schema; any change to Project Scout or to Scout AI architecture.
 
+### Spark-X2.5 1.7B as a future Patevan AI candidate model
+**Status:** OPEN. **Recorded:** 2026-09-07.
+
+A read-only investigation on this date into Spark-X2.5 1.7B
+(`Spark2_5ForCausalLM`, GGUF architecture `spark2_5`), developed by
+XHToken/the SparkLLM Team and released under Apache 2.0. Noted here for
+tracking only — **not evaluated, not run, not selected, and not a
+benchmark candidate.**
+
+**Architecture, as documented upstream:** 1.7B parameters; hybrid
+attention combining 3 sliding-window attention layers to every 1
+full-attention layer, with a 512-token sliding window. Thinking is
+enabled by default, using the same chat-template/reasoning-parser
+convention as Qwen3 (a documented `enable_thinking` toggle; not
+independently verified end to end in this pass).
+
+**llama.cpp support — updates and supersedes the 2026-09-02 tracking
+note under "Scout-specific model evaluation" above, without altering
+that note's own text:** that earlier note correctly recorded, as of
+2026-09-02, that official Spark-X2.5 instructions required a dedicated
+`XHToken/llama.cpp` fork and that upstream support was only a draft PR.
+As of this entry, that has changed: `Spark2_5ForCausalLM` support merged
+into mainline `ggml-org/llama.cpp` via PR #27868 on 2026-09-06, first
+available in release b10828 (same date). The fork requirement is now
+stale/historical documentation the vendor's own README has not yet
+updated, not a current technical limitation — confirmed by
+cross-referencing the merged PR against a related, now-closed llama.cpp
+issue that had reported the architecture as unsupported. Whether
+mainline support is robust enough for production use beyond the merge
+author's own verification remains unconfirmed.
+
+**Potential relevance to Patevan AI's architecture:** Spark-X2.5 claims
+structured tool/function-calling behavior (a dedicated tool-call parser,
+self-reported BFCL-V4 results). This is potentially interesting for
+Patevan AI's future controlled capability-request layer — a model
+emitting a well-formed capability *request* that a deterministic system
+then executes and verifies, never the model executing anything itself,
+consistent with the Charter's "Grounded action and honesty" principle
+and the existing capability-vs-action-result distinction
+(`RESEARCH_LOG.md`, 2026-08-29 epistemic-contract entry). This is a
+plausible research direction only — no evidence yet ties Spark's
+tool-call behavior to Patevan's own capability vocabulary or fixtures.
+
+**Evidence gaps, none filled by this investigation:**
+- No trustworthy Android/ARM/CPU performance evidence exists anywhere
+  (Snapdragon, Cortex ARM64, RAM, tokens/sec, prompt-processing speed,
+  heat/power) — not estimated here, and not to be assumed favorable or
+  unfavorable until real evidence exists.
+- No meaningful independent evidence exists yet about ordinary
+  companion-conversation quality, warmth, follow-up handling, or
+  hallucination behavior — only vendor-self-reported agentic/coding/math
+  benchmarks (BFCL-V4, SWE-Bench, AIME 2026, GPQA) and one secondary,
+  GPU-only, 4B-sibling hands-on review were found.
+- The exact Q4_K_M GGUF size for the 1.7B model was not independently
+  confirmed during this investigation (huggingface.co was unreachable
+  this session); treat any specific figure as unverified until confirmed
+  directly.
+
+**Current recommendation: WATCH only.** Not yet a Lab Runner or future
+benchmark candidate, and not to be evaluated or implemented yet.
+Revisit once independent Android/ARM/CPU evidence exists and
+mainline llama.cpp support for `spark2_5` has had more real-world
+exercise beyond its first week.
+
+**This entry is completely separate from, and does not affect, the
+current Qwen Android debugging work** (the zero-logit/JNI
+investigation) — nothing here suggests changing the Android production
+model or llama.cpp version while that diagnosis is active.
+
+**Explicitly not decided or authorized by recording this idea:** any
+model selection; replacement of TinyLlama or Qwen2.5-1.5B-Instruct as
+the current baseline/candidate; any ModelAdapter/backend
+implementation; any GGUF download; any benchmark run; any llama.cpp
+version change in Project Patevan or in this repository's lab tooling.
+
 ---
 
 ## Proposed Experiments
