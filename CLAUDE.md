@@ -1,47 +1,47 @@
-# Scout AI Research — Session Notes
+# Patevan AI Research — Session Notes
 
-Read this at the start of every session on this repo, same as Scout's own
-`CLAUDE.md` is read fresh every Scout session. This file is the persistence
-mechanism for the Future Scout direction — nothing discussed in a chat survives
+Read this at the start of every session on this repo, same as Patevan's own
+`CLAUDE.md` is read fresh every Patevan session. This file is the persistence
+mechanism for the Future Patevan direction — nothing discussed in a chat survives
 into the next session unless it's written here.
 
 ## What this repo is
 
-A parallel, groundwork-only research/design track for a future Scout-specific
+A parallel, groundwork-only research/design track for a future Patevan-specific
 local AI brain. Not a frontier/general-purpose AI project. The goal:
 
-> Build a local intelligence that is substantially better at *being Scout* than
+> Build a local intelligence that is substantially better at *supporting Patevan* than
 > TinyLlama is — not one that competes with ChatGPT or Claude.
 
 This could eventually combine: a stronger small local base model, real Working
-Memory, Scout's existing Truth/Habit systems, semantic understanding/routing,
+Memory, Patevan's existing Truth/Habit systems, semantic understanding/routing,
 vision and environmental context, controlled autonomy, learning from experience,
 reflection and proposed improvements, a Scout Constitution governing what the
-autonomous AI may do or change, and Scout-specific fine-tuning if it eventually
+autonomous AI may do or change, and Patevan-specific fine-tuning if it eventually
 proves worthwhile.
 
-## Relationship to Project Scout — hard boundary
+## Relationship to Patevan — hard boundary
 
-The real app is [Patevan9/Scout](https://github.com/Patevan9/Scout). Current Scout
+The real app is [Patevan9/Scout](https://github.com/Patevan9/Scout). Current Patevan
 development is stability-first (launch, real-device testing, approved PRs) and
 **must never be interrupted or refactored for this track.** Rules currently in
 force, unless the owner explicitly changes them:
 
-- No implementation here that touches the Scout app repo.
-- No branch, no PR against Scout for Future Scout purposes.
-- No refactoring current Scout code "in service of" Future Scout.
+- No implementation here that touches the Patevan app repo.
+- No branch, no PR against Patevan for Future Patevan purposes.
+- No refactoring current Patevan code "in service of" Future Patevan.
 - No replacing TinyLlama in the shipping app.
-- No changes to Scout's current development priorities.
+- No changes to Patevan's current development priorities.
 
-**Flag, don't build.** If something in ongoing Scout development looks like it
-would matter to a future Scout brain or to the Intelligence Test (see below),
+**Flag, don't build.** If something in ongoing Patevan development looks like it
+would matter to a future Patevan brain or to the Intelligence Test (see below),
 the right move is to note it here or say so out loud — never to implement a
-Future Scout solution inside a Scout session.
+Future Patevan solution inside a Patevan session.
 
-Scout's own `CLAUDE.md` and `Scout_Quick_Start.md` are the source of truth for
+Patevan's own `CLAUDE.md` and `Scout_Quick_Start.md` are the source of truth for
 what's actually built. **Re-verify against them before trusting anything below
-as current** — Scout moves fast (60+ merged PRs as of this writing) and this
-file will drift, the same way Scout's own docs are explicitly warned to drift.
+as current** — Patevan moves fast (60+ merged PRs as of this writing) and this
+file will drift, the same way Patevan's own docs are explicitly warned to drift.
 
 ## Grounding: what's real in Scout today (as of main `021656a`, Aug 21 2026)
 
@@ -107,7 +107,7 @@ app):
 ## First groundwork project: the Scout Intelligence Test
 
 A permanent benchmark of real Scout interactions. TinyLlama is the baseline.
-**Any future Scout brain must demonstrably outperform that baseline while
+**Any future Patevan brain must demonstrably outperform that baseline while
 preserving stability, factual integrity, privacy, acceptable speed, and
 acceptable device resource use** — not quality alone.
 
@@ -122,42 +122,42 @@ Coverage areas (eventual, not all at once):
 - correct TruthDb use
 - appropriate HabitLayer use
 - memory-write requests
-- uncertainty / knowing when Scout doesn't know
+- uncertainty / knowing when Patevan doesn't know
 - hallucination resistance
 - vision-context understanding
 - environmental context
-- choosing the appropriate Scout capability
+- choosing the appropriate Patevan capability
 - deciding when reasoning is unnecessary
 - deciding when silence is appropriate
 - natural household conversation
 - multi-step reasoning
 - future autonomous decisions
 
-Real Scout failures and real-device observations (A32/Fold 7 findings, `DiagLog`
+Real Patevan failures and real-device observations (A32/Fold 7 findings, `DiagLog`
 traces) should eventually become regression cases here — this benchmark is meant
-to grow from Scout's actual bug history, not synthetic examples invented in the
+to grow from Patevan's actual bug history, not synthetic examples invented in the
 abstract.
 
 ## Working direction — sequencing (not yet started, no approval to build any of this)
 
 Roughly ordered, each stage meant to be individually valuable and de-risk the
 next. Nothing below is authorized to start without explicit go-ahead, and it
-should follow the same gated-phase discipline Scout's own `CLAUDE.md` uses
+should follow the same gated-phase discipline Patevan's own `CLAUDE.md` uses
 (Investigation → Design → Design revision → Implementation → Merge → Post-merge
 verification, each phase waiting for explicit sign-off):
 
 1. Name and unify the Constitution — generalize the existing deterministic-guard
    pattern into one policy engine.
-2. Design real Working Memory (Scout's own acknowledged gap).
+2. Design real Working Memory (Patevan's own acknowledged gap).
 3. Build the Scout Intelligence Test / eval suite, seeded from real A32/Fold 7
    findings.
 4. Evaluate upgrading the base local model (TinyLlama → a stronger small
-   open-weight model) against that suite, using Scout's existing model-delivery
+   open-weight model) against that suite, using Patevan's existing model-delivery
    infrastructure — no personalization yet, isolate "better small brain" from
    "self-evolving brain."
 5. Build the semantic/paraphrase routing layer already scoped and deferred in
-   Scout's own history.
-6. Build "Behavior Learning" as Scout's `CLAUDE.md` already describes it —
+   Patevan's own history.
+6. Build "Behavior Learning" as Patevan's `CLAUDE.md` already describes it —
    SharedPreferences-level suggestions, Approve/Not Now/Never Suggest This Again.
 7. Only after 1–6: an off-device, eval-gated fine-tuning pipeline for real
    personalization, and only then any widening of the Decisions layer beyond
@@ -172,14 +172,14 @@ capability level.
 
 - Groundwork only until the owner explicitly authorizes moving past it.
 - No repo other than this one is ever modified from this track.
-- Every claim about "what Scout currently does" gets re-verified against the
+- Every claim about "what Patevan currently does" gets re-verified against the
   real `Patevan9/Scout` repo before being trusted — this file is a snapshot,
   not a live source.
 - Full paste-ready files, clear screenshot-level explanations — same
-  communication style Patrick's Scout sessions use (not a professional
+  communication style Patrick's Patevan sessions use (not a professional
   programmer; explain plainly).
 
 ---
 
-Project Scout / Scout AI Research
+Patevan / Patevan AI Research
 Copyright © 2026 Patrick Evan Lippy. All rights reserved.

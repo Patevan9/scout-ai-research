@@ -1,6 +1,6 @@
 # Decision Records
 
-Architectural/process decisions for Scout AI that have actually been approved
+Architectural/process decisions for Patevan AI that have actually been approved
 — not research conclusions, not ideas still under discussion. See
 `SCOUT_AI_STATUS.md`'s review workflow: something only lands here after
 Claude reports it, ChatGPT independently reviews it, and Patrick approves it.

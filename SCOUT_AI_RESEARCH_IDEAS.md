@@ -1,4 +1,4 @@
-# Scout AI — Research Ideas
+# Patevan AI — Research Ideas
 
 **Nothing in this file is approved architecture.** This is a durable backlog
 of ideas and questions worth investigating later — so Patrick doesn't have to
@@ -34,7 +34,7 @@ decision now lives elsewhere — pointer given), or **REJECTED/DEFERRED**
 backlog — not an attic or basement where every idea lives forever.**
 Periodically evaluate active ideas for promotion, consolidation, deferral,
 or removal from active consideration, based on: evidence gathered so far,
-usefulness to Scout, complexity, resource/hardware cost, redundancy with
+usefulness to Patevan, complexity, resource/hardware cost, redundancy with
 other ideas already here, and current relevance. When an idea is removed
 from active consideration, **preserve only enough history or a pointer**
 to understand a significant rejected/deferred direction later (see
@@ -1407,5 +1407,5 @@ Memory schema; any change to Project Scout or to Scout AI architecture.
 
 ---
 
-Project Scout / Scout AI Research
+Patevan / Patevan AI Research
 Copyright © 2026 Patrick Evan Lippy. All rights reserved.

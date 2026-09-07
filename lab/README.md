@@ -1,8 +1,8 @@
 # Scout AI Lab Runner
 
 A standalone, PC-based test harness for running Scout Intelligence Test
-v1's RAW cases against local models — completely separate from the Scout
-Android app. It does not require Scout to run, and it never modifies
+v1's RAW cases against local models — completely separate from the Patevan
+Android app. It does not require Patevan to run, and it never modifies
 `Patevan9/Scout`.
 
 **Status: Canonical Context Renderer / Option B pipeline proven with mocks
