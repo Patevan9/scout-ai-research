@@ -1454,7 +1454,7 @@ implementation; any GGUF download; any benchmark run; any llama.cpp
 version change in Project Patevan or in this repository's lab tooling.
 
 ### Grounded household awareness and context continuity
-**Status:** OPEN. **Recorded:** 2026-09-07.
+**Status:** OPEN. **Recorded:** 2026-09-07. **Updated:** 2026-09-08.
 
 Synthesizes a completed 2026-09-07 read-only investigation into how
 Patevan could become meaningfully more aware of household context over
@@ -1542,18 +1542,81 @@ verified *transition* events — neither of which exists today. This is a
 factual finding about current `PeopleDb` behavior, not a proposal to
 change it.
 
-**Speak/silence finding:** `ScoutCompanionMomentsEngine` already
+**Speak/silence finding, confirmed and deepened by a 2026-09-08
+read-only investigation:** `ScoutCompanionMomentsEngine` already
 provides the strongest existing precedent for a future deterministic
 speak/don't-speak gate — cooldown, daily budget, confidence threshold,
 per-category cooldowns, and `null`/silence as a normal, expected
-outcome rather than a failure state. Future research would need to
-extend this concept with semantic novelty (recognizing that two
-differently-worded remarks express the same idea), event-level
-repetition tracking (distinct from today's category-level cooldowns),
-engagement/interruption awareness (no such signal exists today),
-material-change detection (no diffing against prior state exists
-today), and person-specific repetition suppression. **No
-implementation is selected by recording this.**
+outcome rather than a failure state. That investigation additionally
+found that `ScoutPresenceDecider`, together with the genuine-absence/
+return-stabilization state machine it consults in `MainActivity`
+(brief-gap tolerance, a minimum genuine-absence duration, a stabilized-
+return requirement, and its own cooldowns), already implements a real,
+working deterministic novelty path — not merely a precedent for one —
+for one specific event: **camera-presence return after a sufficiently
+long observed absence, followed by stabilization.** `ScoutArrivalLatch`
+(a latched, freshness-bounded rising-edge signal for a second face
+appearing) and `ScoutPresenceStreakTracker` (a separate, gap-tolerant
+continuous-presence streak) are two further, narrowly scoped transition/
+continuity patterns supporting this same machinery.
+
+**Production already has a deterministic novelty and speak/silence
+solution for camera-presence return events. It does not yet model
+semantic household arrival/visit state** — it cannot currently
+distinguish leaving the house and returning home from merely leaving
+camera/room coverage long enough and then reappearing, since no data
+source above camera presence exists today. Existing category/shared
+cooldowns suppress repetition of *already-eligible* candidates, but
+they still do not establish: same-visit identity (whether a second
+stabilized return within the same outing is "the same visit"
+continuing rather than a new one), person-specific event repetition,
+semantic novelty (recognizing that two differently-worded remarks
+express the same idea), material-change detection (no diffing against
+prior state exists today for anything outside the presence/absence
+machinery above), staleness, conflict resolution, or generalized
+household-event gating (today's gates are narrowly built for their one
+event type each, not a shared abstraction a new event type could plug
+into). **No implementation is selected by recording this.**
+
+**A separate, reusable novelty precedent, confirmed 2026-09-08:**
+`AwarenessResolver` demonstrates a second, independent working pattern
+for deciding when a state change is worth recording at all: read the
+previous value, update the live state, and write a history event only
+when the value actually changed (currently scoped to charging/
+connectivity only, per its own Phase-1 documentation — presence is not
+represented there). This is offered as a second existing precedent
+alongside `ScoutCompanionMomentsEngine`'s cooldown-based approach, not
+as a proposal to extend `AwarenessResolver` itself to presence.
+
+**Identity confidence is already gated separately from speech
+eligibility, confirmed 2026-09-08:** `ScoutGreetingIdentity` shows that
+whether a person is present/returned (the grounded observation) is
+already treated separately from whether their specific identity is
+confident enough to name. Low-confidence identity falls back to generic
+unnamed phrasing; identity is not asserted — the presence/return event
+itself is still expressed, just without a name claim the evidence
+doesn't support.
+
+**Expression channel finding, confirmed 2026-09-08:** production
+expression for these current presence/companion-moment paths is
+`VoiceBank`/template-based today, not LLM-generated — the deterministic
+gates above decide whether to speak at all, and a fixed phrase pool
+decides the wording, with no reasoning model in that loop for this
+event type today.
+
+**What this confirms about next steps, 2026-09-08:** no additional
+model-generation experiment is justified by this investigation — the
+gaps above (same-visit identity, person-specific repetition, semantic
+novelty, material-change detection, staleness, conflict resolution,
+generalized household-event gating, and semantic arrival/visit state
+itself) are deterministic-systems questions a model is not involved in
+today. The next unresolved question this idea depends on is
+deterministic event modeling/gating architecture, not a further Lab
+Runner fixture or benchmark run. This does not modify or reopen the
+separately committed Grounded Arrival Expression experiment or its
+results, which answered a different, narrower question (can a small
+model phrase already-eligible grounded evidence without inventing
+detail) and stand as recorded.
 
 **Grounding rule this idea depends on, restated rather than
 reinvented:** the deterministic system establishes the event/state and
