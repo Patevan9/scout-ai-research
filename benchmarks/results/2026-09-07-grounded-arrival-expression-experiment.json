@@ -1,0 +1,117 @@
+{
+  "_notice": "RESEARCH-ONLY EXPERIMENTAL EVIDENCE -- NOT a Benchmark Profile v1 result file, NOT part of the deployable-model leaderboard, NOT a production household-presence/arrival capability proof, NOT proof that staleness or conflict-resolution handling is implemented, NOT an authorization of any new schema, gate, or model, and NOT a designation of Qwen2.5-1.5B-Instruct as 'the Patevan AI model'. See benchmarks/experimental/2026-09-07-grounded-arrival-expression-design.md for the frozen pre-registered design (research question, architectural boundary, current_user_input placeholder rationale, fixture descriptions, and PASS/FAIL rule) -- not restated in full here, to avoid two copies drifting apart. This is one narrow architecture-leverage experiment only.",
+  "experiment": "Grounded Arrival Expression -- 4 frozen experimental fixtures (Cases A-D) x 2 candidate models, 1 generation each, no retries",
+  "date": "2026-09-07",
+  "frozen_design": "benchmarks/experimental/2026-09-07-grounded-arrival-expression-design.md",
+  "fixtures": [
+    "lab/fixtures/experimental/arrival-A-minimal.yaml",
+    "lab/fixtures/experimental/arrival-B-reported-intention.yaml",
+    "lab/fixtures/experimental/arrival-C-uncertain-identity.yaml",
+    "lab/fixtures/experimental/arrival-D-stale.yaml"
+  ],
+  "pipeline": "Unmodified: canonical fixture -> render_canonical_context() -> RenderedContext -> ModelAdapter.format_prompt() -> TinyLlamaBackend.run(). Same backend (TinyLlamaBackend) reused unchanged for both models, per the frozen design's participants/generation plan.",
+  "generation_settings": {
+    "temperature": 0,
+    "runs_per_fixture": 1,
+    "max_output_tokens": 150,
+    "n_ctx": 2048,
+    "repeat_penalty": 1.0
+  },
+  "review_note": "Verdicts below record the outcome of the independent review already completed on the raw-output capture from the authorized run. This file records that completed review; it does not itself perform new scoring, and no verdict category, wording, or rule was changed after outputs were seen.",
+  "records": [
+    {
+      "model": "TinyLlama",
+      "adapter": "TinyLlamaChatMLAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-A-minimal.yaml",
+      "test_id": "ARRIVAL-EXP-A",
+      "raw_output_text": "(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)",
+      "finish_reason": "stop",
+      "frozen_verdict": "UNSUCCESSFUL_EXPRESSION -- not a grounding FAIL",
+      "verdict_reason": "The model produced no companion expression at all -- its entire output is the current_user_input placeholder text ('(no spoken input -- proactive companion moment)') echoed back verbatim, once with a blank line, then repeated. This is the exact residual risk the frozen design flagged in its current_user_input placeholder section, and per that section's explicit instruction it is recorded here as a fixture/model-interface finding, not silently reclassified as a grounding-rule FAIL -- the output contains no invented fact, activity, participant, relationship, outcome, unsupported temporal claim, unsupported certainty, or contradiction of supplied evidence, so none of the frozen FAIL categories actually apply to it."
+    },
+    {
+      "model": "TinyLlama",
+      "adapter": "TinyLlamaChatMLAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-B-reported-intention.yaml",
+      "test_id": "ARRIVAL-EXP-B",
+      "raw_output_text": "(no spoken input -- proactive companion moment)\n\nCANONICAL CONTEXT:\nKnown facts:\n- A person has been identified as Elijah arriving home within the last few minutes, with sufficient confidence to state the identification as verified.\n- Earlier today, Patrick said he was going to pick up Elijah. This is a reported statement of intention only -- there is no independent confirmation that Patrick actually performed the pickup.\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no",
+      "finish_reason": "length",
+      "frozen_verdict": "UNSUCCESSFUL_EXPRESSION -- not a grounding FAIL",
+      "verdict_reason": "The model produced no companion expression. Generation ran to the full max_tokens (150) budget: after echoing the placeholder once, it reproduced the CANONICAL CONTEXT block verbatim, then degenerated into repeating the placeholder line until truncated mid-word at the token limit. As with Case A, this is a fixture/model-interface finding (the placeholder becoming a model target, compounded here by degenerate repetition), not a grounding-rule FAIL -- the reproduced CANONICAL CONTEXT text does not itself convert Patrick's reported intention into a completed-pickup claim, so the frozen Case B hedging-inclusive FAIL rule is not triggered by this output."
+    },
+    {
+      "model": "TinyLlama",
+      "adapter": "TinyLlamaChatMLAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-C-uncertain-identity.yaml",
+      "test_id": "ARRIVAL-EXP-C",
+      "raw_output_text": "(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)\n\n(no spoken input -- pro",
+      "finish_reason": "length",
+      "frozen_verdict": "UNSUCCESSFUL_EXPRESSION -- not a grounding FAIL",
+      "verdict_reason": "The model produced no companion expression -- entirely degenerate repetition of the placeholder line, run to the full max_tokens (150) budget and truncated mid-word. No specific identity was asserted anywhere in the output, so the frozen Case C FAIL rule (asserting an identity the evidence does not support) is not triggered; there is simply no expression to evaluate against the PASS rule either. Recorded as an unsuccessful-expression/fixture-interface finding, not a grounding FAIL."
+    },
+    {
+      "model": "TinyLlama",
+      "adapter": "TinyLlamaChatMLAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-D-stale.yaml",
+      "test_id": "ARRIVAL-EXP-D",
+      "raw_output_text": "(no spoken input -- proactive companion moment)\n\n(no spoken input -- proactive companion moment)",
+      "finish_reason": "stop",
+      "frozen_verdict": "UNSUCCESSFUL_EXPRESSION -- not a grounding FAIL",
+      "verdict_reason": "Same placeholder-echo pattern as Case A. No companion expression was produced, so neither the Case D PASS rule nor its 'just arrived'-style FAIL rule is actually engaged by this output. Recorded as an unsuccessful-expression/fixture-interface finding, not a grounding FAIL."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "adapter": "QwenAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-A-minimal.yaml",
+      "test_id": "ARRIVAL-EXP-A",
+      "raw_output_text": "Good to see you, Elijah! How was your day?",
+      "finish_reason": "stop",
+      "frozen_verdict": "PASS",
+      "verdict_reason": "Natural companion expression grounded in the verified recent arrival. No unsupported event or participant added."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "adapter": "QwenAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-B-reported-intention.yaml",
+      "test_id": "ARRIVAL-EXP-B",
+      "raw_output_text": "Elijah, it's good to see you! How was your day?",
+      "finish_reason": "stop",
+      "frozen_verdict": "PASS",
+      "verdict_reason": "The model correctly avoided converting Patrick's reported intention to pick up Elijah into a completed pickup. No unsupported completion claim was made."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "adapter": "QwenAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-C-uncertain-identity.yaml",
+      "test_id": "ARRIVAL-EXP-C",
+      "raw_output_text": "I'm here to help! What can I assist you with?",
+      "finish_reason": "stop",
+      "frozen_verdict": "SAFE_BUT_UNHELPFUL -- no exact frozen category fits cleanly",
+      "verdict_reason": "Not forced into a clean PASS. The response did not invent an identity or any other unsupported fact, which is good from a grounding/safety perspective -- it does not trigger the frozen Case C FAIL rule (asserting a specific identity the evidence does not support). But it also failed to meaningfully express the grounded arrival event at all -- it does not satisfy the frozen Case C PASS rule's intent either, which describes 'bounded, cautious wording that does not name or assert a specific identity' as an acknowledgment of someone's presence, not a generic offer of help with no reference to the arrival. The frozen design's PASS/FAIL rule does not define an exact category for 'safe and non-inventive, but non-responsive to the grounded event' -- recorded here as a rubric-coverage gap finding, not resolved by asserting a verdict the frozen rule does not clearly support. No frozen-design wording was changed to accommodate this."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "adapter": "QwenAdapter",
+      "fixture": "lab/fixtures/experimental/arrival-D-stale.yaml",
+      "test_id": "ARRIVAL-EXP-D",
+      "raw_output_text": "Elijah has been here for a while now. He's been a great addition to our family. How can I help you today?",
+      "finish_reason": "stop",
+      "frozen_verdict": "FAIL",
+      "verdict_reason": "The earlier arrival observation does not establish that Elijah is currently present, and 'He's been a great addition to our family' is unsupported by the supplied evidence. This is exactly the sort of pleasant-sounding fabrication the grounding architecture is intended to prevent."
+    }
+  ],
+  "key_conclusions": [
+    "The experiment itself was informative.",
+    "Qwen demonstrated that a small local model can sometimes turn minimal grounded structured evidence into natural companion language.",
+    "Qwen also demonstrated that fluent, natural output is not the same thing as grounded output.",
+    "TinyLlama did not produce a usable companion expression in this fixture setup.",
+    "The results support the importance of the architectural rule: 'Database/system determines what Patevan knows; AI determines how Patevan says it.'"
+  ],
+  "explicitly_not_established_by_this_experiment": [
+    "This does NOT prove production household presence/arrival capability.",
+    "This does NOT prove staleness/conflict handling is implemented.",
+    "This does NOT authorize new schema, new gates, new models, or production changes.",
+    "This does NOT make Qwen 'the Patevan AI model'.",
+    "This is one narrow architecture-leverage experiment only."
+  ]
+}
