@@ -1618,6 +1618,80 @@ results, which answered a different, narrower question (can a small
 model phrase already-eligible grounded evidence without inventing
 detail) and stand as recorded.
 
+**Minimum event-model investigation, 2026-09-08:** a further read-only
+investigation confirmed that the "minimum temporal/context primitives"
+recorded above are not merely hypothetical — real, shipped precedent
+for most of them already exists in `Patevan9/Scout`. `AwarenessState`
+(live, continuously-overwritten, in-memory) and `AwarenessHistoryDb`
+(a rolling, edge-triggered history table) already provide a shipped
+precedent for exactly the current-state/historical-event separation
+this idea's primitives distinguish. `AwarenessHistoryDb`'s own
+`AwarenessCategory` enum further demonstrates the same investigation's
+two smallest-necessary concepts already in production use: a
+deliberately small, closed event vocabulary (four values today,
+documented as intentionally closed rather than a general taxonomy),
+and a nullable resolved-entity field, written "only when genuinely
+resolved."
+
+**Independent convergence found in an existing, not-yet-built spec:**
+`Scout_Awareness_Layer_Spec.md` §3 ("Edge-Triggered Awareness Events")
+independently converges on approximately the same minimum event
+concept this idea's primitives already named: category/what happened,
+a timestamp, an entity only when genuinely resolved, no raw sensor
+payload, and no speech text. That document already defers "presence
+began/ended, known-entity-encounter began/ended" past its own Phase 1,
+pending its own entity-vocabulary and orientation-resolution work —
+this idea's speak/silence and household-event questions are downstream
+of that same deferred work, not a separate track.
+
+**A second, adjacent existing precedent, for facts rather than
+events:** `TruthDb.entity_memory` already carries source/provenance
+(`source`), a confidence value (`confidence`), and confirmation
+timestamps (`last_confirmed`, `created_at`, `updated_at`) for grounded
+facts. These concepts are not currently part of `AwarenessHistoryDb`
+events — `AwarenessHistoryDb` rows carry no source or confidence field
+today — but `TruthDb.entity_memory` shows the project already has a
+working, shipped shape for source/confidence/confirmation-timestamp
+tracking to draw on if a future event representation ever needed it.
+
+**The smallest presently justified future household-event concept,
+recorded as research concepts only — NOT a committed schema:**
+approximately an event type; a subject/entity, nullable or explicitly
+unresolved; an observed-at timestamp; a source/evidence-provenance
+tag; and some confidence/verification representation whose exact form
+(a single score, a tier-first scheme, or something else) remains
+genuinely undecided. No field, type, enum, storage shape, or exact
+confidence representation is selected or proposed by recording this.
+
+**The existing transition/edge discipline is preserved, not
+reconsidered:** an observation should not automatically become a new
+event merely because it was observed again — exactly the discipline
+`AwarenessResolver`'s own previous-value/update/event-only-on-change
+pattern and the presence/return state machine already enforce today.
+This investigation found no reason to weaken or replace that
+discipline for any future household-event concept.
+
+**Insufficient evidence currently exists to justify:** separate
+`event_at` and `observed_at` timestamps; a universal numeric confidence
+score; a generic event bus; persisted same-event correlation IDs; a
+conflict-resolution schema or algorithm; multi-room/multi-sensor
+semantic arrival modeling; or a new, parallel event structure separate
+from the existing Awareness direction. None of these is proposed,
+designed, or authorized by recording this.
+
+**Architectural convergence:** current evidence points toward the
+existing Awareness architecture/spec (`AwarenessState`,
+`AwarenessHistoryDb`, `Scout_Awareness_Layer_Spec.md`) as the likely
+place to extend if a future concrete household-event use case ever
+justifies implementation — not toward inventing a second, parallel
+event system now.
+
+**Implementation threshold:** no new event code or schema is justified
+solely by this investigation. A concrete additional household-awareness
+producer or use case — not yet identified — should establish the need
+before any generalized event representation is designed, let alone
+built.
+
 **Grounding rule this idea depends on, restated rather than
 reinvented:** the deterministic system establishes the event/state and
 whether it is eligible to be expressed at all; the reasoning model may
