@@ -303,7 +303,7 @@ purely as an external research influence that prompted these questions,
 not as something Scout is committed to depending on or resembling.
 
 ### Personal continuity: a private world model, unfinished threads, and time awareness
-**Status:** OPEN. **Recorded:** 2026-09-01.
+**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-08.
 
 A long-term vision for Scout AI, distilled as: *"Scout knows less about
 the world, but more about your world."* Most assistants effectively
@@ -358,6 +358,54 @@ connection was relevant, not in producing the sentence itself.
 **Central research question:** *What is the smallest safe architectural
 experiment toward true continuity that builds on what Scout already
 has?*
+
+**Grounded personal continuity across household events, 2026-09-08:** a
+further read-only investigation established the general grounding
+principle this idea's central research question depends on: two
+independently grounded facts or events do not establish a third fact
+connecting them. Illustrative example, not a schema: Patrick reporting
+an intention to pick up Elijah at T1, and Elijah being confidently
+observed at T2, may both be retained independently — neither
+establishes that Patrick performed the pickup, caused Elijah's later
+presence, or completed the reported intention. This is the generalized
+architectural form of the already-reviewed Grounded Arrival Expression
+experiment's Case B rule
+(`benchmarks/experimental/2026-09-07-grounded-arrival-expression-design.md`),
+not a new rule.
+
+**Safe continuity, for now, means preservation — not narrative
+construction, 2026-09-08:** the same investigation found that safe
+continuity currently means preserving separately grounded
+observations/facts/events with their own timestamps, not constructing
+an inferred narrative or causal chain between them. "These things are
+independently grounded" is **not** equivalent to "the system knows how
+these things are related" — no existing mechanism establishes the
+latter, and none is proposed here.
+
+**Existing unresolved-to-resolved identity precedent, confirmed
+2026-09-08:** `PeopleDb.touchSeen(faceHash)` can create or update an
+unnamed identity row; a later `setName(faceHash, name)` resolves that
+same row in place, with `first_met` preserved as the original encounter
+time — history is not rewritten merely because identity becomes known
+later. This works only when the observations resolve to the same
+`faceHash`; it is identity continuity, not generalized fact/event
+reconciliation.
+
+**A sharpened refinement of the unresolved/open-thread question,
+2026-09-08:** the same investigation found no grounded, timestamped
+holding mechanism exists today for an ordinary spoken statement such as
+"I'm leaving soon to pick up Elijah," prior to any later decision about
+whether it belongs in Truth, a reminder, a habit, or another durable
+system. This refines, rather than replaces or authorizes, the existing
+open question above about how an unresolved thread's status might be
+preserved.
+
+**No existing structure links two facts/events as one episode or
+causal chain, 2026-09-08:** `JournalDb.reel_id` exists in schema but is
+currently neither populated nor read anywhere in the verified
+implementation (consistent with the "Episodic/shared-experience
+memory" entry's own finding) — it does not provide cross-event linking
+today.
 
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
@@ -1691,6 +1739,25 @@ solely by this investigation. A concrete additional household-awareness
 producer or use case — not yet identified — should establish the need
 before any generalized event representation is designed, let alone
 built.
+
+**The camera-grounding boundary applies symmetrically, confirmed
+2026-09-08:** camera appearance/reappearance does not establish
+"arrived home," and camera disappearance does not establish "left the
+house" — the same principle already recorded above for arrivals applies
+identically to departures. Camera coverage establishes only what was or
+was not recently observed through that camera, unless another grounded
+source provides stronger semantics; no such source exists today.
+
+**A narrow `PeopleDb` identity limitation, confirmed 2026-09-08:** the
+existing unresolved-to-resolved reconciliation (see the "Personal
+continuity" entry) works only for the same `faceHash` — there is no
+mechanism to merge two different `faceHash` records later determined to
+represent the same person. No merge algorithm is proposed here.
+
+**A `TruthDb` history limitation, confirmed 2026-09-08:** `TruthDb`'s
+current upsert/`ON CONFLICT REPLACE` behavior preserves only the latest
+fact state, not a history of prior fact values. No fact versioning or
+history table is proposed here.
 
 **Grounding rule this idea depends on, restated rather than
 reinvented:** the deterministic system establishes the event/state and
