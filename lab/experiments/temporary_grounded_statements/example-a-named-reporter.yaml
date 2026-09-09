@@ -1,0 +1,12 @@
+# RESEARCH-ONLY REPRESENTATION EXAMPLE -- NOT a RAW benchmark fixture,
+# NOT part of Benchmark Profile v1, NOT consumed by any ModelAdapter or
+# InferenceBackend, NOT wired into lab_runner's renderer/fixture_schema
+# pipeline. See
+# docs/2026-09-08-temporary-grounded-statements-design.md for the
+# frozen design this shape implements -- not restated here.
+#
+# Case A -- a named reporter.
+who: "patrick"
+statement: "Patrick reported an intention to leave soon to pick up Elijah."
+reported_at: "2026-09-08T14:30:00Z"
+source: "user_speech"
