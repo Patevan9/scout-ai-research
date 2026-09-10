@@ -407,6 +407,40 @@ implementation (consistent with the "Episodic/shared-experience
 memory" entry's own finding) — it does not provide cross-event linking
 today.
 
+**Promotion-boundary precedent investigation, 2026-09-10:** a further
+read-only investigation, prompted by the sharpened refinement above,
+looked for existing deterministic precedent for how information might
+ever move from unresolved/tentative into durable. Real-Scout precedent
+supports one clear trigger shape: `TruthDb.upsertFact()` is reached only
+through deterministic phrase-pattern matching on an explicit user
+utterance (`ScoutFactExtractor`, the "my name is X"/relationship-fact
+teaching flow) — never through the model's own reasoning, consistent
+with the existing "the model does not determine what Scout knows"
+principle (`RESEARCH_LOG.md`, 2026-08-29). Two mechanisms that might look
+like further precedent turn out, on inspection, not to be: `AwarenessResolver`
+compares an already-authoritative live sensor reading against its
+previous value and writes history only on an actual change — state-change
+deduplication, not tentative information earning durability, since the
+reading was never tentative. `HabitLayer` records every utterance/person
+sighting immediately and unconditionally; its decay/prune threshold and
+`getIdleObservation()`'s count-based gate affect retrieval, surfacing, and
+pruning, not whether the original information was ever admitted as
+durable. That same `getIdleObservation()` gate is itself evidence that
+surfacing eligibility is a distinct question from durability — the same
+distinction the lab-only Temporary Grounded Statements eligibility proof
+(`lab/experiments/temporary_grounded_statements/eligibility.py`)
+independently demonstrates. No mechanism inspected implements "wait for N
+independent occurrences, then promote this information into durable
+memory" — evidence-based autonomous durability has no current precedent
+anywhere in the inspected code and remains genuinely unresolved,
+open new territory rather than an extension of `HabitLayer`. This
+narrows, rather than answers, the sharpened refinement above: "promotion"
+is not one undifferentiated operation — existing evidence already
+distinguishes explicit user-triggered durability, state-change/history
+deduplication, and surfacing/retrieval eligibility as separate concerns,
+and this entry does not conclude whether an evidence-based durability
+trigger should ever be built.
+
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
 any rule for when, or whether, an unresolved thread is ever promoted to
