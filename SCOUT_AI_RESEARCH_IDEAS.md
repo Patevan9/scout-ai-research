@@ -1068,6 +1068,32 @@ discipline (cited as design inspiration in ADR-0004) is noted only as
 precedent that confidence-based identity handling already exists in one
 form today — not adopted as a requirement for speaker identity here.
 
+**Empirical corroboration — TGS-EXP-A, 2026-09-09:** a research-only Lab
+Runner experiment (`lab/fixtures/experimental/tgs-A-reported-intention-only.yaml`,
+result recorded in
+`benchmarks/results/2026-09-09-tgs-exp-a-reported-intention-experiment.json`)
+supplied Qwen2.5-1.5B-Instruct with a single grounded fact naming Patrick
+only as the **reporter** of an intention ("Patrick reported an intention
+to leave soon to pick up Elijah"). No current-speaker or addressee
+identity was supplied anywhere in the fixture. Qwen nevertheless
+generated "Good luck with your trip, Patrick! I hope you find what
+you're looking for." — addressing Patrick directly. The experiment was
+recorded FAIL for this unsupported identity conversion. This is a real,
+observed instance of the exact risk this idea's own boundary already
+names: "the language model must not manufacture speaker identity merely
+to make conversation sound more natural or personal." A follow-up
+read-only investigation (same date) found no structured current-speaker
+or addressee identity seam in either the Lab Runner (`RenderedContext`,
+the canonical renderer, the fixture schema) or the inspected
+`Patevan9/Scout` reference app at commit
+`2f7f60df644c76dcf5daeed104cf98385dce4fa0` — visible/recognized-person
+identity (`PeopleDb`, `ScoutGreetingIdentity`) is the only one of these
+identity concepts with an implemented identity-resolution path in the
+inspected reference app. Reporter, current speaker, addressee, and
+visible/recognized person remain distinct concepts here, consistent with
+this idea's existing boundaries — none is established as proof of
+another by this finding.
+
 **Explicitly not decided or authorized by recording this idea:** any
 speaker-recognition design, biometric voice technology, or model
 selection; any face/voice fusion architecture; any confidence threshold;
