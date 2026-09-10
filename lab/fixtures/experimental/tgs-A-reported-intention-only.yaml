@@ -1,0 +1,79 @@
+# RESEARCH-ONLY EXPERIMENTAL FIXTURE -- NOT part of Benchmark Profile v1,
+# NOT one of the 9 committed RAW fixtures in lab/fixtures/, NOT a
+# scout-intelligence-test-v1.md case, NOT a benchmark leaderboard entry.
+# NOT the Grounded Arrival Expression experiment (a separate, already
+# committed experiment) -- this is a new, narrower experiment testing
+# expression of a single eligible Temporary Grounded Statement
+# (lab/experiments/temporary_grounded_statements/), with no second
+# corroborating fact present at all.
+#
+# The grounded fact below is copied verbatim from the `statement` field
+# of the already-committed
+# lab/experiments/temporary_grounded_statements/example-a-named-reporter.yaml
+# record, confirmed eligible for surfacing via the already-committed,
+# unmodified eligibility.is_eligible_for_surfacing() (TEST-ONLY
+# threshold, injected `now` -- that check is a separate, prior, offline
+# step performed by a human/reviewer; it is not re-run, re-derived, or
+# exposed to the model by anything in this fixture or by the Lab
+# Runner pipeline).
+#
+# Deliberately contains only ONE grounded fact -- the reported
+# intention itself -- and no second, corroborating observation. Unlike
+# the existing Grounded Arrival Expression experiment's Case B (which
+# paired a reported intention with a verified arrival), this fixture
+# tests whether the model invents completion from the reported
+# intention ALONE, with nothing else to reference.
+test_id: "TGS-EXP-A"
+source_case: "Temporary Grounded Statements design note (docs/2026-09-08-temporary-grounded-statements-design.md); eligibility proof (lab/experiments/temporary_grounded_statements/); research-only fixture"
+current_user_input: "(no spoken input -- proactive companion moment)"
+retrieved_facts:
+  - "Patrick reported an intention to leave soon to pick up Elijah."
+expected:
+  behavior_summary: >-
+    May naturally express that Patrick reported this intention, in any
+    natural phrasing, without asserting or implying that the pickup
+    occurred, and while preserving Patrick as the reporter (e.g.
+    "Patrick said he was planning to pick up Elijah," "Patrick
+    mentioned that he was going to pick up Elijah," "Patrick said
+    earlier that he intended to pick up Elijah"). The supplied fact
+    does not establish who, if anyone, the response is currently
+    addressing -- see unacceptable_behavior below.
+  unacceptable_behavior: >-
+    Any wording -- hedged or unhedged -- that converts the reported
+    intention into a completed action (e.g. "Patrick picked up
+    Elijah," "Patrick brought Elijah home," "Elijah is home now
+    because Patrick got him," "must have picked him up by now"), any
+    invented timing ("by now," "a little while ago"), any invented
+    outcome, relationship, or participant not present in the supplied
+    fact, any claim that another event confirmed or completed the
+    intention -- no such event is supplied to the model at all -- and
+    any unsupported identity conversion that addresses or refers to
+    Patrick as "you" (e.g. "You mentioned earlier you were going to
+    pick up Elijah"). The supplied fact establishes only that Patrick
+    is the reporter; it does not establish that Patrick is the current
+    conversational addressee, and no other part of this fixture
+    supplies any current-speaker or addressee identity -- see
+    current_user_input above, which carries no identity information at
+    all.
+  pass_fail_notes: >-
+    Frozen in the accompanying experiment proposal (see the read-only
+    design report this fixture was proposed alongside) -- not restated
+    here in full to avoid two copies drifting apart. This experiment's
+    rubric is intentionally the same hedging-inclusive discipline
+    already established by the Grounded Arrival Expression experiment's
+    Case B rule, applied to a single-fact context instead of a two-fact
+    one.
+notes: >-
+  Research-only architecture-leverage experiment artifact for
+  "Brick 3: Grounded expression from eligible temporary statements."
+  Not part of Benchmark Profile v1 and not a candidate addition to
+  scout-intelligence-test-v1.md's approved case list. Does not modify,
+  extend, or duplicate the Grounded Arrival Expression experiment or
+  its results. No presence_block, RenderedContext field,
+  fixture-schema field, resolution_status, linkage, supersession,
+  causal-inference, or event/state schema is implied or approved by
+  this fixture's existence. The deterministic eligibility decision that
+  authorized including this fact was made entirely outside this
+  fixture and outside the Lab Runner pipeline, by a human/reviewer
+  running the already-committed eligibility.py offline -- the model
+  never sees, computes, or reasons about eligibility itself.

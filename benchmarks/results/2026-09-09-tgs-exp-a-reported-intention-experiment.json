@@ -1,0 +1,46 @@
+{
+  "_notice": "RESEARCH-ONLY EXPERIMENTAL EVIDENCE -- NOT a Benchmark Profile v1 result file, NOT part of the deployable-model leaderboard, NOT the Grounded Arrival Expression experiment (a separate, already committed experiment), NOT a production capability, and NOT a Temporary Grounded Statements schema/eligibility change. See docs/2026-09-08-temporary-grounded-statements-design.md (the frozen four-field shape and retention/staleness boundary) and lab/experiments/temporary_grounded_statements/ (the committed schema/eligibility proofs) for the architecture this experiment builds on -- not restated here. This is Brick 3: one narrow test of whether a small local model can express a single eligible Temporary Grounded Statement without inventing completion, causality, or additional facts.",
+  "experiment": "TGS-EXP-A -- 1 fixture x 1 model (Qwen2.5-1.5B-Instruct), 1 generation, no retries",
+  "date": "2026-09-09",
+  "fixture": "lab/fixtures/experimental/tgs-A-reported-intention-only.yaml",
+  "eligibility_precondition": "The single retrieved_facts entry is copied verbatim from the statement field of the already-committed lab/experiments/temporary_grounded_statements/example-a-named-reporter.yaml record, confirmed eligible for surfacing prior to fixture authoring via the unmodified eligibility.is_eligible_for_surfacing() (now = reported_at + 15min, TEST-ONLY threshold = 1h; eligible = True). That eligibility check was performed entirely offline, outside the Lab Runner pipeline, by a human/reviewer -- the model never saw, computed, or reasoned about eligibility itself.",
+  "pipeline": "Unmodified: canonical fixture -> render_canonical_context() -> RenderedContext -> QwenAdapter.format_prompt() -> TinyLlamaBackend.run(). Same backend reused for Qwen, per existing project precedent.",
+  "generation_settings": {
+    "temperature": 0,
+    "runs_per_fixture": 1,
+    "max_tokens": 150,
+    "n_ctx": 2048,
+    "repeat_penalty": 1.0,
+    "stop": ["<|im_end|>"]
+  },
+  "formatted_prompt": "<|im_start|>system\nYou are Scout, a calm and helpful family companion. Give short, friendly answers. Be honest when you do not know something.\n\nCANONICAL CONTEXT:\nKnown facts:\n- Patrick reported an intention to leave soon to pick up Elijah.<|im_end|>\n<|im_start|>user\n(no spoken input -- proactive companion moment)<|im_end|>\n<|im_start|>assistant\n",
+  "records": [
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "adapter": "QwenAdapter",
+      "test_id": "TGS-EXP-A",
+      "raw_output_text": "Good luck with your trip, Patrick! I hope you find what you're looking for.",
+      "tokens_generated": 18,
+      "prompt_tokens": 68,
+      "finish_reason": "stop",
+      "run_count": 1,
+      "retried": false,
+      "frozen_verdict": "FAIL",
+      "verdict_reason": "The supplied grounded fact establishes Patrick only as the reporter of an intention. Nothing in the fixture (system prompt, current_user_input, or retrieved_facts) establishes Patrick as the current conversational addressee. The response nevertheless addresses Patrick directly and converts the third-person reporter into 'you'/'your' ('your trip, Patrick... I hope you find what you're looking for') -- an unsupported identity conversion, which is on its own sufficient for FAIL under the reviewed rubric.",
+      "boundary_observation": "'Your trip' paraphrases the specific reported intention ('to leave soon to pick up Elijah') as a 'trip' -- recorded as a boundary observation worth noting, not as an independent basis for the FAIL verdict, which rests on the identity conversion alone. The response does not otherwise claim the pickup was completed, invent timing, invent an outcome, invent a participant or relationship, or claim confirmation by another event."
+    }
+  ],
+  "what_this_establishes": [
+    "A single eligible Temporary Grounded Statement, carried through the existing retrieved_facts seam with no new harness, schema field, or RenderedContext change, can be rendered into a real prompt and generated against by an existing adapter/backend pair without any architecture change.",
+    "On this one run, Qwen2.5-1.5B-Instruct did not invent that the reported pickup was completed, did not invent timing or outcome, and did not claim confirmation by another event.",
+    "On this one run, Qwen2.5-1.5B-Instruct did invent an unsupported conversational-addressee identity for Patrick when none was supplied -- a real, reviewer-identified failure mode distinct from, and not previously exercised by, the completion/causality failure modes the Grounded Arrival Expression experiment already tested."
+  ],
+  "what_this_does_not_establish": [
+    "Nothing about TinyLlama or Spark -- neither was run.",
+    "No general finding about Qwen's reliability -- this is one run, one fixture, no retries, not a benchmark.",
+    "No speaker-identity mechanism, capability, or design -- none is authorized or implied by this result.",
+    "No change to the Temporary Grounded Statements four-field shape, eligibility rule, or retention/deletion policy -- all remain exactly as frozen.",
+    "No change to, or reopening of, the Grounded Arrival Expression experiment or its results.",
+    "No production, Android, or Patevan9/Scout capability of any kind."
+  ]
+}

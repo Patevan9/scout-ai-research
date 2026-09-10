@@ -886,3 +886,83 @@ component design; any schema, enum, field name, or message format; any
 capability registry or intention-dispatch design; any model selection or
 evaluation; any change to Project Scout. `Patevan9/Scout` was not
 touched.
+
+## 2026-09-09
+
+**EXTERNAL RESEARCH LEAD (corroborating evidence, not yet triaged as
+architecture)** — Reachy Mini (Pollen Robotics) is preserved here as a
+research lead, in the same spirit as the 2026-09-04 Zeroth Robotics
+entry above: its reported architecture lessons are recorded because of
+what they corroborate or suggest about Patevan AI's own already-
+established principles, not because Reachy's own implementation is
+adopted, copied, read, or treated as authority. No Reachy source code
+was fetched or read to produce this entry — the lessons below are
+recorded as externally reported architecture findings supplied for this
+research thread, not independently verified against Reachy's own
+repository.
+
+Three lessons evaluated:
+
+1. **Dynamic grounded capability availability.** Reachy's reported
+   design gives its reasoning layer only the capabilities that
+   deterministic system state says actually exist and are currently
+   available/authorized right now — not a fixed, always-present
+   capability list. This directly corroborates, rather than adds to,
+   Patevan AI's own already-established capability-vs-action-result
+   distinction (2026-08-29 epistemic-contract entry, this log) and the
+   already-shipped `capability_availability` fixture field
+   (`lab/lab_runner/fixture_schema.py`, `renderer.py`) — both already
+   implement exactly this "deterministic state decides what
+   capabilities the model is even told about" principle. **Already
+   present; no new Patevan AI concept.**
+2. **Model-independent action proposals.** Reachy's reported design
+   lets its reasoning layer propose an action while a separate
+   deterministic layer decides whether that action exists, is
+   available, is permitted, and may execute. This is the same
+   separation already recorded in ADR-0004 ("Least Sufficient
+   Intelligence" — never guess, escalate rather than guess under
+   uncertainty) and in the 2026-09-04 Zeroth Robotics entry's own
+   pipeline sketch (structured intention → deterministic
+   capability/authority/safety/execution → verified result), and the
+   same "intention ≠ authorization; authorization ≠ execution;
+   execution ≠ verified success" chain already named there. **Already
+   present; corroborating evidence for an existing principle, not a new
+   one.**
+3. **Background task execution.** Reachy's reported design includes a
+   mechanism for long-running operations that do not block ongoing
+   conversation. Patevan AI has no equivalent mechanism, precedent, or
+   open research question recorded anywhere in this project today.
+   Recorded here as a Bucket-only future possible research lead —
+   explicitly **not** an OPEN research question, not a design, not a
+   scheduling/threading mechanism, and not authorized for any
+   implementation. Whether this is ever worth investigating on its own
+   is left entirely undecided.
+
+**Supporting evidence, already established elsewhere and only
+reinforced here, not newly proven:**
+- Speech/silence gating living outside the reasoning model — already
+  Patevan AI's own real, shipped behavior (`ScoutCompanionMomentsEngine`,
+  `ScoutPresenceDecider`; recorded in the "Grounded household awareness
+  and context continuity" OPEN entry's speak/silence finding).
+- Model/backend replaceability — already a Patevan AI Charter principle
+  (`SCOUT_AI_CHARTER.md`, "Model-replaceable") and structurally enforced
+  by this repository's own renderer/adapter/backend boundary (ADR-0006).
+- Temporary prompt/policy content kept separate from identity and
+  durable memory — already the exact distinction the Temporary Grounded
+  Statements design note
+  (`docs/2026-09-08-temporary-grounded-statements-design.md`) draws
+  between a temporary reported statement and `TruthDb`'s durable facts.
+- No-action/silence as a legitimate outcome, not a failure — already
+  explicitly documented in `ScoutCompanionMomentsEngine`'s own docstring
+  ("Silence is not a failure state here; it's the default") and
+  restated in the "Grounded household awareness" entry.
+
+**Explicitly not decided or authorized by this entry:** any new OPEN
+entry in `SCOUT_AI_RESEARCH_IDEAS.md`; any capability manifest,
+registry, or tool-framework design; any background-task scheduling
+mechanism or code; any change to `TruthDb`, the Temporary Grounded
+Statements design, or the Grounded Arrival Expression experiment/
+results; any architecture, schema, or component design; any model
+selection; any change to `Patevan9/Scout`. Reachy Mini's own
+implementation is not copied, referenced as a dependency, or treated as
+an authority for any Patevan AI decision.
