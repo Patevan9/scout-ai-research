@@ -294,6 +294,29 @@ continuous behavioral episode from genuinely independent recurrences,
 and if so, what minimal evidence/confidence model is needed before
 treating something as a learned habit at all?*
 
+**Production evidence confirms the stated failure mode, 2026-09-10:** a
+read-only investigation against `Patevan9/Scout` at commit
+`2f7f60df644c76dcf5daeed104cf98385dce4fa0` confirmed this.
+`HabitLayer.logUtterance()` increments interaction/topic counts
+unconditionally on every call, with no internal episode/latching/reset
+guard and no episode/session/boundary identity supplied by its caller —
+it is called for every accepted recognized user utterance
+(`MainActivity.kt`), so repeated mentions of the same topic within one
+continuous conversation can contribute multiple increments today.
+`HabitLayer.logPersonSeen()` has the same absence of an internal guard;
+its one call site is protected only by a shared, global 10-second
+elapsed-time rate limiter, which reduces sampling frequency but does not
+distinguish one continuous presence episode from a genuinely new
+occurrence — continuous presence can still produce multiple sighting
+increments. Persisted `HabitLayer` data (`scout_habits.json`) holds only
+aggregate counts/scores and a single most-recent timestamp per
+topic/person, not discrete occurrence records, so independent episodes
+cannot be reconstructed after the fact from that data either. This
+evidence applies to the two inspected `HabitLayer` production paths
+(utterance/topic logging and person-sighting logging) — it does not
+establish that every possible habit-evidence source in the app has been
+exhaustively proven vulnerable.
+
 **Explicitly not decided by recording this idea:** any Habit Store
 schema, lifecycle states, thresholds, or decay algorithm; whether ADA
 Pi's approach is adopted in any form; how this interacts with
