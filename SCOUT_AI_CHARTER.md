@@ -101,8 +101,13 @@ behavior, and meaningful facial expression (see "Model-replaceable" below).
   local model, more memory/context, stronger perception, robotics,
   additional sensors), but hardware changes available capability, not who
   Patevan is.
-- **Affordable by design.** Patevan AI should help keep personal companion-AI
-  technology affordable. Ordinary users should get a complete, worthwhile
+- **Affordable by design.** This principle reflects a broader Lippy
+  Robotics Labs belief behind Patevan: great technology shouldn't belong
+  only to people who can afford expensive robots, and capable
+  personal/family companion technology should be reachable by ordinary
+  families through hardware they can afford or may already own. Patevan
+  AI should help keep personal companion-AI technology affordable.
+  Ordinary users should get a complete, worthwhile
   companion without requiring expensive proprietary hardware, mandatory
   subscriptions, or paid bundles just to make Patevan useful. Normal features,
   fixes, and improvements are ordinary Patevan development, never withheld to
