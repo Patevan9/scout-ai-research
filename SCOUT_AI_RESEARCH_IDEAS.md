@@ -317,6 +317,25 @@ evidence applies to the two inspected `HabitLayer` production paths
 establish that every possible habit-evidence source in the app has been
 exhaustively proven vulnerable.
 
+**External research evidence — OpenSquilla Dream, 2026-09-10:** EXTERNAL
+PRECEDENT ONLY (TokenRhythm/opensquilla, commit
+`75a7085960ee57bc7a17acde5ce08071af4e7632`). That project's opt-in
+Dream memory-consolidation feature tracks, per candidate, `seen_count`,
+`positive_signal_count`, `correction_signal_count`,
+`failure_signal_count`, `manual_signal_count`, and `source_days`; its
+`ranking.py` performs deterministic ranking/eligibility logic before
+any model involvement, and `source_days` (distinct source days
+represented) contributes to a consolidation component of that score.
+This is relevant because Patevan's own production `HabitLayer`
+currently counts repeated observations/interactions but has no
+independent-episode identity (see the confirmed finding above).
+OpenSquilla did not solve Patevan's independent-episode problem, and
+`source_days` is not equivalent to a real-world episode — it is only a
+concrete precedent that evidence seen across distinct days/occasions
+can be represented separately from raw repeated count. Classification:
+external corroboration plus a genuinely useful research precedent, not
+an adopted design.
+
 **Explicitly not decided by recording this idea:** any Habit Store
 schema, lifecycle states, thresholds, or decay algorithm; whether ADA
 Pi's approach is adopted in any form; how this interacts with
@@ -326,7 +345,7 @@ purely as an external research influence that prompted these questions,
 not as something Scout is committed to depending on or resembling.
 
 ### Personal continuity: a private world model, unfinished threads, and time awareness
-**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-08.
+**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-10.
 
 A long-term vision for Scout AI, distilled as: *"Scout knows less about
 the world, but more about your world."* Most assistants effectively
@@ -463,6 +482,49 @@ distinguishes explicit user-triggered durability, state-change/history
 deduplication, and surfacing/retrieval eligibility as separate concerns,
 and this entry does not conclude whether an evidence-based durability
 trigger should ever be built.
+
+**Current-time grounding evidence, 2026-09-10:** CONFIRMED IN PATEVAN
+PRODUCTION — real Scout has deterministic current date/time handling
+(`handleTimeIntent()`, `handleDateIntent()`, `CalendarReader`'s
+date-boundary logic), but that current time is NOT generally
+model-visible: Gemini's system instruction gets only a coarse
+time-of-day label via `HabitLayer.getSummaryForGemini()`; the
+local-model system prompt has no current date, exact time, day-of-week,
+or general temporal anchor at all. `ScoutConversationState.startedAt`
+DOES exist — correcting an earlier over-strong statement that no
+conversation-start timestamp exists anywhere in the app — but it is
+genuine, in-memory only, lost on process death/Activity recreation, and
+not generally model-visible either. Production lacks a deterministic
+mechanism that converts grounded timestamps plus current time into safe
+relative-time relationships for model-visible context. Knowing the
+clock does not establish that a reported intention was completed, that
+a scheduled event actually occurred, that a stale observation is still
+true now, who the current speaker/addressee is, or causation between
+separately timestamped facts. EXTERNAL PRECEDENT (TokenRhythm/opensquilla,
+commit `75a7085960ee57bc7a17acde5ce08071af4e7632`): that project
+deterministically prepends a current-time stamp (date, time, UTC
+offset, weekday, timezone name) to user turns — useful evidence that a
+minimal model-visible "now" is simple to add, but its own turn-capture
+step strips this prefix before saving to memory, confirming it does not
+solve grounded relative-time relationships over stored evidence. Not a
+recommendation to copy this format.
+
+**Session/conversation-boundary external precedent, 2026-09-10:**
+EXTERNAL PRECEDENT (TokenRhythm/opensquilla, commit
+`75a7085960ee57bc7a17acde5ce08071af4e7632`): that project's durable
+session model stores session identity, `created_at`, `started_at`,
+`ended_at`, `runtime_ms`, lifecycle status, and an epoch/reset
+generation counter, all persisted (SQLite), unlike
+`ScoutConversationState`'s in-memory-only equivalent. Its transcript
+rows preserve `session_id`, `session_key`, and `created_at` as indexed
+identifiers — durably session-linked transcript rows using `session_id`
+and `session_key`. This provides a concrete external precedent for
+preserving durable session identity on transcript rows, directly
+addressing the structural association that Patevan currently lacks.
+NOT YET DECIDED / not established by this evidence: this does not by
+itself justify the spoken claim "you told me that earlier in this
+conversation" — deterministic retrieval/relationship logic over that
+linkage would still be required.
 
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
