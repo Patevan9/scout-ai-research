@@ -345,7 +345,7 @@ purely as an external research influence that prompted these questions,
 not as something Scout is committed to depending on or resembling.
 
 ### Personal continuity: a private world model, unfinished threads, and time awareness
-**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-10.
+**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-11.
 
 A long-term vision for Scout AI, distilled as: *"Scout knows less about
 the world, but more about your world."* Most assistants effectively
@@ -525,6 +525,55 @@ NOT YET DECIDED / not established by this evidence: this does not by
 itself justify the spoken claim "you told me that earlier in this
 conversation" — deterministic retrieval/relationship logic over that
 linkage would still be required.
+
+**Model-visible context / source-provenance evidence, 2026-09-11:** a
+completed read-only investigation found that production model-visible
+context substantially flattens distinct evidence types. Only a small
+set of sources was confirmed to reach either model: `TruthDb` facts on
+the local-model path, `HabitLayer`'s aggregate prose on the Gemini
+path, recent `ConversationDb` turns, and the current user utterance.
+Vision/perception, calendar, weather, `AwarenessState`/
+`AwarenessHistoryDb`, `JournalDb`, and general grounded web retrieval
+were not found to be generally model-visible in the inspected
+production paths. Local-model `TruthDb` facts are flattened into prose
+under a textual "Known facts:" cue; `source`, `confidence`,
+`created_at`, `updated_at`, and `last_confirmed` do not survive into
+that model-visible text. Gemini does not receive general `TruthDb`
+household facts through `ScoutPromptBuilder`; it receives the
+configured Scout name plus fixed instruction text and `HabitLayer`'s
+coarse prose summary, which itself does not preserve underlying counts,
+scores, or per-item recency metadata. `ConversationDb` stores
+`created_at` when a turn is logged, but `getLastTurns()` omits it from
+the retrieval query entirely and returns only `role` and `text`; the
+verified schema also has no session/conversation identifier.
+Separately, past deterministic/template Scout output and past
+LLM-generated Scout output are later represented identically as
+`role="scout"` plus plain text, with no stored origin/type
+distinction. The current user utterance reaches the model as plain text with
+no timestamp, speaker-identity proof, or session marker. No timestamp
+metadata, and no confidence/verification metadata, was found surviving
+into model-visible context for any inspected source. **Smallest
+confirmed gap:** production has no general mechanism for preserving
+evidence/source kind when grounded information is converted into
+model-visible context. This partially overlaps with, but is not
+identical to, the already-recorded temporal-grounding gap: timestamp
+loss is one instance of the broader confirmed pattern — metadata that
+exists deterministically in storage or subsystem state may disappear
+when information is converted into model-visible prose. Restoring
+source/evidence-kind would not itself provide a current-time anchor,
+and adding current time would not itself restore source, confidence,
+or evidence-kind distinctions. Research implication, not a
+requirement: as model context grows, relying on position in
+conversation history is not equivalent to preserving deterministic
+source identity — relevant grounded information may eventually need to
+be selected for a turn without losing what kind of evidence it
+represents. EXTERNAL CONTRAST (narrow, already-reviewed): OpenSquilla
+retrieval objects can retain structured fields such as source, path,
+score, and citation alongside retrieved text — not a claim that
+OpenSquilla solves Patevan's provenance problem, that its final prompt
+necessarily preserves all of that metadata, or that Patevan should
+copy its design. Classification: **C — MODEL-VISIBLE CONTEXT
+SUBSTANTIALLY FLATTENS DISTINCT EVIDENCE TYPES.**
 
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
