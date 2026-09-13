@@ -1631,7 +1631,7 @@ identity and confidence," "Episodic / shared-experience memory," and
 "Grounded web retrieval" above.
 
 ### Natural conversational interruption / barge-in (distinct from stopping speech)
-**Status:** OPEN. **Recorded:** 2026-09-03.
+**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-13.
 
 **Purpose:** investigate what would let Scout be naturally,
 conversationally interruptible — recognizing that a person has
@@ -1725,6 +1725,67 @@ Distinct from, and not restating, "Speaker identity and confidence,"
 "Developer observability, diagnostics, and user-authorized support
 sharing," "Self-diagnosis and bounded self-recovery," the still-open
 Working Memory question, and any local speech/TTS research.
+
+**Capability Design #8 findings, 2026-09-13:** a completed read-only
+architecture investigation (Capability Design #8) inspected the current
+production mechanisms this entry's precedent section already cites —
+`ScoutSpeechCompletionPolicy.Kind` (`NATURAL`/`ENGINE_ERROR`/
+`USER_INTERRUPTED`), `ScoutSpeechDispatchGuard`'s audible-vs-submitted
+dispatch-identity tracking, the `isSpeaking`/TTS-lockout mic guard,
+self-echo discard, and courtesy-phrase matching — and established the
+smallest model-independent architecture boundaries needed to preserve
+this entry's stated distinctions.
+
+**Ownership boundary finding:** interruption-request/intent and actual
+response-delivery completion are two separate deterministic ownership
+boundaries, not one. That incoming input requests Tolliver to stop or
+redirect is established by a deterministic upstream input/conversation
+mechanism (today, evidenced only by the manual tap). Whether a specific
+live response actually ended as interrupted is a separate fact, owned
+exclusively by the response-delivery state owner, because only it holds
+the authoritative dispatch/audibility lifecycle. A request does not by
+itself guarantee a response ends this way. Neither judgment belongs to
+the model. The mechanism that may eventually determine interruption
+intent remains deferred; this investigation does not design it.
+
+**Terminal completion state finding:** when a response delivery reaches
+a recorded terminal completion, that completion must be represented by
+a deterministic, model-independent state that distinguishes natural
+completion from non-natural completion. A non-natural terminal
+completion state is sufficient to establish, within the live delivery
+lifecycle, that the response did not complete normally and to gate the
+immediate post-completion behaviors actually evidenced by Scout
+(`ScoutSpeechCompletionPolicy`'s `opensPresenceReplyWindow`/
+`drainsPendingAnswer`/`countsAsStartupGreetingFinished`). Whether
+terminal completion state, response identity, or any relationship to
+generated content must survive beyond the live dispatch remains
+unproven, because no later deterministic consumer requiring that
+information has been established.
+
+**Self-echo finding:** Tolliver hearing its own synthesized voice proves
+that recognized speech is not automatically valid user input. Recognized
+text must still be rejectable as self-echo before routing or
+interruption-intent handling.
+
+**Failure-case distinctions:** ten concrete cases (explicit "stop,"
+explicit "thanks," nearby speech to another person, self-echo, a visible
+person present while a different person speaks, recognized-but-not-
+addressed speech, a long response interrupted partway through, natural
+completion, input arriving nearly simultaneously with natural
+completion, and process death mid-speech) were each traced against the
+architecture above; none required collapsing audio activity, recognized
+speech, addressee determination, interruption intent, or
+delivery-completion state into one signal, and none established a
+requirement for finer-grained partial-delivery tracking. The
+process-death case separately proves that architecture must not assume
+a terminal completion event is always recorded.
+
+**Implementation status:** Scout's cited mechanisms prove a real,
+working precedent but are **not** `tolliver-core` consumers, and no real
+`tolliver-core` caller currently exists. Capability Design #8 therefore
+reveals no justified Brick #2. No implementation is authorized. No
+partial-delivery amount, new timestamp, persistence schema, or
+`EvidencePayload` extension is justified by this investigation.
 
 ### Natural local speech delivery (pacing, variety, and expressiveness within on-device constraints)
 **Status:** OPEN. **Recorded:** 2026-09-03.
