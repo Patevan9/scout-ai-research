@@ -117,7 +117,7 @@ compatible in spirit and would likely need to be designed together if this
 is ever pursued.
 
 ### Structured context beyond vision
-**Status:** OPEN. **Recorded:** 2026-08-29.
+**Status:** OPEN. **Recorded:** 2026-08-29. **Updated:** 2026-09-12.
 
 Point 8 above, split out because it's broader than vision alone: should
 memory, capabilities, identity, calendar, weather, sensors, and hardware
@@ -125,6 +125,54 @@ state eventually supply Scout AI with similarly clean, typed context
 instead of prose? Not investigated yet; likely overlaps significantly with
 the typed-structure direction already noted as a research conclusion in
 `RESEARCH_LOG.md`.
+
+**Non-vision context inventory finding, 2026-09-12:** a completed read-only
+investigation inventoried Scout's real non-vision context sources
+(calendar, weather/NWS, connectivity, identity enrollment, `TruthDb`,
+`HabitLayer`, `JournalDb`, conversation state, runtime/model-availability
+state) and found each retains genuinely different structure, provenance,
+and semantics, confirmed directly in code rather than assumed. Weather
+(`ScoutWeatherManager`) is a strong existing example of source-specific
+freshness discipline: differentiated per-query-type cache windows, and a
+deliberate, test-enforced rule that stale cached weather is never served
+as current, even with an apologetic prefix. Timestamp meanings (cache-fetch
+time, forecast-period time, calendar schedule time, `TruthDb`
+creation/update time, vision-observation-capture time) remain distinct
+across sources — none were found merged into one meaning. No real
+executable code path combines multiple sources into an unsupported
+connecting fact (e.g. inferring attendance at a scheduled event from a
+later visual observation plus weather); every real multi-source consumer
+found (`CalendarFollowupMatcher`, `VisionAnswerBuilder`) keeps its sources
+individually distinguishable. No real cross-source reasoning consumer
+exists anywhere in Scout today. No single universal minimum context unit
+was established — calendar, weather, vision, durable-fact, habit, and
+runtime-boolean shapes are genuinely irreducible to one form.
+
+**Resulting boundary:** Tolliver should preserve source-specific
+representations and semantics unless a proven consumer establishes a need
+for a shared abstraction. This investigation found no such consumer, so a
+universal context representation is not justified. This does **not**
+endorse Scout's existing model-context construction or its existing
+prose-flattening behavior — no claim is made that either is correct or
+sufficient, only that no evidence-based requirement for a shared structured
+representation was found. Runtime operational state (e.g. connectivity,
+model availability) should not be forced into `EvidencePayload` merely to
+create uniformity — it is not evidence in the sense Brick #1 represents.
+
+**EvidencePayload/weather boundary:** Brick #1's current `EvidencePayload`
+does not represent structured weather without unjustified/lossy
+adaptation, and no current proven requirement justifies extending
+`EvidencePayload` for weather. This is a current architecture boundary,
+not a permanent prohibition on a future structured weather representation
+if a real deterministic consumer later proves one necessary.
+
+**Consequently:** no `ContextPayload`, `ContextManager`, `WorldState`,
+evidence bus, or similar shared abstraction is justified; this
+investigation reveals no Brick #2; no implementation piece is currently
+justified; `EvidencePayload`/Brick #1 remains unchanged; all previously
+deferred architecture (retrieval/ranking, universal schema, knowledge
+graph, vector database, memory redesign, prompt redesign) remains
+deferred.
 
 ### Coordination of existing specialized systems
 **Status:** OPEN. **Recorded:** 2026-08-29.
