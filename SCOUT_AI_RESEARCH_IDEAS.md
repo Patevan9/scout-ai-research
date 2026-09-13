@@ -282,7 +282,7 @@ Scout without an actual run against existing fixtures; the advertised
 scheduled by this note.
 
 ### Habit learning from independent episodes
-**Status:** OPEN. **Recorded:** 2026-08-31.
+**Status:** OPEN. **Recorded:** 2026-08-31. **Updated:** 2026-09-13.
 
 Inspired by reviewing the open-source [ADA Pi project](https://github.com/nazirlouis/ada-pi)
 — an external research reference only, not a dependency Scout intends to
@@ -383,6 +383,73 @@ concrete precedent that evidence seen across distinct days/occasions
 can be represented separately from raw repeated count. Classification:
 external corroboration plus a genuinely useful research precedent, not
 an adopted design.
+
+**Independent episode counting finding, 2026-09-13:** a completed
+read-only architecture investigation (Capability Design #7) reconfirmed
+the production `HabitLayer` failure above is real and code-grounded, and
+established the smallest model-independent architecture for distinguishing
+one continuous episode from a genuinely new independent recurrence.
+Repeated sampling of one continuous condition must not silently become
+repeated independent occurrences.
+
+**Episode opening/closing:** an episode begins when a qualifying
+observation arrives while no episode for that source-specific key is
+currently open; it remains open across observations that the source
+deterministically treats as continuous; and it ends only when that source
+supplies a deterministic close/reset signal. The first occurrence does
+**not** require evidence that an earlier episode closed. For a second or
+later independent occurrence under the same key, there must have been:
+open → close/reset → subsequent qualifying observation/open. Time alone
+cannot establish independence — it is a useful bound, never the
+deterministic mechanism itself.
+
+**Reset ownership:** the source-specific producer/caller owns the
+deterministic judgment that its condition has ended. Any future generic
+mechanism, if one is ever justified, would only consume the resulting
+state transition per key — it would not decide what absence, conversation
+completion, activity completion, or another source-specific reset means.
+Source-specific reset/continuity semantics remain source-specific; no
+universal `Episode`/`EpisodeId` object or architecture is justified.
+
+At this narrow scope, the only necessary distinction is raw/qualifying
+observation versus independent occurrence — no habit lifecycle
+(candidate/emerging/established/fading or otherwise) is designed.
+Confidence/scoring/thresholds remain deferred and upstream of this
+mechanism, not solved by it. Episode independence is separable from
+verified identity attribution — counting requires only a stable, possibly
+unresolved key, not a confirmed identity.
+
+**Timestamps:** no timestamp has been proven necessary for episode
+independence itself. A future occurrence representation or later
+deterministic consumer might justify retaining source-appropriate time
+data, but this investigation does not establish such a requirement. Brick
+#1's `Text` payloads do not carry a timestamp field, and none is added.
+
+Persistence across a process restart remains an explicitly unresolved edge
+case — no persistence schema is designed. Correction/invalidation is not
+required to solve the narrow counting problem and remains deferred.
+
+Episode-independence determination occurs before any eventual
+`HABIT_DERIVED` `EvidencePayload` construction — a precondition/gating
+check, not a transformation of already-constructed evidence; no change to
+`EvidencePayload` is made or justified by this investigation. Personal
+Continuity and Structured Perception are related — both concern whether a
+new observation connects to something already recorded without inventing
+an unsupported link — but remain separate concerns, not merged. The model
+must not decide whether repeated observations constitute one episode or
+multiple independent occurrences; that determination stays entirely
+deterministic and Tolliver-owned.
+
+**Implementation status:** Scout's `HabitLayer` call sites prove a real
+production problem but are **not** `tolliver-core` consumers, and no real
+`tolliver-core` caller currently exists. Capability Design #7 therefore
+reveals no justified Brick #2. No implementation is authorized. Previously
+deferred areas remain deferred: Habit Store schema, lifecycle states,
+confidence formulas/thresholds, decay/staleness, retrieval/ranking,
+embeddings, episodic memory, Working Memory, universal context/evidence
+abstractions, knowledge graph, model/prompt rendering, Android
+integration, UI, actions/reminders, persistence schema, and
+correction/invalidation.
 
 **Explicitly not decided by recording this idea:** any Habit Store
 schema, lifecycle states, thresholds, or decay algorithm; whether ADA
