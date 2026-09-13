@@ -345,7 +345,7 @@ purely as an external research influence that prompted these questions,
 not as something Scout is committed to depending on or resembling.
 
 ### Personal continuity: a private world model, unfinished threads, and time awareness
-**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-11.
+**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-12.
 
 A long-term vision for Scout AI, distilled as: *"Scout knows less about
 the world, but more about your world."* Most assistants effectively
@@ -574,6 +574,66 @@ OpenSquilla solves Patevan's provenance problem, that its final prompt
 necessarily preserves all of that metadata, or that Patevan should
 copy its design. Classification: **C — MODEL-VISIBLE CONTEXT
 SUBSTANTIALLY FLATTENS DISTINCT EVIDENCE TYPES.**
+
+**Deterministic temporal classification finding, 2026-09-12:** a completed
+read-only architecture investigation (Tolliver AI, building on
+`tolliver-core` Architecture Brick #1's `EvidencePayload.ScheduledEvent`)
+established the smallest deterministic relationship Tolliver may establish
+between a scheduled interval and an explicitly supplied reference instant,
+without inferring real-world occurrence. Given `startMs`, `endMs`
+(input-domain precondition: `startMs <= endMs`) and an explicit
+`referenceTimeMs` (never an internal clock read), the half-open interval
+`[startMs, endMs)` yields exactly one of three states: `referenceTimeMs <
+startMs` → BEFORE; `startMs <= referenceTimeMs < endMs` → IN_PROGRESS;
+`referenceTimeMs >= endMs` → AFTER. For `startMs == endMs` the interval is
+empty and IN_PROGRESS is never produced — a defined consequence of the
+precondition, not an invalid state requiring exception handling. The
+classification is pure, deterministic, model-independent, side-effect-free,
+and recomputed whenever queried rather than stored in canonical evidence.
+**Evidence vs. truth, reconfirmed:** AFTER does not mean the event
+occurred; IN_PROGRESS does not mean it is actually happening; BEFORE does
+not mean it will definitely happen — scheduled evidence remains evidence of
+what was scheduled, consistent with Brick #1's existing invariant.
+
+**All-day event interpretation finding, 2026-09-12:** a related read-only
+investigation found that `ScheduledEvent`'s existing `allDay: Boolean` is
+sufficient to distinguish the timed-instant and all-day semantic
+*categories* that already share that shape — but `allDay` by itself does
+not establish which raw encoding any given source used for
+`startMs`/`endMs`. For the current `Patevan9/Scout` `CalendarContract`-
+backed source specifically, all-day `BEGIN`/`END` use the documented
+UTC-midnight calendar-date convention (confirmed directly in
+`Patevan9/Scout`, `brain/CalendarFollowupMatcher.kt`'s own
+`canonicalMonthDay()` and its explanatory comment), and for that source,
+recovering the intended calendar date is deterministic — a fixed,
+context-free normalization (always decode via UTC), unaffected by device
+timezone changes or DST. No new `EvidencePayload` field or alternate
+payload shape was found necessary; Brick #1 does not currently need to
+change. Once a calendar date has been recovered, comparing it against a
+real reference instant is a separate, later interpretation step that
+requires an explicitly supplied timezone (never read implicitly from
+device or environment) and does interact with DST for that specific
+date/zone; the exact comparison function is not designed or authorized
+for implementation. **Source boundary, not yet generalized:** `allDay=true`
+does not by itself prove that a future, non-`CalendarContract`
+`ScheduledEvent` producer encoded its `startMs`/`endMs` the same way. Any
+future source/adapter must establish its own explicit construction/
+normalization contract before its all-day values can safely receive this
+same UTC-decode interpretation — designing that future contract is not
+authorized here.
+
+**Implementation status, 2026-09-12:** Architecture Brick #1
+(`EvidencePayload.ScheduledEvent`) remains unchanged in `tolliver-core` —
+this finding required no change to it. The temporal classification above
+is architecturally justified by this research but is not authorized for
+implementation: no real executable caller currently exists in
+`tolliver-core` or elsewhere. No stable event identity was found necessary
+for single-event classification; overlapping events may be classified
+independently and may both legitimately be IN_PROGRESS. Calendar evidence
+remains canonical evidence of what the source stated at construction — if
+the live calendar later changes, existing evidence does not change with it;
+fresh awareness would require fresh evidence construction. This does not by
+itself establish any staleness/versioning architecture.
 
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
