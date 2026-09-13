@@ -1300,7 +1300,7 @@ discussed self-diagnosis/self-repair concept — related, but distinct,
 and to be investigated as its own idea if and when that happens.
 
 ### Self-diagnosis and bounded self-recovery (operational faults, not behavior)
-**Status:** OPEN. **Recorded:** 2026-09-02.
+**Status:** OPEN. **Recorded:** 2026-09-02. **Updated:** 2026-09-13.
 
 **Distinct from "Scout-proposed behavioral growth" above:** that entry
 covers noticing a recurring *behavioral* limitation and proposing a
@@ -1365,6 +1365,80 @@ automatic patch installation, or Constitution/safety-rule changes;
 silent authority expansion or Scout approving its own recovery; and no
 "Proposal Sandbox" or other historical brainstorm label as an approved
 component, even for the future repair-proposal possibility above.
+
+**Capability Design #9 findings, 2026-09-13:** a completed read-only
+architecture investigation (Capability Design #9) inspected the minimum
+relevant `Patevan9/Scout` production code needed to verify or refine
+this entry's claims, and established the smallest model-independent
+architecture boundary this capability actually requires.
+
+**Real-Scout precedent — several distinct mechanisms, not one:**
+`ScoutSpeechAvailabilityMonitor` is deterministic fault-pattern
+detection plus honest disclosure — observational only, it performs no
+recovery. The recognizer watchdog
+(`MainActivity.runRecognizerWatchdog()`) detects a stale or missing
+recognizer and performs a single destroy/recreate action per watchdog
+trigger, but lacks independent positive verification that recognition
+became healthy afterward. Separately, the
+`isSpeaking`/`isThinking`/Busy-Brain watchdog behavior clears Scout's
+own stale bookkeeping state after a stuck duration — this is not
+recovery of the underlying TTS or model subsystem itself, only a
+correction to Scout's tracking of it, and should not be described as
+the former. TTS engine selection (`onInit()`/`applyPreferredVoice()`)
+has a bounded retry/fallback plus an independent read-back of the
+actual resulting voice state, and is the strongest real precedent
+found for action-completion not being the same fact as a verified
+result. The Gemini→TinyLlama same-question fallback is a real
+failover precedent, but is ordinary answer-routing behavior, not
+evidence of a general fault-recovery architecture.
+
+**Fault signal and fault condition may be distinct:** the recognizer
+watchdog computes a raw signal (staleness/missing) and then a determined
+condition from it; both are established deterministically, with no
+model involvement in any real case inspected.
+
+**Recovery-authorization ownership:** evidenced today as source/
+subsystem-specific deterministic code chosen by humans at build time —
+not a runtime, model-owned, or general permission mechanism. No evidence
+justifies a broader or narrower ownership model.
+
+**The principal truth boundary this entry must hold:** recovery
+attempted ≠ recovery action completed ≠ subsystem independently verified
+healthy. This is a boundary to freeze, not a universal state object or
+schema. The recognizer watchdog performs the recovery action but does
+not independently verify that recognition is healthy afterward. It
+waits for future observable behavior, including recurrence of the same
+stale/missing condition, to reveal that the problem remains. It
+therefore lacks positive recovery verification; it does not itself
+establish or record that recovery succeeded. When a recovery outcome
+matters to a deterministic consumer, recovery attempt, action
+completion, and independent verification of resulting subsystem health
+must remain distinguishable. Completion of the recovery action must
+never by itself be treated as proof that the subsystem is healthy — a
+deterministic check of actual subsystem state is required before a
+positive recovery-success claim may be treated as established.
+Reappearance of the same fault later is re-detection of a problem, not
+positive verification that the prior recovery succeeded.
+
+**No universal retry count, budget, timeout, cooldown, or
+terminal-failure policy is justified.** Existing thresholds/cooldowns
+(e.g. `ScoutSpeechAvailabilityMonitor`'s) are source-specific and must
+not be promoted into a universal recovery policy.
+
+**Process-death continuity is not currently required by any evidenced
+deterministic consumer.** No persistence is justified. Operational
+recovery state does not currently justify an `EvidencePayload`
+extension.
+
+**Model boundary:** the model does not own fault determination, recovery
+authorization, recovery-attempt truth, recovery-completion truth, or
+recovery-success truth. No real Scout mechanism inspected gives the
+model a role in any of these determinations today.
+
+**Implementation status:** the Scout production mechanisms cited above
+are evidence only — they are **not** `tolliver-core` callers, and no
+real `tolliver-core` caller currently exists. Capability Design #9
+therefore reveals no justified Brick #2.
 
 ### Speaker identity and confidence (who is talking, not just who is known)
 **Status:** OPEN. **Recorded:** 2026-09-02.
