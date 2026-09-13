@@ -1591,7 +1591,7 @@ disagreement-resolution rule; any model selection; whether this is ever
 built.
 
 ### Grounded web retrieval — authority, privacy, source-trust, and persistence boundaries
-**Status:** OPEN. **Recorded:** 2026-09-03.
+**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-13.
 
 **Purpose:** investigate what boundaries Scout would need before ever
 requesting or using external web information — who may authorize a
@@ -1626,6 +1626,67 @@ DESIGN IDEA (`RESEARCH_LOG.md`, 2026-08-26), the capability-vs-
 action-result distinction, "the model does not determine what Scout
 knows," and the false-success discipline already established elsewhere
 in this project.
+
+**Capability Design #10 findings, 2026-09-13:** a completed read-only
+architecture investigation (Capability Design #10), narrowly scoped to
+outbound disclosure authorization only (not general web-retrieval
+architecture), inspected the minimum relevant `Patevan9/Scout`
+production code needed to establish the real current outbound-to-cloud
+flow and the boundary, if any, governing it.
+
+**Real current outbound flow:** deterministic local context assembly
+(`ScoutPromptBuilder.buildSystemInstruction()` plus the recent
+conversation list supplied by `MainActivity`) →
+`ScoutGeminiManager.tryGemini()` → `GeminiClient.generateReply()` → an
+HTTPS request to Gemini. `ScoutChatMessageBuilder` is **not** part of
+this outbound path — it prepares content for the local llama.cpp/JNI
+model only and does not cross the network boundary; it should not be
+described as doing so.
+
+**What `buildSystemInstruction()` contributes:** Scout's own configured
+name; `HabitLayer.getSummaryForGemini()`'s output; and a fixed
+persona/behavior-instructions template. Separately, `MainActivity`
+supplies the recent conversation list via
+`convoDb.getLastTurns(limit = 6)`. `GeminiClient` receives and
+serializes the supplied system instruction and conversation list into
+the outbound request; whether the current utterance is already
+represented in that supplied list is a separate, upstream
+conversation-persistence fact not independently verified here.
+
+**Inclusion is deterministic and non-model-owned; no explicit
+disclosure-authorization step exists.** Every field included in the
+outbound request is chosen by deterministic code before the request is
+built. No component in the inspected path evaluates, per request,
+whether a specific piece of assembled content is permitted to leave the
+device — whatever is assembled is what is transmitted. The model has no
+ability to independently expand the disclosed local context through
+this path; it only ever receives what deterministic code already
+decided to include.
+
+**Context selection and outbound disclosure authorization are
+currently fused, not distinct operations.** The architectural gap this
+investigation surfaces is **not** "the model controls disclosure" — it
+does not. The gap is that no deterministic component currently treats
+permission-to-disclose as a decision separate from context assembly for
+another purpose (answering the question well).
+
+**Minimum model-independent architecture finding:** outbound disclosure
+to an external system must be a deterministic decision separable from
+local context assembly, rather than an implicit consequence of whatever
+context was assembled for another purpose. This finding does not claim
+existing Scout behavior is unsafe, and does not prescribe what a future
+authorization mechanism must allow or deny.
+
+**Relationship to prior designs:** distinct in direction from both.
+Design #3 concerns authority over claims coming **in** from a model.
+Design #6 concerns representation of information already **inside**
+Tolliver. Design #10 concerns authorization over information going
+**out**.
+
+**Implementation status:** the Scout production mechanisms cited above
+are evidence only — they are **not** `tolliver-core` callers, and no
+real `tolliver-core` caller currently exists. Capability Design #10
+therefore reveals no justified Brick #2.
 
 ### Developer observability, diagnostics, and user-authorized support sharing
 **Status:** OPEN. **Recorded:** 2026-09-03.
