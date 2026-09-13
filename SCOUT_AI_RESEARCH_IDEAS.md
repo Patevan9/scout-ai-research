@@ -597,21 +597,30 @@ what was scheduled, consistent with Brick #1's existing invariant.
 
 **All-day event interpretation finding, 2026-09-12:** a related read-only
 investigation found that `ScheduledEvent`'s existing `allDay: Boolean` is
-sufficient to discriminate two genuinely different semantics already
-sharing that shape — a real timed instant interval, and a calendar date
-encoded via Android CalendarContract's UTC-midnight convention (confirmed
-directly in `Patevan9/Scout`, `brain/CalendarFollowupMatcher.kt`'s own
-`canonicalMonthDay()` and its explanatory comment). No new `EvidencePayload`
-field or alternate payload shape was found necessary. The investigation
-separated two operations the informal problem statement had conflated: (1)
-recovering an all-day event's intended calendar date — a fixed,
+sufficient to distinguish the timed-instant and all-day semantic
+*categories* that already share that shape — but `allDay` by itself does
+not establish which raw encoding any given source used for
+`startMs`/`endMs`. For the current `Patevan9/Scout` `CalendarContract`-
+backed source specifically, all-day `BEGIN`/`END` use the documented
+UTC-midnight calendar-date convention (confirmed directly in
+`Patevan9/Scout`, `brain/CalendarFollowupMatcher.kt`'s own
+`canonicalMonthDay()` and its explanatory comment), and for that source,
+recovering the intended calendar date is deterministic — a fixed,
 context-free normalization (always decode via UTC), unaffected by device
-timezone changes or DST; and (2) comparing that recovered date against a
-real reference instant — a separate interpretation step that does require
-an explicitly supplied timezone (never read implicitly from device or
-environment) and does interact with DST for that specific date/zone. The
-exact comparison function for (2) is not designed or authorized for
-implementation.
+timezone changes or DST. No new `EvidencePayload` field or alternate
+payload shape was found necessary; Brick #1 does not currently need to
+change. Once a calendar date has been recovered, comparing it against a
+real reference instant is a separate, later interpretation step that
+requires an explicitly supplied timezone (never read implicitly from
+device or environment) and does interact with DST for that specific
+date/zone; the exact comparison function is not designed or authorized
+for implementation. **Source boundary, not yet generalized:** `allDay=true`
+does not by itself prove that a future, non-`CalendarContract`
+`ScheduledEvent` producer encoded its `startMs`/`endMs` the same way. Any
+future source/adapter must establish its own explicit construction/
+normalization contract before its all-day values can safely receive this
+same UTC-decode interpretation — designing that future contract is not
+authorized here.
 
 **Implementation status, 2026-09-12:** Architecture Brick #1
 (`EvidencePayload.ScheduledEvent`) remains unchanged in `tolliver-core` —
