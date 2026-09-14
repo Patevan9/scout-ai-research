@@ -1519,7 +1519,7 @@ any change to `PeopleDb`, `TruthDb`, or `HabitLayer`; whether this is
 ever built.
 
 ### Episodic / shared-experience memory (distinct from facts, habits, and open threads)
-**Status:** OPEN. **Recorded:** 2026-09-03.
+**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-14.
 
 **Purpose:** investigate whether and how Scout could durably represent
 that a specific past shared experience occurred — who was involved, what
@@ -1589,6 +1589,74 @@ summarization technology; any retention period or confidence threshold;
 any automatic open-thread-to-episode promotion rule; any
 disagreement-resolution rule; any model selection; whether this is ever
 built.
+
+**Capability Design #12 findings, 2026-09-14:** a completed read-only
+architecture investigation (Capability Design #12) inspected every real
+`JournalDb` write and read call site in `Patevan9/Scout` production
+code and established the current production truth in full, going
+beyond the prior precedent note above.
+
+**Write paths, confirmed exhaustively:** `JournalDb` has 18 verified
+write call sites, all in `MainActivity`. Sixteen use the default
+`"note"` entry type (boot events, watchdog force-clears, setup
+failures, and similar operational/diagnostic lines). One site writes
+deterministic fact-change bookkeeping (`"teaching"`/`"correction"`,
+chosen by whether a taught fact already had a prior value — not by any
+judgment of narrative significance). One site writes a
+`"companion_moment"` entry supporting the Companion Moments engine's
+own logging of its proactive remarks.
+
+**Read paths, confirmed exhaustive:** the only real reads are
+`entry_type`-filtered `"companion_moment"` reads, consumed exclusively
+by Companion Moments' own novelty/cooldown wiring (how long since a
+category last fired, how many have fired today). `JournalDb` content
+does not currently participate in ordinary conversational recall —
+confirmed, not assumed: no code path supplies any `JournalDb` content
+to the reasoning model or surfaces a past entry's content back into a
+conversation.
+
+**Field semantics, confirmed at the call-site level:** `entry_type` has
+narrow, real production semantics limited to the three values above.
+The declared Memory-Reel types `first_met`, `milestone`, and `freeform`
+are confirmed unused scaffolding — never written by any call site.
+`weight` is written (with two different literal values depending on
+write path) but never consumed — no read path selects it. `reel_id` is
+never populated (omitted from every `INSERT`) or queried anywhere.
+
+**The central gap, confirmed rather than assumed:** no current
+deterministic mechanism distinguishes an ordinary occurrence from an
+episode-worthy event. `entry_type` labels are chosen by fixed
+contextual logic, not by any evaluation of significance, and `weight` —
+the one field whose name suggests such a concept — has no consumer.
+
+**Model/narrative authority, confirmed:** no model currently writes
+directly or indirectly to `JournalDb` through any verified path.
+`JournalDb` content in the verified production paths is supplied
+deterministically by Scout code — as fixed diagnostic strings, as a
+template with variable substitution (e.g. the teaching/correction
+line), or as a deterministic identifier key (e.g. `contentKey` values
+such as `"environment:new_arrival"`) — and is not free-form
+model-generated narrative. This investigation establishes current
+production truth and the architectural gap above — it does **not**
+establish, and does not prohibit, the eventual mechanism that fills
+that gap; the established authority distinction remains only that a
+fluent model-generated narrative is not, by itself, authoritative evidence
+that the described event actually occurred.
+
+**Relationship to Design #7 and Companion Moments, both distinct:**
+`HabitLayer` occurrence counting (Design #7) remains a separate
+mechanism, in a separate store, with no code-level connection to
+`JournalDb` found anywhere, and must not be conflated with episodic
+significance. Companion Moments' novelty/cooldown check is itself a
+third, separate mechanism from both — it answers whether a specific
+remark category may fire again, not whether an event is independently
+new (Design #7's question) or episode-worthy (this entry's question).
+
+**Implementation status:** the Scout production mechanisms cited above
+are evidence only — they are **not** `tolliver-core` callers, and no
+real `tolliver-core` caller currently exists. No `EvidencePayload`
+change is justified. No new persistence semantics are justified.
+Capability Design #12 therefore reveals no justified Brick #2.
 
 ### Grounded web retrieval — authority, privacy, source-trust, and persistence boundaries
 **Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-13.
