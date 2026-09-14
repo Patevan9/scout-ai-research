@@ -1689,7 +1689,7 @@ real `tolliver-core` caller currently exists. Capability Design #10
 therefore reveals no justified Brick #2.
 
 ### Developer observability, diagnostics, and user-authorized support sharing
-**Status:** OPEN. **Recorded:** 2026-09-03.
+**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-14.
 
 **Purpose:** investigate how Scout's growing set of interacting systems
 — perception, identity evidence, memory, grounded context, model
@@ -1764,6 +1764,73 @@ any hard-coded personal-identity authority mechanism. Distinct from, and
 not restating, "Self-diagnosis and bounded self-recovery," "Speaker
 identity and confidence," "Episodic / shared-experience memory," and
 "Grounded web retrieval" above.
+
+**Capability Design #11 findings, 2026-09-14:** a completed read-only
+architecture investigation (Capability Design #11) inspected the
+minimum relevant `Patevan9/Scout` production code needed to verify this
+entry's claims, and established that diagnostic evidence
+production/collection, elevated local viewing, the grant of elevated
+viewing access, and deliberate outward sharing are four separable facts
+in real Scout production behavior — not merely a conceptual distinction
+this entry hoped for.
+
+**Bounded collection, confirmed:** `DiagnosticDb` and the ordinary
+crash-diagnostic path remain bounded technical evidence by
+construction, consistent with the precedent already recorded above.
+
+**Elevated local viewing, confirmed real:** `ChatDiagnosticActivity`
+may expose richer, real production-chat information locally — its own
+code comment states it "can contain real conversation content and
+personal facts." That richer diagnostic information is read from an
+in-memory, native-side snapshot; `ChatDiagnosticActivity` itself does
+not write it to `DiagnosticDb` or any file and has no direct
+save/export/share path — text is shown in selectable views for manual
+on-device copying only, not transmitted by any code in that screen.
+Reopening the Activity re-reads whatever in-memory diagnostic state is
+currently available; the underlying snapshot's own lifetime beyond that
+is not established by the code inspected here.
+
+**The grant of elevated viewing access:** gated by a hidden,
+device-local, action-based, identity-independent unlock — a rapid-tap
+gesture (7 taps on "About Scout" within a fixed window) persisted to a
+boolean flag. This establishes only that the mechanism is device-local,
+action-based, and identity-independent; it does **not** establish
+physical possession, device ownership, developer identity,
+administrator identity, or legitimate authority beyond what the code
+itself performs. The unlock does not itself imply or grant outward
+sharing — it gates viewing only, and no code path connects it to any
+transmission mechanism.
+
+**Sharing remains a separate, manual path:** the bounded Diagnostic
+Report's share action is a distinct, ordinary UI operation (a button
+press opening Android's share chooser) — not gated by the developer
+unlock, and structurally incapable of sharing the richer
+`ChatDiagnosticActivity` content, since that content has no share code
+path at all.
+
+**Model boundary, confirmed:** no inspected model-facing path can grant
+elevated access, open the richer diagnostic view, or trigger sharing —
+every call site for the unlock flag, the richer view, and the share
+action originates from direct UI handlers, none reachable from any
+model-routing code.
+
+**Identity is not evidence of administrative/developer authority** —
+confirmed directly by the unlock mechanism's own shape, which checks no
+face, voice, name, or household identity at any point. This extends
+Designs #4 and #8's identity≠authority boundary into a new domain
+(device-local administrative access) rather than restating it, and
+remains distinct from Design #9 (fault/recovery truth) and Design #10
+(outbound disclosure during a live model request, not user-initiated
+sharing afterward).
+
+**Implementation status:** the Scout production mechanisms cited above
+are evidence only — they are **not** `tolliver-core` callers, and no
+real `tolliver-core` caller currently exists. No `EvidencePayload`
+change is justified. No new persistence requirement is justified.
+Capability Design #11 therefore reveals no justified Brick #2. This
+finding describes deterministic ownership boundaries evidenced by
+current code — it does not describe, and does not claim to describe, a
+complete security or authorization system.
 
 ### Natural conversational interruption / barge-in (distinct from stopping speech)
 **Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-13.
