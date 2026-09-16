@@ -281,6 +281,73 @@ Scout without an actual run against existing fixtures; the advertised
 1M-token context is not a Scout requirement. Not authorized or
 scheduled by this note.
 
+**2026-09-16 note (NeoHorse-1-4B, external candidate — tracking only,
+🟡 RESEARCH — DO NOT ADOPT):** noted here for tracking only, not as a
+benchmark candidate or a recommendation to replace Tolliver's current
+Android model. Its primary interest is its reported agent/tool-use
+post-training approach, said to include routing-guided agentic
+post-training and recursive-improvement ideas. The Tolliver-specific
+research question this raises: what, if anything, can that training
+approach teach us about making a small, replaceable local LLM
+cooperate reliably with Tolliver's deterministic tools and systems,
+without moving Tolliver's identity, memory, authority, or truth into
+the model — connecting directly to this entry's existing
+architecture-leverage question above. **Official primary source:**
+TokenRhythm's own model page, [TokenRhythm/NeoHorse-1-4B on Hugging
+Face](https://huggingface.co/TokenRhythm/NeoHorse-1-4B). Per that model
+card, NeoHorse-1-4B is released under an Apache 2.0 license and is
+post-trained from Qwen3.5-4B using a
+routing-guided approach — incoming tasks are routed across a
+heterogeneous pool of models, trace data from tool calls/multi-step
+plans/outcomes is used to estimate which capabilities are
+underdeveloped across the pool, and those gaps shape the next training
+round — framed by TokenRhythm as an initial step toward recursive
+self-improvement. **All benchmark claims (e.g. a reported 64.87
+macro-average across a ten-benchmark suite, ~5.93 points above base
+Qwen3.5-4B) are TokenRhythm's own self-reported figures, not
+independently validated by Tolliver AI research** — no independent
+Android/ARM feasibility evidence exists. Not authorized or scheduled by
+this note.
+
+**2026-09-16 note (MiniCPM5-2B, first record in this repository):**
+recorded here for the first time as the more compelling near-term
+phone-sized model candidate relative to NeoHorse-1-4B, per this
+session's research review — a minimal tracking note only. No
+evaluation, benchmark run, or independent verification of MiniCPM5-2B's
+claims has been performed, and none is authorized by recording this
+note. **Official primary source:** OpenBMB's own model page,
+[openbmb/MiniCPM5-2B on Hugging
+Face](https://huggingface.co/openbmb/MiniCPM5-2B). Per that model
+card, MiniCPM5-2B is a dense 2.52B-parameter (1.98B non-embedding)
+causal language model released under an Apache 2.0 license, built for
+on-device/edge-AI deployment with native tool-calling support, a
+131,072-token context, and local deployment options including GGUF
+builds for llama.cpp (and downstream runtimes such as Ollama/LM
+Studio). **The benchmark claim
+that motivates calling it the stronger near-term phone-sized candidate
+(a reported 53.9 average across 34 benchmarks, ahead of Qwen3.5-4B's
+51.1) is OpenBMB's own self-reported figure, not independently
+validated by Tolliver AI research.** This entry's existing
+architecture-leverage question above governs any future evaluation of
+this candidate, the same as every other model noted here.
+
+**2026-09-16 note (llama.cpp 0.4.1, WATCH / FUTURE EXPERIMENT):** noted
+here for tracking only, in the same spirit as the 2026-09-02
+Spark-X2.5/`spark2_5` mainline-support note above — this tracks
+upstream `ggml-org/llama.cpp` development, not a Tolliver-specific
+finding. **Official primary source:** [Release v0.4.1 ·
+ggml-org/llama.cpp on
+GitHub](https://github.com/ggml-org/llama.cpp/releases/tag/v0.4.1) (the
+project's own release notes). Per that release: new model-architecture
+support was added for Maple 20B-A1B, Tencent Hy 4, and Spark2.5; and,
+directly relevant to Tolliver's own Qwen-family runtime, the release
+notes record a correctness fix changing GDN normalization from `max`
+to `rsqrt`, affecting Qwen-, Kimi-, and GLM-family models.
+**Explicit boundary:** this does NOT justify
+changing Tolliver's pinned Android native llama.cpp runtime now — the
+current known inference path should be stabilized first. Not
+authorized or scheduled by this note.
+
 ### Habit learning from independent episodes
 **Status:** OPEN. **Recorded:** 2026-08-31. **Updated:** 2026-09-13.
 
@@ -983,6 +1050,84 @@ layer?*
 action schema, permission system, API, protocol, or universal
 `ACTION_RESULT` structure; any specific smart-home platform as a required
 dependency; any authorization beyond low-risk lights/switches.
+
+**2026-09-16 note (Google Home MCP — optional integration candidate and
+research reference, 🟢 INVESTIGATE — OPTIONAL FUTURE CAPABILITY):**
+Google Home MCP is noted here as another candidate integration/
+compatibility layer alongside Home Assistant, within this entry's
+existing vendor-neutral framing above — not a selected or required
+dependency. **Official primary source:** [MCP Reference — Google Home
+Developers](https://developers.home.google.com/reference/home-developers/mcp),
+Google's own Home Developers documentation domain. Per that official
+reference page, Home MCP is a Model Context Protocol server, currently
+in Early Access, spanning four capability areas: room/device
+enumeration, live device-state queries, parameterized device
+control/actions, and historical state and chronological event-log
+queries, across a user's Google Home ecosystem (Nest and
+Works-with-Google-Home/Matter devices). That same official material
+directly distinguishes Home MCP from a separate product, **Home
+Developer MCP**, which instead grounds AI coding tools in Google's own
+technical documentation (Home API references, the Matter specification,
+Thread/OpenThread material) for development tools — a
+developer-documentation server, not a household-control integration,
+and not what this entry tracks. Why it is
+relevant to this entry's central research question: structured
+household device state as grounded evidence; device/event history as
+temporal household context (connects to
+**Personal continuity: a private world model, unfinished threads, and
+time awareness** and **Grounded household awareness and context
+continuity**, elsewhere in this document — see those entries for the
+existing temporal-primitives and structured-evidence discussion, not
+restated here); deterministic household actions; an explicit
+separation of request, attempted action, completion, and verified
+state (a concrete application of this entry's own already-established
+capability-vs-action-result distinction above, not a new principle);
+permissions and privacy boundaries (connects to the existing outbound
+disclosure/permission-authorization finding recorded under **Grounded
+web retrieval — authority, privacy, source-trust, and persistence
+boundaries** — Capability Design #10 — which is scoped to web
+retrieval specifically, not smart-home, but is the closest existing
+precedent for treating disclosure/permission as its own deterministic
+decision); and possible camera/context research under privacy controls
+stricter than any currently established in this project, which is
+**not** authorized here.
+
+**Extends this entry's existing companion principle** (*"the model
+does not determine whether a real-world action succeeded"*) with:
+*the model is also not the authority for household state — structured
+device/tool evidence supplies that state, and the model may help
+converse about that evidence without becoming its source.* This is the
+same "the model is replaceable; Tolliver is not" architectural lesson
+already established throughout this project, applied here to household
+state specifically — not a new concept.
+
+**Hard boundary, not a suggestion:** Google Home MCP is not a required
+dependency. No paid Google subscription, Google Home Premium tier, or
+single smart-home vendor may become necessary for Tolliver's core
+$9.99 family experience merely because this integration exists —
+consistent with this entry's existing Home-Assistant framing and the
+Charter's hardware/chassis-independence principles.
+
+**Subscription/access, split by source:** Google's own Google Home
+Premium product page directly confirms Google Home Premium Advanced
+pricing — [Google Home Premium
+Subscription](https://store.google.com/product/google_home_premium)
+lists the Advanced tier at $20/month or $200/year. Separately, the
+claim that Home MCP Early Access itself is gated to US subscribers on
+that Advanced tier is one this pass could not confirm directly against
+Google's own Home MCP reference/onboarding material (still not
+directly reachable in this pass); that specific gating requirement
+remains attributed to 2026-09-16 launch-day press coverage of Google's
+announcement (e.g. TechCrunch, Engadget), not to Google's own MCP
+documentation. Either way, this is a concrete, current instance of
+exactly the paid-single-vendor dependency this entry's hard boundary
+above exists to keep out of Tolliver's core experience, not a
+hypothetical concern. Google frames Home MCP as designed so connected
+agents cannot take sensitive actions on a user's behalf — e.g. it will
+not unlock smart locks, open garage doors, or disarm security alarms —
+per its own stated security/privacy positioning; that framing is
+Google's own characterization, not independently validated by
+Tolliver AI research. Not authorized or scheduled by this note.
 
 ### Physical movement / robot control (transport-independent)
 **Status:** OPEN. **Recorded:** 2026-09-01.
