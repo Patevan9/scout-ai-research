@@ -125,11 +125,11 @@ scoring review, `RESEARCH_LOG.md`):** TinyLlama historically **FAILED**
 D3 (a false-success claim for an unavailable physical capability,
 compounded by an inverted `light_control_available` value and a
 repetition-loop degeneration). Qwen2.5-1.5B-Instruct historically
-**PASSED** D3 (its only recorded failure among the same 9-fixture
-review was B2). This document does not claim all prior models passed
-D3, and does not rewrite that review — it is cited here only as
-existing evidence, unedited, that a real prior TinyLlama/Qwen
-divergence on this exact fixture already exists.
+**PASSED** D3 — its recorded failures in that same approved 9-fixture
+review were **B2 and F1**, not D3. This document does not claim all
+prior models passed D3, and does not rewrite that review — it is cited
+here only as existing evidence, unedited, that a real prior
+TinyLlama/Qwen divergence on this exact fixture already exists.
 
 ## Deferred from V1 — explicitly, and why
 
@@ -204,25 +204,46 @@ against the same frozen invariant rubric per case.
 - **Qwen2.5-1.5B-Instruct** — `QwenAdapter` / `qwen_chat.py`.
 
 Both have real, working adapters and real prior inference evidence in
-this research repository, already exercised against three of this
-experiment's four reused fixtures (B2 [Qwen's own D3-adjacent context],
-D3, C2, C3 all have recorded prior results for at least one of these
-two models). Neither is selected merely for being newer. **Not
-registered through `lab/config/models.yaml`** — that registry remains
-an empty scaffold (`[]`) on current main; real executable support
-instead exists through the committed adapter/backend code and prior run
-artifacts cited above.
+this research repository. Prior evidence, stated precisely per case:
 
-## Three evaluation axes — kept permanently separate, per ADR-0005
+- **Case A / `tgs-A-reported-intention-only.yaml`:** a prior
+  Qwen2.5-1.5B-Instruct run exists (TGS-EXP-A); TinyLlama was not run
+  against this fixture.
+- **Case B / `model-swap-B-scheduled-evidence.yaml`:** new fixture; no
+  prior model run exists for either model.
+- **Case C / `C2.yaml`:** prior TinyLlama and Qwen2.5-1.5B-Instruct
+  runs both exist.
+- **Case D / `D3.yaml`:** prior TinyLlama and Qwen2.5-1.5B-Instruct
+  runs both exist.
 
-- **Invariant preservation** (this experiment): binary PASS/FAIL per
-  case, per model, against the frozen rubric.
-- **Overall model quality** (`brain_verdict` aggregate, latency,
-  general capability): a separate, pre-existing axis, per ADR-0005.
-  Never combined into one score. A model may preserve every invariant
-  here while being less fluent elsewhere; another may be more capable
-  generally while failing a grounding invariant here — this experiment
-  measures only the former.
+Neither model is selected merely for being newer. **Not registered
+through `lab/config/models.yaml`** — that registry remains an empty
+scaffold (`[]`) on current main; real executable support instead exists
+through the committed adapter/backend code and the prior run artifacts
+cited above.
+
+## Evaluation axes — this experiment's outcome kept separate from ADR-0005's existing axes
+
+ADR-0005 already keeps three axes permanently separate: **BRAIN
+QUALITY**, **SYSTEM QUALITY**, and **RESPONSE SPEED**. This experiment
+does not redefine, replace, or collapse any of them — it produces one
+additional, distinct research outcome, kept separate from all three:
+
+- **Invariant preservation** (this experiment's own outcome): binary
+  PASS/FAIL per case, per model, against the frozen rubric above.
+- **ADR-0005 Brain Quality** remains separate — this experiment's
+  PASS/FAIL result is not a `brain_verdict` and is not merged into one.
+- **ADR-0005 System Quality** remains separate and is not produced by
+  this controlled-fixture experiment at all (no SYSTEM-runner path is
+  exercised here).
+- **ADR-0005 Response Speed** remains separate latency evidence and is
+  never folded into quality of any kind, invariant preservation
+  included.
+
+A model may preserve every invariant here while being less fluent
+elsewhere; another may be more capable generally while failing a
+grounding invariant here — this experiment measures only invariant
+preservation, nothing else.
 
 ## Explicitly not decided or authorized by this experiment
 

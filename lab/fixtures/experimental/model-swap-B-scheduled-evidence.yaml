@@ -62,9 +62,10 @@ expected:
     the schedule plus reference time actually establish (i.e. that the
     reference instant falls inside the scheduled window, nothing
     more). Attribution: LM. Not a Scout Intelligence Test v1 case;
-    test_scope does not apply in the ADR-0005 sense -- this is a
-    controlled-fixture architecture experiment, not a Scout-integrated
-    RAW/SYSTEM/BOTH case.
+    this fixture creates or changes no benchmark "test_scope" or
+    RAW/SYSTEM/BOTH runner assignment. It is a research-only
+    controlled-fixture experiment using the existing
+    canonical-context/model-adapter/backend pipeline.
 notes: >-
   Synthetic schedule/time data only -- no real calendar, no real
   tolliver-core ScheduledEvent object, no real clock read. Deliberately
