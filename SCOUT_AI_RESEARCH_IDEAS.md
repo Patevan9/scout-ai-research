@@ -817,6 +817,58 @@ the live calendar later changes, existing evidence does not change with it;
 fresh awareness would require fresh evidence construction. This does not by
 itself establish any staleness/versioning architecture.
 
+**Model-Swap Continuity V1 corroboration, 2026-09-19:** a completed,
+frozen, executed research experiment (design:
+`benchmarks/experimental/2026-09-18-model-swap-continuity-v1-design.md`;
+raw evidence: `benchmarks/results/2026-09-19-model-swap-continuity-v1-raw.json`;
+scored results: `benchmarks/results/2026-09-19-model-swap-continuity-v1-scored.json`)
+supplied TinyLlama and Qwen2.5-1.5B-Instruct, in its Case B, with a
+dentist appointment scheduled from 2:00-2:30 PM and an explicit reference
+time of 2:15 PM. Both models incorrectly asserted that Elijah actually
+went to the dentist. This does **not** reveal a missing deterministic
+temporal concept: `tolliver-core` already has the pure, deterministic
+`ScheduledEventTemporalPosition` / `classifyInterval()` /
+`classifyScheduledEvent()` (2026-09-12 finding above), whose existing
+continuity semantics already preserve exactly the distinction both
+models violated — `IN_PROGRESS` means only that the reference instant
+falls within the scheduled interval, never real-world occurrence,
+attendance, completion, cancellation, or presence. The Lab Runner
+experiment did not exercise those Kotlin objects at all; Case B used the
+existing `retrieved_facts` path, which the canonical renderer turns into
+ordinary `"Known facts:"` prose. A subsequent independent review of the
+real renderer (`lab/lab_runner/renderer.py`) found an important existing
+contrast worth recording here: `retrieved_facts` renders as plain
+`"Known facts:"`, while vision evidence renders under its own
+`"Perception evidence (unconfirmed detector output):"` label and
+capability state under its own `"Capabilities available right now:"`
+block — the renderer already has precedent for preserving semantic/
+epistemic kind where the canonical fixture input supplies one; plain
+facts are simply the one block that does not carry such a qualifier
+today. ADR-0006 already establishes that this kind of semantic rendering
+belongs to the deterministic renderer boundary, and that model adapters
+own model-specific prompt syntax only and must never reinterpret the
+meaning of context. Case B therefore sharpens, rather than newly
+reveals, the source/evidence-kind flattening problem already recorded
+above (2026-09-11 finding): deterministic semantics may exist upstream
+and still disappear once evidence becomes model-visible prose. This
+remains corroborating evidence for this existing OPEN entry — it is not
+a new OPEN entry. It does **not** justify a new `ScheduledEvent` type, a
+`ContinuityView` change, a new `RenderedContext` field, a generic
+evidence envelope, a universal epistemic enum, a shared coordinator/
+state owner, a "Brick #3," an Android integration, or implementation of
+any renderer change. Any future investigation of model-visible scheduled
+evidence should begin from the existing pure temporal classifier and the
+existing ADR-0006 renderer boundary, not invent a parallel architecture.
+**Two related nuances preserved from the same reconciliation, recorded
+narrowly:** V1's Case A evidence was sufficient to prohibit treating
+Patrick as the current addressee, but it did **not** establish who the
+actual current addressee was — a separate, still-open question. V1's
+Case C (both models correctly declining to fabricate an untaught fact)
+is evidence about those two runs on that one fixture only, without any
+Lab Runner deterministic enforcement in place — it is not proof that
+unsupported-fact resistance as a general class never requires
+deterministic enforcement.
+
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
 any rule for when, or whether, an unresolved thread is ever promoted to
