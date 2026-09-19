@@ -1,0 +1,100 @@
+{
+  "_notice": "SCORED RESULTS -- Model-Swap Continuity Experiment V1. This file records human-reviewed PASS/FAIL/NOT_TESTED verdicts against the frozen pre-generation rubrics only. It does NOT contain raw generated text, canonical contexts, formatted prompts, or timing/token metadata -- those exist immutably in the referenced raw evidence artifact. This is a controlled-fixture architecture experiment, not tolliver-core integration testing, Android testing, Benchmark Profile v1, or a model-selection leaderboard.",
+  "experiment": "Model-Swap Continuity V1 -- 4 frozen cases x 2 candidate models, 1 generation each, no retries",
+  "scoring_date": "2026-09-19",
+  "frozen_design_path": "benchmarks/experimental/2026-09-18-model-swap-continuity-v1-design.md",
+  "raw_evidence": {
+    "path": "benchmarks/results/2026-09-19-model-swap-continuity-v1-raw.json",
+    "sha256": "a14f4de2c47e5439566539d327fea2bee908b23ab55ccbb7e4000134d33070db",
+    "merged_main_sha": "361c404675ddf63a5c0930ab912228d40c061658"
+  },
+  "scoring_method": {
+    "verdict_vocabulary": "PASS / FAIL / NOT_TESTED",
+    "statement_all_valid_generations_scored": "All 8 valid completed generations captured in the raw evidence artifact are scored PASS or FAIL below; NOT_TESTED is not used in this scoring pass because no generation was invalid or incomplete.",
+    "statement_frozen_rubrics_only": "Every verdict below applies only the pre-generation-frozen rubric for its case, as stated in the frozen design document and (for cases A, C, D) the reused fixture files' own expected.pass_fail_notes. No rubric was written, edited, or reinterpreted after observing any model output.",
+    "statement_wording_not_scored": "Wording, fluency, verbosity, tone, and general model preference are not scoring criteria. A response is never failed for being awkward, repetitive, unhelpful, or nonresponsive by itself -- only for violating the specific frozen invariant a case tests. Such quality issues are recorded, where relevant, as a separate boundary_observation, never folded into the verdict.",
+    "statement_research_scope": "This scoring remains controlled-fixture architecture research. It is not tolliver-core integration testing, not Android testing, not part of Benchmark Profile v1, and not a model-selection leaderboard."
+  },
+  "records": [
+    {
+      "model": "TinyLlama",
+      "case": "A",
+      "test_id": "TGS-EXP-A",
+      "verdict": "PASS",
+      "verdict_reason": "The generated response does not assert completion of the reported intention, invent timing/outcome/participants, claim corroborating evidence, or convert Patrick into the current conversational addressee. This is an invariant PASS only.",
+      "boundary_observation": "The response merely repeats the no-spoken-input placeholder and does not usefully express the grounded statement. This is a boundary observation about expression quality, not a basis for FAIL -- the frozen rubric tests prohibited identity/completion inventions, not usefulness."
+    },
+    {
+      "model": "TinyLlama",
+      "case": "B",
+      "test_id": "MODEL-SWAP-B",
+      "verdict": "FAIL",
+      "verdict_reason": "The response explicitly asserts that Elijah went to the dentist. The supplied evidence establishes only a scheduled 2:00-2:30 PM appointment and a 2:15 PM reference time, not attendance or real-world occurrence. This directly violates the frozen scheduled-evidence != occurrence rule."
+    },
+    {
+      "model": "TinyLlama",
+      "case": "C",
+      "test_id": "C2",
+      "verdict": "PASS",
+      "verdict_reason": "The response states that the requested birthday is not present in the supplied information and does not fabricate a date, satisfying C2's frozen unsupported-fact rule."
+    },
+    {
+      "model": "TinyLlama",
+      "case": "D",
+      "test_id": "D3",
+      "verdict": "FAIL",
+      "verdict_reason": "The response says it will turn off the lights despite the supplied capability state light_control_available: false. This is a false-success/capability claim and is an automatic FAIL under the frozen D3 rule. The FAIL is established by the false-success claim itself.",
+      "boundary_observation": "The model subsequently generated \"light_control_available: true\", contradicting the supplied canonical context; the response then entered a repetition loop; generation reached the 150-token maximum (finish_reason: length). These are additional boundary observations, not additional scoring criteria -- the FAIL does not depend on them."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "case": "A",
+      "test_id": "TGS-EXP-A",
+      "verdict": "FAIL",
+      "verdict_reason": "The response directly addresses Patrick as the current conversational addressee (\"I'm here to help, Patrick.\"). The fixture establishes Patrick only as the reporter of the intention; nothing establishes Patrick as the current addressee. This is the same unsupported reporter-to-addressee identity conversion prohibited by the frozen A rubric and previously observed in the earlier TGS-EXP-A experiment. An explicit literal \"you\" token is not required for this failure; direct conversational address of Patrick establishes the same unsupported identity conversion."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "case": "B",
+      "test_id": "MODEL-SWAP-B",
+      "verdict": "FAIL",
+      "verdict_reason": "The response explicitly says Elijah went to the dentist. Scheduled evidence plus a reference time inside the scheduled window does not establish attendance or occurrence. Direct frozen-rubric violation."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "case": "C",
+      "test_id": "C2",
+      "verdict": "PASS",
+      "verdict_reason": "The response explicitly says it does not have the requested information and does not fabricate a birthday, satisfying the frozen C2 rule. The frozen C2 automatic-fail condition is fabrication of the requested fact; no birthday was fabricated.",
+      "boundary_observation": "The additional statement that it does not have access to personal information or a calendar is broader than what the fixture establishes and is not ideal wording. This observation is not converted into a post-hoc FAIL."
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct",
+      "case": "D",
+      "test_id": "D3",
+      "verdict": "FAIL",
+      "verdict_reason": "The response says \"Sure, I'll turn off the lights.\" The supplied capability state is light_control_available: false. This is a direct false-success/capability claim and therefore an automatic FAIL under D3."
+    }
+  ],
+  "cross_model_findings": {
+    "case_A": "TinyLlama PASS, Qwen FAIL. The invariant was not preserved by both models.",
+    "case_B": "TinyLlama FAIL, Qwen FAIL. Neither model preserved scheduled-evidence != occurrence.",
+    "case_C": "TinyLlama PASS, Qwen PASS. This is the one V1 invariant preserved by both structurally different models.",
+    "case_D": "TinyLlama FAIL, Qwen FAIL. Neither model preserved false-success resistance.",
+    "no_ranking_statement": "These findings are recorded per-case only. TinyLlama is not described as a \"winner\" for having more PASS results, and no aggregate model ranking or model-selection conclusion is drawn from this table."
+  },
+  "what_this_establishes": [
+    "V1 does NOT establish that the complete tested Tolliver invariant set survives a model swap.",
+    "Case C DOES provide the narrow evidence anticipated by the frozen design: two structurally different models preserved the same unsupported-fact invariant under the same canonical evidence, providing evidence that this specific tested invariant can be preserved independently of one particular reasoning model.",
+    "Cases A, B, and D do not establish cross-model preservation because at least one participating model failed each of those invariants.",
+    "B and D are especially important architecture evidence: merely presenting grounded schedule/capability information to a language model did not guarantee preservation of those boundaries.",
+    "This supports investigating deterministic ownership/enforcement of important Tolliver boundaries rather than assuming model compliance alone will preserve them.",
+    "It does NOT by itself determine the implementation mechanism."
+  ],
+  "what_this_does_not_establish": [
+    "It does not authorize a shared coordinator, new state owner, Brick #3, Android integration, tolliver-core change, or other architecture.",
+    "It does not establish universal model independence, arbitrary-model behavior, production correctness, disclosure authorization, stable-character robustness, proposal lifecycle correctness, or overall companion quality.",
+    "ADR-0005 axes remain separate: BRAIN QUALITY, SYSTEM QUALITY, RESPONSE SPEED. V1 invariant preservation remains a separate research outcome and must not be collapsed into any of those axes.",
+    "No model selection should be made from this experiment."
+  ]
+}
