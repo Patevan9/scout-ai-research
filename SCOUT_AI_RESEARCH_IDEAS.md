@@ -836,7 +836,7 @@ attendance, completion, cancellation, or presence. The Lab Runner
 experiment did not exercise those Kotlin objects at all; Case B used the
 existing `retrieved_facts` path, which the canonical renderer turns into
 ordinary `"Known facts:"` prose. A subsequent independent review of the
-real renderer (`lab_runner/renderer.py`) found an important existing
+real renderer (`lab/lab_runner/renderer.py`) found an important existing
 contrast worth recording here: `retrieved_facts` renders as plain
 `"Known facts:"`, while vision evidence renders under its own
 `"Perception evidence (unconfirmed detector output):"` label and
