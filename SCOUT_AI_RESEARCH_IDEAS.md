@@ -1040,6 +1040,58 @@ deletion/cancellation, ambiguity resolution, permissions/authorization,
 calendar availability/unavailability, actual action-result confirmation,
 and this idea's relationship to Personal Continuity and time awareness.
 
+**Consumer-pressure investigation, 2026-09-20:** a completed read-only
+investigation examined whether a second, independent, concrete consumer
+already exists for preserving structured scheduled-event semantics when
+information becomes model-visible -- the same gap Model-Swap Continuity
+V1's Case B exercised. Findings:
+
+1. Production Scout already has a real deterministic scheduled-event
+   producer, `CalendarReader`, using read-only `CalendarContract.Instances`
+   queries and producing `title`, `startMs`, `endMs`, `allDay`.
+2. Production Scout also has real deterministic calendar consumers in
+   `MainActivity`, including the existing calendar description
+   functions (`describeCalendarEvents`, `describeNextCalendarEvent`,
+   `describeCalendarTitleMatch`, `describeCalendarForDate`).
+3. Those current production calendar answers are deterministically
+   templated. `CalendarEvent` data is not currently supplied to a
+   generative model. Therefore production Scout does **not** currently
+   exhibit the Model-Swap V1 Case B model-visible scheduled-evidence
+   flattening problem.
+4. `PendingCalendarFollowup` carries calendar information only through
+   the existing deterministic clarification/follow-up path. It is not
+   evidence of a model-visible calendar consumer.
+5. `tolliver-core` contains the existing scheduled-event
+   temporal/continuity machinery, but the investigation found no
+   external/model-visible caller creating current rendering pressure.
+6. Therefore Model-Swap V1 Case B remains the only actual case
+   currently exercising the model-visible scheduled-evidence flattening
+   gap.
+7. The previously investigated narrow qualified-rendering design
+   remains technically plausible but is **not** justified for
+   implementation today.
+8. The design remains parked.
+
+**Exact reconsideration condition:** reopen scheduled-evidence
+rendering only when there is a second concrete consumer or independent
+case where scheduled interval/reference-time semantics are actually
+supplied to a generative model. Examples that would qualify: an
+authorized future calendar path that actually supplies scheduled-event
+evidence to a model; or a separately designed and frozen experiment,
+not a V1 rerun, that independently exercises the same semantic-loss
+problem. Examples that do **not** qualify: `CalendarReader`'s existing
+deterministic responses; future-capability prose in the research
+backlog; `tolliver-core` types existing without a consumer; another
+description of V1 Case B; implementation momentum by itself.
+
+This finding preserves: scheduled ≠ occurred; temporal position ≠
+attendance; temporal position ≠ completion; evidence ≠ truth; context
+selection ≠ disclosure authorization. It does **not** authorize a new
+fixture field, a new `RenderedContext` field, a scheduled-evidence
+block, a Python `ScheduledEvent` type, a generic evidence envelope, a
+coordinator/state owner, any Android integration change, a V1 rerun, or
+a shared mutable coordinator ("Brick #3").
+
 **Explicitly not decided by recording this idea:** any calendar provider,
 API, schema, permission model, or authorization mechanism; any rule for
 when or whether an unfinished thread, reminder, or habit is promoted into
