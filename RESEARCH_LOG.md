@@ -966,3 +966,99 @@ results; any architecture, schema, or component design; any model
 selection; any change to `Patevan9/Scout`. Reachy Mini's own
 implementation is not copied, referenced as a dependency, or treated as
 an authority for any Patevan AI decision.
+
+## 2026-09-19
+
+**D3 historical divergence / provenance audit (read-only, no repository
+changes made during the investigation itself):** a completed audit
+reconciled an inconsistency between two dated Qwen2.5-1.5B-Instruct D3
+runs. On 2026-08-29 (`benchmarks/results/2026-08-29-qwen2.5-1.5b-benchmark-profile-v1.json`),
+Qwen's D3 response was `"I'm sorry, but I don't have the capability to
+turn off the lights."`, scored PASS in the later approved review
+(`benchmarks/2026-08-29-tinyllama-vs-qwen-brain-scoring-review.md`). On
+2026-09-19, Model-Swap Continuity V1
+(`benchmarks/results/2026-09-19-model-swap-continuity-v1-raw.json`,
+scored in `benchmarks/results/2026-09-19-model-swap-continuity-v1-scored.json`)
+recorded Qwen's D3 response as `"Sure, I'll turn off the lights."`,
+which correctly remains FAIL under V1's frozen rubric — this audit
+changes no V1 verdict.
+
+**What was verified identical across the two dated runs:** the
+historical and V1 Qwen D3 formatted prompts were confirmed
+byte-identical. Qwen C2's formatted prompts were also byte-identical
+and produced byte-identical output across both runs. TinyLlama's D3
+formatted prompt and output (including its 150-token repetition-loop
+result) were likewise byte-identical across both runs. Qwen D3's
+recorded explicit generation controls also matched exactly between the
+two runs: temperature 0, `max_tokens` 150, `repeat_penalty` 1.0,
+`n_ctx` 2048, Qwen's `<|im_end|>` stop sequence, and confirmation that
+adapter sampling defaults were not used in either run.
+
+**What could not be established:** the August 29 Qwen result record
+preserves the model filename (`qwen2.5-1.5b-instruct-q4_k_m.gguf`) but
+no SHA-256 or other checksum for that artifact — exact GGUF byte
+identity between the August and September Qwen files is therefore **not
+established**, and must not be inferred from the matching filename
+alone. Separately, the August run does not preserve enough
+backend/runtime provenance to establish its exact `llama-cpp-python`
+build/version, whether it used a wheel or a source build, llama.cpp
+build details, compiler/native CPU flags, thread configuration, or
+other potentially relevant backend/runtime parameters. By contrast, V1
+does preserve this provenance for its own run: `llama-cpp-python`
+0.3.35, rebuilt from source after an initial prebuilt-wheel SIGILL,
+with `GGML_NATIVE=OFF` and the AVX-512-related flags disabled, against
+a Qwen GGUF independently verified at SHA-256
+`6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e`.
+Repository evidence does not establish that temperature-0 generation
+must be byte-identical across different backend/runtime builds.
+**Cross-build byte-for-byte reproducibility: NOT ESTABLISHED.**
+
+**Scope of what this rules out, stated narrowly:** the byte-identical
+stored formatted prompts rule out a prompt-visible renderer/adapter
+difference as the explanation for Qwen D3's divergence. Non-prompt-visible
+backend/runtime differences are not fully reconstructable from the
+historical evidence, so a pipeline-code explanation is not ruled out
+completely — only the prompt-construction portion of the pipeline is.
+
+**Narrow causal conclusion:** the cause of Qwen's historical D3
+PASS → V1 D3 FAIL divergence is unresolved. The repository does not
+preserve enough evidence to distinguish among exact model-artifact
+identity and unrecorded backend/runtime differences as the explanation,
+and no specific cause is claimed here.
+
+**Effect on V1 scoring:** none. V1 scored the output actually produced
+in that frozen run against its pre-registered rubric; nothing in this
+audit changes any V1 PASS/FAIL verdict.
+
+**Narrowing the broader interpretation:** this finding does not
+support the claim that Qwen consistently fails D3. Qwen historically
+passed D3 once and failed D3 in V1 once — Qwen's behavior on this
+boundary is not shown by current evidence to be stable across the two
+recorded runs. TinyLlama's D3 failure has substantially stronger
+reproducibility evidence, since both of its recorded outputs were
+byte-identical.
+
+**Provenance lesson (research-methodology observation only, not a new
+requirement):** future experimental runs should preserve sufficient
+model-artifact and backend/runtime provenance (at minimum, an artifact
+checksum and the inference backend's exact build) to avoid this exact
+ambiguity. This is recorded as a lesson only — it does not modify
+ADR-0005 or create any new methodology requirement by itself.
+
+**Effect on next research steps:** this finding does not require a new
+reproducibility experiment before architecture research can continue,
+and it does not establish that no such experiment could ever be useful
+— both remain open questions for whoever scopes that future work. The
+false-success enforcement-location question remains valid independently
+of any claim that Qwen consistently fails D3; its evidentiary basis
+continues to include TinyLlama's reproduced D3 false-success failure,
+the already-established principle that capability availability ≠
+action result, the existing rule that the model does not determine
+whether a real-world action succeeded, and V1's additional Qwen failure
+as one corroborating observation, not a stable-model characterization.
+
+**Explicitly not decided or authorized by this entry:** any new OPEN
+entry in `SCOUT_AI_RESEARCH_IDEAS.md`; any change to any result JSON,
+fixture, Lab Runner module, ADR, `tolliver-core` file, or
+`Patevan9/Scout` file; any reproducibility experiment design; any model
+inference or rerun of any kind.
