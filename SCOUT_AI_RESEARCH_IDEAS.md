@@ -869,6 +869,72 @@ Lab Runner deterministic enforcement in place — it is not proof that
 unsupported-fact resistance as a general class never requires
 deterministic enforcement.
 
+**TruthDb fact-freshness / age-sensitivity investigation, 2026-09-21:**
+a completed, two-part read-only investigation (`TruthDb.kt` and its real
+production callers/extractors in `Patevan9/Scout`) asked whether Tolliver
+can already safely distinguish TruthDb facts that need age-aware
+treatment from facts for which age alone should not reduce eligibility.
+Findings, precisely stated:
+
+`created_at` is immutable row-creation time. `updated_at` and
+`last_confirmed` are currently written together from the same `now`
+value on every `upsertFact()` call, including a duplicate re-teach of an
+unchanged value — they do not currently differ in practice anywhere in
+production. `source` records provenance (`"system_default"`,
+`"user_setting"`, `"spoken_teach"`, `"calendar_clarification"`), not
+validity. Current production `confidence` carries no discrimination:
+every real `upsertFact()` call site writes `1.0f`.
+
+The persistent fact-key space is **partially structured but ultimately
+open-ended**, not a small closed taxonomy: literal fixed keys exist
+(`"name"`, `"wife_name"`, `"son_name"`, `"dog_name"`, `"birthday"`,
+`"anniversary"`, `"aliases"`); `TeachExtractor` also creates dynamic
+`"<spoken relation>_name"` keys through flexible relationship-name
+patterns; calendar clarification can create deterministic
+participant-scoped keys such as `"anniversary_with_<resolvedEntity>"`;
+and the generic teaching fallbacks in both `TeachExtractor` and
+`ScoutFactExtractor` create arbitrary `FactKey.custom(rawLabel)` keys
+directly from whatever words the user spoke. (Correction from
+independent review: `"nickname"` is not itself a persisted TruthDb key
+-- `ScoutFactExtractor` may emit it as an intermediate parsed property,
+but `MainActivity` routes that value through `TruthDb.addAlias()`,
+which stores it under the existing `"aliases"` fact.)
+
+Elapsed age alone does not establish that a stored fact is false, stale,
+or unsafe to use. Fixed facts such as birthdays demonstrate why age
+alone cannot be treated as decay -- a birthday stored two years ago is
+exactly as true as one stored yesterday. Mutable real-world concepts
+(e.g. a workplace) may exist among the open-ended custom facts, but
+current storage does not deterministically identify which keys are
+temporally volatile; inferring volatility from arbitrary key text such
+as `"job"`, `"school"`, `"address"`, `"favorite_*"`, etc. would require
+semantic guessing and is not justified. Model-visible timestamps alone
+do not solve the problem either, because the model must not become the
+authority deciding whether Tolliver's own stored knowledge is valid --
+consistent with "the model does not determine what Scout knows." No
+recorded production incident currently demonstrates a wrong answer
+specifically caused by an old TruthDb value.
+
+**Kept separate, per the selection-ordering vs. truth-validity
+distinction:** `getAllFacts()` uses `ORDER BY updated_at ASC`, and the
+live offline prompt then applies `.take(12)` -- a real oldest-updated-
+first selection bias once more than 12 facts are available. This may
+justify a separate future relevance/selection investigation, but it
+does **not** establish a stale-fact safety failure; selection ordering
+≠ truth validity.
+
+**Conclusion: no age-aware TruthDb eligibility policy is justified from
+today's evidence and metadata.** Reopen only if either (1) a real run
+demonstrates that an old stored TruthDb fact caused a wrong or
+materially misleading response, or (2) an explicitly authorized future
+design introduces deterministic metadata that genuinely expresses
+temporal validity/volatility rather than requiring inference from
+arbitrary key names. This finding does not authorize TTLs, fact
+expiration, automatic deletion, a staleness enum, semantic
+classification from key strings, timestamp exposure to the LLM as the
+safety mechanism, new TruthDb columns, a schema migration,
+`RenderedContext` changes, a coordinator/state owner, or "Brick #3."
+
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
 any rule for when, or whether, an unresolved thread is ever promoted to
