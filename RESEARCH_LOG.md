@@ -1071,9 +1071,10 @@ Continuity V1 not rerun, no frozen V1 artifact or scored result
 touched):** a completed audit asked whether any of V1's four frozen
 cases (`benchmarks/experimental/2026-09-18-model-swap-continuity-v1-design.md`)
 test, via ordinary hand-authored `retrieved_facts` prose, an invariant
-for which `tolliver-core` already owns — or is intended to own — a
-typed deterministic mechanism, separately from whether the *model*
-preserved that invariant. Examined the four V1 fixtures
+for which `tolliver-core` already contains typed deterministic
+structure relevant to part of the tested boundary, separately from
+whether the *model* preserved that invariant. Examined the four V1
+fixtures
 (`lab/fixtures/experimental/tgs-A-reported-intention-only.yaml`,
 `lab/fixtures/experimental/model-swap-B-scheduled-evidence.yaml`,
 `lab/fixtures/C2.yaml`, `lab/fixtures/D3.yaml`), the Canonical Context
@@ -1098,16 +1099,24 @@ reference time as two ordinary prose sentences. These never exist as
 typed scheduled-event data anywhere in the Lab Runner path — the
 fixture schema types `retrieved_facts` as `list[str]` with no interval
 sub-schema, and the renderer's `_render_facts_block()` only ever joins
-that list into bulleted prose. This is the one V1 case where an
-invariant now owned by an existing typed, deterministic
-`tolliver-core` mechanism (`classifyInterval()` /
-`ScheduledEventTemporalPosition`, operating on plain `startMs`/`endMs`/
-`referenceTimeMs` `Long` values) was represented to the model solely as
-ordinary prose, with no typed path in this pipeline at all. This
-matches the frozen design document's own stated scope: the Lab Runner
-receives hand-authored YAML facts, not real `tolliver-core` objects,
-and building a real integration adapter was explicitly out of scope
-for V1.
+that list into bulleted prose. Case B is the one V1 case where the
+scheduled-interval/reference-time relationship now has an existing
+typed deterministic `tolliver-core` mechanism for temporal-position
+classification (`classifyInterval()` / `ScheduledEventTemporalPosition`,
+operating on plain `startMs`/`endMs`/`referenceTimeMs` `Long` values),
+while V1 represented those schedule/reference-time inputs solely as
+ordinary `retrieved_facts` prose, with no typed path in this pipeline
+at all. `ScheduledEventTemporalClassifier` does not itself enforce the
+broader scheduled-evidence-≠-occurrence invariant or police downstream
+model claims about attendance or real-world occurrence — it owns only
+deterministic classification of `startMs`/`endMs`/`referenceTimeMs`
+into `BEFORE`/`IN_PROGRESS`/`AFTER`; it does not determine or police
+actual occurrence, attendance, presence, completion, cancellation,
+missed status, or any downstream model claim about those. This matches
+the frozen design document's own stated scope: the Lab Runner receives
+hand-authored YAML facts, not real `tolliver-core` objects, and
+building a real integration adapter was explicitly out of scope for
+V1.
 
 **Cases C and D:** `capability_availability` is structurally typed in
 the canonical fixture schema as `dict[str, bool]` (enforced by
@@ -1122,13 +1131,15 @@ never exist as typed data anywhere upstream of rendering.
 **Durable research finding:** Model-Swap Continuity V1 intentionally
 evaluated model behavior using controlled fixture representations
 rather than real `tolliver-core` integration. Case B is the only V1
-case where an invariant now owned by an existing typed deterministic
-core mechanism was represented solely as ordinary retrieved-fact
-prose. Cases C and D preserve capability state structurally in
-canonical fixture data before deterministic text rendering. Case A
-deliberately resolves eligibility upstream of the model for the
-controlled experiment. These distinctions are consistent with V1's
-frozen declared scope and do not create new implementation pressure.
+case where the underlying scheduled interval/reference-time
+relationship now has existing typed deterministic core support for
+temporal-position classification, while V1 represented those inputs
+solely as retrieved-fact prose. Cases C and D preserve capability
+state structurally in canonical fixture data before deterministic text
+rendering. Case A deliberately resolves eligibility upstream of the
+model for the controlled experiment. These distinctions are consistent
+with V1's frozen declared scope and do not create new implementation
+pressure.
 
 **Preserved unchanged by this audit:** V1 remains frozen historical
 evidence — no verdict, fixture, or result JSON was altered or rerun.
