@@ -948,17 +948,20 @@ classification from key strings, timestamp exposure to the LLM as the
 safety mechanism, new TruthDb columns, a schema migration,
 `RenderedContext` changes, a coordinator/state owner, or "Brick #3."
 
-**Qwen architectural review corroboration, 2026-09-23:** a completed
-read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
-`RESEARCH_LOG.md`) externally corroborates, without adding a new
-mechanism, this entry's own "safe continuity means preservation, not
-narrative construction" finding above — Qwen's separation of capture,
-coordination, inference, memory, and delivery into distinguishable
-stages, and its "generated output is not automatically delivered
-output" lesson, reinforce rather than extend the existing boundary that
-independently grounded facts/events do not themselves establish a
-connecting narrative. No new storage mechanism, lifecycle, or promotion
-rule is proposed by this note.
+**Qwen architectural review corroboration, 2026-09-23 (narrowed):** a
+completed read-only review of Qwen3.8-LiveTranslate and the separate
+Qwen-Live-Harness project (see `RESEARCH_LOG.md`) found only this
+narrow, supported lesson relevant here: Qwen-Live-Harness distinguishes
+generation and delivery lifecycle states, providing external
+corroboration that lifecycle facts must not be silently strengthened —
+generated output, playback/delivery state, and evidence that something
+was actually heard are distinct claims. This does **not** independently
+establish anything about causal narrative construction across separate
+household events; it does not extend, and should not be read as further
+support for, this entry's own "safe continuity means preservation, not
+narrative construction" finding above beyond what that finding already
+established on its own evidence. No new storage mechanism, lifecycle,
+or promotion rule is proposed by this note.
 
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
@@ -1852,9 +1855,14 @@ this idea's existing boundaries — none is established as proof of
 another by this finding.
 
 **Qwen architectural review corroboration, 2026-09-23:** a completed
-read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
-`RESEARCH_LOG.md`) found that associating a speaker identifier with an
-individual utterance/segment is practically useful evidence there,
+read-only review of Qwen3.8-LiveTranslate and the separate
+Qwen-Live-Harness project (see `RESEARCH_LOG.md` — evidence boundary:
+LiveTranslate findings come from Alibaba/Qwen's published product/API
+documentation and observable API contract, not inspected model-internal
+source) found that Qwen3.8-LiveTranslate's published realtime API
+exposes a `speaker_id` when speaker detection is enabled and associates
+speaker attribution with the relevant transcription/event through its
+item/event identifiers — practically useful published-API evidence,
 sharpening this entry's central research question rather than changing
 it: *how should Tolliver represent session-local speaker-attributed
 utterances — "who said what" — while keeping detected speaker
