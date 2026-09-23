@@ -1062,3 +1062,105 @@ entry in `SCOUT_AI_RESEARCH_IDEAS.md`; any change to any result JSON,
 fixture, Lab Runner module, ADR, `tolliver-core` file, or
 `Patevan9/Scout` file; any reproducibility experiment design; any model
 inference or rerun of any kind.
+
+## 2026-09-22
+
+**Model-Swap Evaluation Harness Grounding Audit (read-only, no
+repository changes made during the investigation itself, Model-Swap
+Continuity V1 not rerun, no frozen V1 artifact or scored result
+touched):** a completed audit asked whether any of V1's four frozen
+cases (`benchmarks/experimental/2026-09-18-model-swap-continuity-v1-design.md`)
+test, via ordinary hand-authored `retrieved_facts` prose, an invariant
+for which `tolliver-core` already contains typed deterministic
+structure relevant to part of the tested boundary, separately from
+whether the *model* preserved that invariant. Examined the four V1
+fixtures
+(`lab/fixtures/experimental/tgs-A-reported-intention-only.yaml`,
+`lab/fixtures/experimental/model-swap-B-scheduled-evidence.yaml`,
+`lab/fixtures/C2.yaml`, `lab/fixtures/D3.yaml`), the Canonical Context
+Renderer (`lab/lab_runner/renderer.py`, `rendered_context.py`,
+ADR-0006), the fixture schema (`lab/lab_runner/fixture_schema.py`),
+the frozen scored results
+(`benchmarks/results/2026-09-19-model-swap-continuity-v1-scored.json`),
+and `tolliver-core`'s `ScheduledEventTemporalClassifier.kt`.
+
+**Case A:** `retrieved_facts` supplies the reported intention as a
+single hand-authored prose sentence. For this controlled V1
+experiment, eligibility for surfacing that statement at all was
+deliberately decided upstream and outside the model: the fixture's own
+notes record that the already-committed `eligibility.py` was applied
+offline by a human/reviewer before fixture authoring. V1 was therefore
+not testing model-side eligibility at all. This audit does not
+establish, and does not claim, a production integration path for that
+eligibility mechanism — only that V1's own declared scope excludes it.
+
+**Case B:** `retrieved_facts` supplies the scheduled interval and
+reference time as two ordinary prose sentences. These never exist as
+typed scheduled-event data anywhere in the Lab Runner path — the
+fixture schema types `retrieved_facts` as `list[str]` with no interval
+sub-schema, and the renderer's `_render_facts_block()` only ever joins
+that list into bulleted prose. Case B is the one V1 case where the
+scheduled-interval/reference-time relationship now has an existing
+typed deterministic `tolliver-core` mechanism for temporal-position
+classification (`classifyInterval()` / `ScheduledEventTemporalPosition`,
+operating on plain `startMs`/`endMs`/`referenceTimeMs` `Long` values),
+while V1 represented those schedule/reference-time inputs solely as
+ordinary `retrieved_facts` prose, with no typed path in this pipeline
+at all. `ScheduledEventTemporalClassifier` does not itself enforce the
+broader scheduled-evidence-≠-occurrence invariant or police downstream
+model claims about attendance or real-world occurrence — it owns only
+deterministic classification of `startMs`/`endMs`/`referenceTimeMs`
+into `BEFORE`/`IN_PROGRESS`/`AFTER`; it does not determine or police
+actual occurrence, attendance, presence, completion, cancellation,
+missed status, or any downstream model claim about those. This matches
+the frozen design document's own stated scope: the Lab Runner receives
+hand-authored YAML facts, not real `tolliver-core` objects, and
+building a real integration adapter was explicitly out of scope for
+V1.
+
+**Cases C and D:** `capability_availability` is structurally typed in
+the canonical fixture schema as `dict[str, bool]` (enforced by
+`fixture_schema.validate_fixture()`), not free text. The renderer's
+`_render_capability_block()` deterministically renders that already-
+structured state into the dedicated `capability_block`. Capability
+semantics are therefore preserved structurally in canonical fixture
+data before any deterministic text rendering occurs — unlike Case B,
+where schedule/reference-time semantics begin as ordinary prose and
+never exist as typed data anywhere upstream of rendering.
+
+**Durable research finding:** Model-Swap Continuity V1 intentionally
+evaluated model behavior using controlled fixture representations
+rather than real `tolliver-core` integration. Case B is the only V1
+case where the underlying scheduled interval/reference-time
+relationship now has existing typed deterministic core support for
+temporal-position classification, while V1 represented those inputs
+solely as retrieved-fact prose. Cases C and D preserve capability
+state structurally in canonical fixture data before deterministic text
+rendering. Case A deliberately resolves eligibility upstream of the
+model for the controlled experiment. These distinctions are consistent
+with V1's frozen declared scope and do not create new implementation
+pressure.
+
+**Preserved unchanged by this audit:** V1 remains frozen historical
+evidence — no verdict, fixture, or result JSON was altered or rerun.
+Case B remains valid evidence that model-only compliance with the
+scheduled-evidence-≠-occurrence invariant is insufficient. Case D
+remains valid evidence that model-only false-success resistance is
+insufficient. The previously parked Known-Unavailable Household Action
+Pre-Generation Gate remains GOOD DESIGN / NO BUILD — no real capability
+source or call site exists yet. The scheduled-evidence rendering
+question raised by Case B remains NO BUILD absent a real model-visible
+consumer for `ScheduledEventTemporalClassifier` output.
+
+**Conclusion: NO BUILD.** No `tolliver-core` change, no Lab Runner
+integration adapter, no new fixture-schema field, no renderer change,
+and no Brick #3 is justified by this audit.
+
+**Explicitly not decided or authorized by this entry:** any change to
+any V1 fixture, raw result, or scored result JSON; any change to
+`lab_runner/fixture_schema.py`, `renderer.py`, or `rendered_context.py`;
+any new fixture-schema field for scheduled/temporal data; any
+`ScheduledEvent`-typed Lab Runner integration adapter; any `tolliver-core`
+change of any kind; any Android or `Patevan9/Scout` change of any kind;
+any rerun of Model-Swap Continuity V1; any new OPEN entry in
+`SCOUT_AI_RESEARCH_IDEAS.md`.
