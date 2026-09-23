@@ -117,7 +117,7 @@ compatible in spirit and would likely need to be designed together if this
 is ever pursued.
 
 ### Structured context beyond vision
-**Status:** OPEN. **Recorded:** 2026-08-29. **Updated:** 2026-09-12.
+**Status:** OPEN. **Recorded:** 2026-08-29. **Updated:** 2026-09-23.
 
 Point 8 above, split out because it's broader than vision alone: should
 memory, capabilities, identity, calendar, weather, sensors, and hardware
@@ -173,6 +173,19 @@ justified; `EvidencePayload`/Brick #1 remains unchanged; all previously
 deferred architecture (retrieval/ranking, universal schema, knowledge
 graph, vector database, memory redesign, prompt redesign) remains
 deferred.
+
+**Qwen architectural review corroboration, 2026-09-23:** a completed
+read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
+`RESEARCH_LOG.md`) found that Qwen uses prior conversational context to
+help resolve ambiguous names/terminology — external corroboration that
+this is worth pursuing, sharpened by an explicit boundary this idea must
+preserve: context may influence interpretation without becoming truth.
+Must not allow a stored belief to bias a transcript into silently
+becoming confirmation of that belief. Working Memory, TruthDb, Habit
+Store, temporary observations, and model reasoning must remain separate;
+a resulting transcript remains an interpretation of evidence, not a new
+fact. Does not reopen the already-complete, separate TruthDb
+fact-freshness research above. RESEARCH WORTH PURSUING / NO BUILD.
 
 ### Coordination of existing specialized systems
 **Status:** OPEN. **Recorded:** 2026-08-29.
@@ -527,7 +540,7 @@ purely as an external research influence that prompted these questions,
 not as something Scout is committed to depending on or resembling.
 
 ### Personal continuity: a private world model, unfinished threads, and time awareness
-**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-12.
+**Status:** OPEN. **Recorded:** 2026-09-01. **Updated:** 2026-09-23.
 
 A long-term vision for Scout AI, distilled as: *"Scout knows less about
 the world, but more about your world."* Most assistants effectively
@@ -934,6 +947,18 @@ expiration, automatic deletion, a staleness enum, semantic
 classification from key strings, timestamp exposure to the LLM as the
 safety mechanism, new TruthDb columns, a schema migration,
 `RenderedContext` changes, a coordinator/state owner, or "Brick #3."
+
+**Qwen architectural review corroboration, 2026-09-23:** a completed
+read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
+`RESEARCH_LOG.md`) externally corroborates, without adding a new
+mechanism, this entry's own "safe continuity means preservation, not
+narrative construction" finding above — Qwen's separation of capture,
+coordination, inference, memory, and delivery into distinguishable
+stages, and its "generated output is not automatically delivered
+output" lesson, reinforce rather than extend the existing boundary that
+independently grounded facts/events do not themselves establish a
+connecting narrative. No new storage mechanism, lifecycle, or promotion
+rule is proposed by this note.
 
 **Explicitly not decided by recording this idea:** any Personal World
 Model schema, database, or graph structure; any Working Memory design;
@@ -1756,7 +1781,7 @@ real `tolliver-core` caller currently exists. Capability Design #9
 therefore reveals no justified Brick #2.
 
 ### Speaker identity and confidence (who is talking, not just who is known)
-**Status:** OPEN. **Recorded:** 2026-09-02.
+**Status:** OPEN. **Recorded:** 2026-09-02. **Updated:** 2026-09-23.
 
 **Purpose:** investigate how Scout should represent who is currently
 speaking — including confidence and unknown speakers — as a concern
@@ -1825,6 +1850,25 @@ inspected reference app. Reporter, current speaker, addressee, and
 visible/recognized person remain distinct concepts here, consistent with
 this idea's existing boundaries — none is established as proof of
 another by this finding.
+
+**Qwen architectural review corroboration, 2026-09-23:** a completed
+read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
+`RESEARCH_LOG.md`) found that associating a speaker identifier with an
+individual utterance/segment is practically useful evidence there,
+sharpening this entry's central research question rather than changing
+it: *how should Tolliver represent session-local speaker-attributed
+utterances — "who said what" — while keeping detected speaker
+attribution separate from known person identity and preventing the
+replaceable model from becoming the authority on speaker identity?*
+"Speaker Track B said X" is valid speaker-attribution evidence; it does
+**not** automatically mean "Patrick said X" unless a separate,
+independently established Tolliver-owned mechanism establishes that
+binding. A future representation may need to preserve a session-local
+speaker track, the utterance, a timestamp, attribution confidence,
+evidence source, an explicit unknown/uncertain state, and a separately
+established identity binding if one exists — research question only, no
+schema designed here. This is REAL RESEARCH PRESSURE / NO BUILD, and
+remains this idea's highest-priority open thread.
 
 **Explicitly not decided or authorized by recording this idea:** any
 speaker-recognition design, biometric voice technology, or model
@@ -2216,7 +2260,7 @@ current code — it does not describe, and does not claim to describe, a
 complete security or authorization system.
 
 ### Natural conversational interruption / barge-in (distinct from stopping speech)
-**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-13.
+**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-23.
 
 **Purpose:** investigate what would let Scout be naturally,
 conversationally interruptible — recognizing that a person has
@@ -2372,8 +2416,20 @@ reveals no justified Brick #2. No implementation is authorized. No
 partial-delivery amount, new timestamp, persistence schema, or
 `EvidencePayload` extension is justified by this investigation.
 
+**Qwen architectural review corroboration, 2026-09-23:** a completed
+read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
+`RESEARCH_LOG.md`) found that Qwen's realtime architecture distinguishes
+explicit stages — input arriving, speech detected, utterance committed,
+interpretation/generation progressing, playback started, playback
+completed/delivered — external evidence corroborating, not extending,
+this entry's own already-established "generation completed ≠ response
+fully communicated" distinction. Lesson stated generally: generated
+speech ≠ delivered speech ≠ heard speech, compatible with the existing
+capability ≠ successful-action rule. No streaming framework proposed.
+RESEARCH PRESSURE EXISTS / NO BUILD.
+
 ### Natural local speech delivery (pacing, variety, and expressiveness within on-device constraints)
-**Status:** OPEN. **Recorded:** 2026-09-03.
+**Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-23.
 
 **Purpose:** investigate what would make Scout's spoken responses feel
 like a natural household companion rather than text merely being read
@@ -2428,6 +2484,16 @@ laughter, chuckles, sighs, breaths, hesitation sounds, or other
 nonverbal vocal delivery. The existing Tap-to-interrupt mechanism
 remains useful and belongs to the separate interruption research
 problem, not this one.
+
+**Qwen architectural review corroboration, 2026-09-23:** a completed
+read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
+`RESEARCH_LOG.md`) externally corroborates this entry's own existing
+"speech generation ≠ speech delivery" distinction via Qwen's staged
+realtime lifecycle (generation progressing, playback started, playback
+completed/delivered) — evidence, not a new mechanism, and not a
+chunking/streaming architecture proposal. RESEARCH PRESSURE EXISTS / NO
+BUILD, shared with "Natural conversational interruption / barge-in"
+above rather than duplicated in full here.
 
 **Explicitly not decided or authorized by recording this idea:** any
 TTS engine, speech model, or audio library selection; any SSML/prosody
