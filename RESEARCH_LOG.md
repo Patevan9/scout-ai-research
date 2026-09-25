@@ -1243,10 +1243,16 @@ is already complete, separate research (see the age-aware-eligibility
 conclusion above). **RESEARCH WORTH PURSUING / NO BUILD.**
 
 **3. Incremental / streaming conversation.** Qwen3.8-LiveTranslate's
-realtime architecture distinguishes stages — input arriving, speech
-detected, utterance committed, interpretation/transcription
-progressing, reasoning/generation progressing, playback started,
-playback completed/delivered. Lesson for Tolliver: generated speech ≠
+published realtime API demonstrates incremental speech detection,
+source transcription, translated text, and generated-audio output
+rather than requiring a single isolated request/response boundary.
+Separately, Qwen-Live-Harness distinguishes generation from Host
+playback and confirmed delivery. Together these provide useful evidence
+for explicit conversational lifecycle semantics, while remaining
+separate systems — LiveTranslate's own published API evidence does not
+by itself establish that client playback started, playback completed,
+or that the user heard the output; those delivery distinctions come
+from Qwen-Live-Harness. Lesson for Tolliver: generated speech ≠
 delivered speech ≠ heard speech, compatible with the existing
 capability ≠ successful-action rule. Relevant to the still-open
 "Natural conversational interruption / barge-in" and "Natural local

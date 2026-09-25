@@ -2425,16 +2425,22 @@ partial-delivery amount, new timestamp, persistence schema, or
 `EvidencePayload` extension is justified by this investigation.
 
 **Qwen architectural review corroboration, 2026-09-23:** a completed
-read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
-`RESEARCH_LOG.md`) found that Qwen's realtime architecture distinguishes
-explicit stages — input arriving, speech detected, utterance committed,
-interpretation/generation progressing, playback started, playback
-completed/delivered — external evidence corroborating, not extending,
-this entry's own already-established "generation completed ≠ response
-fully communicated" distinction. Lesson stated generally: generated
-speech ≠ delivered speech ≠ heard speech, compatible with the existing
-capability ≠ successful-action rule. No streaming framework proposed.
-RESEARCH PRESSURE EXISTS / NO BUILD.
+read-only review of Qwen3.8-LiveTranslate and the separate
+Qwen-Live-Harness project (see `RESEARCH_LOG.md`) found two distinct
+evidence sources, kept separate: Qwen3.8-LiveTranslate's published
+realtime API demonstrates incremental speech/transcription/translation/
+generation behavior (speech detected, source transcription progressing,
+translated text progressing, generated-audio output progressing);
+Qwen-Live-Harness separately distinguishes generation from Host
+playback and confirmed delivery. LiveTranslate's own published API
+evidence does not by itself establish that playback started, playback
+completed, or that the user heard the output — external evidence
+corroborating, not extending, this entry's own already-established
+"generation completed ≠ response fully communicated" distinction.
+Lesson stated generally: generated speech ≠ delivered speech ≠ heard
+speech, compatible with the existing capability ≠ successful-action
+rule. No streaming framework proposed. RESEARCH PRESSURE EXISTS / NO
+BUILD.
 
 ### Natural local speech delivery (pacing, variety, and expressiveness within on-device constraints)
 **Status:** OPEN. **Recorded:** 2026-09-03. **Updated:** 2026-09-23.
@@ -2494,14 +2500,20 @@ remains useful and belongs to the separate interruption research
 problem, not this one.
 
 **Qwen architectural review corroboration, 2026-09-23:** a completed
-read-only review of Qwen3.8-LiveTranslate/Qwen-Live-Harness (see
-`RESEARCH_LOG.md`) externally corroborates this entry's own existing
-"speech generation ≠ speech delivery" distinction via Qwen's staged
-realtime lifecycle (generation progressing, playback started, playback
-completed/delivered) — evidence, not a new mechanism, and not a
-chunking/streaming architecture proposal. RESEARCH PRESSURE EXISTS / NO
-BUILD, shared with "Natural conversational interruption / barge-in"
-above rather than duplicated in full here.
+read-only review of Qwen3.8-LiveTranslate and the separate
+Qwen-Live-Harness project (see `RESEARCH_LOG.md`) externally
+corroborates this entry's own existing "speech generation ≠ speech
+delivery" distinction. The playback-started/playback-completed/
+confirmed-delivery evidence specifically comes from Qwen-Live-Harness,
+which distinguishes generation from Host playback and delivery;
+Qwen3.8-LiveTranslate's own published API evidence covers incremental
+generation only and does not by itself establish playback or delivery.
+Evidence, not a new mechanism, and not a chunking/streaming
+architecture proposal; "delivered" (playback completed) remains a
+weaker claim than "heard" — neither Qwen system is evidence that a
+human actually heard the output. RESEARCH PRESSURE EXISTS / NO BUILD,
+shared with "Natural conversational interruption / barge-in" above
+rather than duplicated in full here.
 
 **Explicitly not decided or authorized by recording this idea:** any
 TTS engine, speech model, or audio library selection; any SSML/prosody
