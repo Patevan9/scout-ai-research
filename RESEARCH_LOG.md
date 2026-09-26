@@ -1164,3 +1164,165 @@ any new fixture-schema field for scheduled/temporal data; any
 change of any kind; any Android or `Patevan9/Scout` change of any kind;
 any rerun of Model-Swap Continuity V1; any new OPEN entry in
 `SCOUT_AI_RESEARCH_IDEAS.md`.
+
+## 2026-09-23
+
+**Qwen3.8-LiveTranslate / Qwen-Live-Harness architectural review
+(read-only, no repository changes made during the review itself; no
+`tolliver-core`, `Patevan9/Scout`, Android, Model-Swap Continuity V1
+artifact, benchmark result, or Lab Runner file touched):** a completed
+review examined two separate systems, kept distinct throughout —
+**Qwen3.8-LiveTranslate**, studied for realtime translation,
+speaker-aware attribution, long-context speech disambiguation, and
+interleaved/streaming behavior; and **Qwen-Live-Harness**, a separate
+open-source project built around the Qwen Omni Realtime API, studied
+for Host/daemon/background-tools/Proactive/Memory orchestration
+boundaries. Qwen-Live-Harness does not wrap, control, or implement
+Qwen3.8-LiveTranslate — the two are independent evidence sources, not
+one integrated system. The purpose was explicitly not to adopt either
+Qwen system's cloud service or architecture, but to identify ideas
+relevant to Tolliver AI's own local, model-independent architecture,
+governed throughout by: **"The model is replaceable. Tolliver is
+not."**
+
+**Evidence boundary:** findings about Qwen3.8-LiveTranslate in this
+review come from Alibaba/Qwen's published product/API documentation and
+observable API contract; equivalent model-internal source code was not
+inspected. Findings about Qwen-Live-Harness come from its public
+open-source repository/documentation. No undocumented LiveTranslate
+internal mechanism is claimed. Published behavior/API evidence is
+evidence; inferred internal implementation is not.
+
+**Durable research conclusion:** the two Qwen systems together provide
+useful evidence about interfaces and lifecycle boundaries, not a
+replacement architecture for Tolliver. The strongest transferable
+concepts: speaker attribution should be structured evidence; context
+may assist speech interpretation without becoming truth; realtime
+conversation benefits from explicit incremental/commit/delivery states;
+capture, coordination, inference, memory, and delivery should remain
+distinguishable; generated output is not automatically delivered
+output; model reasoning should not own identity, permissions, truth, or
+action authority.
+
+**Strongest new concrete research pressure — speaker-attributed
+utterance evidence:** Tolliver already has the conceptual rule that
+known identity ≠ current speaker, visual identity ≠ speaker identity,
+identity ≠ authority, and that uncertainty/unknown speakers must remain
+representable. It does not yet have a frozen research representation
+for "who said what," where an utterance can be associated with a
+session-local detected speaker without falsely converting that speaker
+into a known household identity. Example: "Speaker Track B said X" is
+valid speaker-attribution evidence; it does **not** automatically mean
+"Patrick said X" unless a separate, independently established Tolliver-
+owned identity-binding mechanism says so. The language model must never
+become the authority that decides that binding.
+
+**1. Speaker-aware conversation.** Qwen3.8-LiveTranslate's published
+realtime API exposes a `speaker_id` when speaker detection is enabled
+and associates speaker attribution with the relevant
+transcription/event through its item/event identifiers — practically
+useful, and the transferable concept for Tolliver is *speaker
+observation ≠ person identity*. A future representation may need to
+preserve a session-local speaker track, the utterance, a timestamp,
+attribution confidence, evidence source, an explicit unknown/uncertain
+state, and a separately established identity binding if one exists.
+Research question only — no schema designed or implemented here. **REAL
+RESEARCH PRESSURE / NO BUILD.**
+
+**2. Context-assisted speech interpretation.** Qwen3.8-LiveTranslate
+uses prior conversational context to help resolve ambiguous
+names/terminology. Tolliver may eventually use Tolliver-owned context
+(Working Memory, separately labeled grounded information) to assist
+interpretation, but must preserve: context may influence interpretation
+without becoming truth. Must not allow stored belief to bias a
+transcript into silently confirming itself. Working Memory, TruthDb,
+Habit Store, temporary observations, and model reasoning must remain
+separate; the resulting transcript remains an interpretation of
+evidence, not a new fact. Does not reopen TruthDb fact-freshness, which
+is already complete, separate research (see the age-aware-eligibility
+conclusion above). **RESEARCH WORTH PURSUING / NO BUILD.**
+
+**3. Incremental / streaming conversation.** Qwen3.8-LiveTranslate's
+published realtime API demonstrates incremental speech detection,
+source transcription, translated text, and generated-audio output
+rather than requiring a single isolated request/response boundary.
+Separately, Qwen-Live-Harness distinguishes generation from Host
+playback and confirmed delivery. Together these provide useful evidence
+for explicit conversational lifecycle semantics, while remaining
+separate systems — LiveTranslate's own published API evidence does not
+by itself establish that client playback started, playback completed,
+or that the user heard the output; those delivery distinctions come
+from Qwen-Live-Harness. Lesson for Tolliver: generated speech ≠
+delivered speech ≠ heard speech, compatible with the existing
+capability ≠ successful-action rule. Relevant to the still-open
+"Natural conversational interruption / barge-in" and "Natural local
+speech delivery" ideas. No streaming framework built here. **RESEARCH
+PRESSURE EXISTS / NO BUILD.**
+
+**4. Qwen-Live-Harness orchestration.** Separates host/user-facing
+capture, coordinator/daemon, realtime model, background agents/tools,
+proactive observation, and memory. Useful lesson: device I/O,
+coordination, model inference, memory, and delivery do not need to be
+the same subsystem. This does **not** justify a universal coordinator,
+an omniscient state owner, a generic evidence bus, an orchestration
+framework, or a new Brick #3 — coordination does not equal authority.
+**CORROBORATING ARCHITECTURE EVIDENCE / NO BUILD.**
+
+**5. Proactive behavior.** Qwen-Live-Harness separates observation,
+monitoring, scheduling, and foreground delivery. Tolliver already has
+stronger deterministic proactive-gating principles via `PresenceDecider`
+and related research. Preserved: model observation/proposal does not
+authorize Tolliver to speak or act; the model may offer an inference or
+proposal, but a Tolliver-owned deterministic gate must decide whether
+speaking or acting is permitted. **MOSTLY CORROBORATION / NO NEW
+COMPONENT.**
+
+**6. Memory.** Qwen-Live-Harness separates memory storage from the
+realtime model it coordinates — useful corroboration — but relies
+partly on model/cloud-based consolidation and embeddings for memory
+processing. Tolliver's requirements remain stronger: do not weaken or
+merge Working Memory, Habit Store, TruthDb, Proposal Sandbox, or the
+Reflective Layer; do not allow model summaries to become TruthDb
+automatically, vector similarity to determine factual truth, temporary
+conversation context to become durable truth, or behavioral habits and
+permanent facts to share authority. **REFERENCE EVIDENCE ONLY — no
+Tolliver memory redesign is justified.**
+
+**Replaceable-model test, preserved for future use:** *"If the language
+model were replaced tomorrow, would Tolliver still own the state,
+rules, identity, permissions, evidence, continuity, and truth?"* If the
+answer is no, a Qwen-inspired idea conflicts with Tolliver's
+architecture unless redesigned.
+
+**Recommended future research priority:** (1) speaker-attributed
+utterance evidence / speaker identity boundary; (2) context-assisted
+speech interpretation without memory contamination; (3) streaming
+conversational lifecycle semantics; (4) proactive orchestration — lower
+priority, mostly corroboration; (5) Qwen memory architecture — reference
+only.
+
+**Smallest potentially justified future experiment (not designed or run
+here):** speaker attribution without identity invention — using
+synthetic/session-local speaker labels ("Speaker A," "Speaker B") to
+test whether a model can reason about who said what without inventing
+that Speaker A/B is Patrick, Diana, Elijah, or another known person
+unless independent identity evidence is supplied.
+
+**Final status:** Qwen architectural review COMPLETE. New concrete
+research pressure: speaker-attributed utterance evidence. Secondary
+research pressure: context-assisted speech interpretation; streaming
+conversation lifecycle semantics. Implementation pressure: NONE. New
+`tolliver-core` component: NOT JUSTIFIED. Memory redesign: NOT
+JUSTIFIED. Universal coordinator: NOT JUSTIFIED. Cloud dependency: NOT
+JUSTIFIED. Brick #3: NOT JUSTIFIED. **Final verdict: RESEARCH FURTHER /
+NO BUILD.**
+
+**Explicitly not decided or authorized by this entry:** adoption of any
+Qwen cloud service, model, or architecture; any speaker-attribution
+schema, database, or class; any context-interpretation mechanism; any
+streaming/lifecycle framework; any coordinator, evidence bus, or
+orchestration component; any change to `PresenceDecider`, Working
+Memory, Habit Store, TruthDb, the Proposal Sandbox, or the Reflective
+Layer; any new `tolliver-core` file; any Android or `Patevan9/Scout`
+change; any Brick #3; the speaker-attribution-without-identity-invention
+experiment described above being run.
