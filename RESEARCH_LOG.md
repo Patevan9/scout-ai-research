@@ -1326,3 +1326,128 @@ Memory, Habit Store, TruthDb, the Proposal Sandbox, or the Reflective
 Layer; any new `tolliver-core` file; any Android or `Patevan9/Scout`
 change; any Brick #3; the speaker-attribution-without-identity-invention
 experiment described above being run.
+
+## 2026-10-08
+
+**Research Brain documentation-reconciliation pass (research-only, no
+`tolliver-core`, `Patevan9/Scout`, Android, llama.cpp/runtime, model
+file, benchmark fixture/result, or frozen Model-Swap artifact touched):**
+this pass followed a ~3-week recovery check (PR #17 independently
+reconfirmed merged, `main` clean, OPEN count 26, nothing contradicted)
+with two documentation tasks: (1) recording a completed ADM-Planner
+architectural comparison with detail that had previously been uncertain,
+and (2) reconciling several research subjects that had been discussed
+but never committed to this repository's persistent record.
+
+**ADM-Planner architectural comparison — CORROBORATION / NO BUILD.**
+Paper: "ADM-Planner: LLM-Guided Long-Horizon Planning for Mobile
+Manipulators with Attention-Enhanced Dynamic Memory" (Xiao, Ji,
+Feroskhan; arXiv 2609.29212). Verified architectural details:
+
+- Persistent workspace/static knowledge (map, station locations, task
+  rules, skill definitions) is kept separate from current object-centric
+  state (one current record per task entity: class, pose, confidence,
+  timestamp, source).
+- Retrieval is bounded to decision-relevant current records only — an
+  attention-style scorer (source-weighted confidence × recency decay ×
+  distance-to-active-task) caps what reaches the planner at K=8, with a
+  0.55 acceptance threshold for remote observations and an 18-step
+  recency decay.
+- The LLM proposes a typed skill sequence; a deterministic validator
+  checks the proposed sequence before dispatch. The LLM does not
+  directly edit memory or command actuators.
+- Update arbitration is explicitly field-specific: accepted perceptual
+  evidence may revise pose, confidence, timestamp, and observation
+  source; task-status transitions (observed → assigned → grasped →
+  delivered/failed) are advanced by verified skill outcomes; perception
+  cannot demote a verified grasp or delivery back to an earlier status.
+- Earlier values remain in an audit log while only the current record is
+  planning-eligible — history is preserved, not rewritten.
+- Replanning occurs only when relevant changed fields affect the
+  remaining plan, or execution fails — not continuously.
+
+**Tolliver lesson:** different evidence sources may have authority to
+update different kinds of state; the model itself has no direct
+state-write authority. This is a useful explicit principle for future
+action/execution research — specifically, it previews what the already-
+parked Known-Unavailable Household Action Pre-Generation Gate's eventual
+"verified outcome" write-rule should look like — and is treated as such,
+not as present implementation pressure, since Tolliver has no
+action/actuator execution path today. Every individual Tolliver mechanism
+already inspected across this research program (`ScoutFactExtractor`'s
+phrase-pattern-only path to `TruthDb.upsertFact()`, `AwarenessResolver`'s
+change-only sensor writes, `HabitLayer`'s separately-scoped counters,
+`PeopleDb.touchSeen()`/`setName()`'s non-rewriting identity continuity)
+already behaves this way case-by-case; ADM-Planner is external evidence
+that generalizing it explicitly is worth doing eventually, not evidence
+that anything is currently missing or broken. **No universal `WorldState`,
+evidence bus, coordinator, policy engine, memory layer, or Brick #3 is
+created or justified.** Recorded as a corroboration pointer in
+"Coordination of existing specialized systems" in
+`SCOUT_AI_RESEARCH_IDEAS.md`.
+
+**Research-subject reconciliation.** The following subjects had been
+discussed but had no committed record anywhere in this repository before
+this pass (confirmed by a case-insensitive full-repository search finding
+zero prior matches for each name). Recorded now as minimal,
+source-disciplined tracking notes — not as new OPEN ideas, not as
+evaluations, and not as findings manufactured from memory beyond what is
+stated here:
+
+- **Imajev-2B and Liquid d1** (bounded/typed decision-model research, not
+  conversational-LLM candidates) — recorded in "Scout-specific model
+  evaluation." Both PARKED / NO BUILD; the Tolliver authority-boundary
+  flow (Tolliver supplies bounded state/questions → model returns
+  probability/classification → Tolliver-owned deterministic logic
+  interprets → Tolliver decides) governs any future work on either. The
+  previously-agreed Liquid d1 guardrails (treat `d1-omni-600M` as
+  experimental; separate official vs. third-party quantization evidence;
+  separate upstream llama.cpp support from Android-proven status; flag
+  the LFM Open License v1.0 $10M-revenue condition) are noted as agreed
+  but not yet exercised — no investigation has been run for either
+  model.
+- **EmbeddingGemma 2** (small local text-only semantic retrieval) —
+  recorded in "Structured context beyond vision," preserving the concrete
+  research question: can a small local embedding model improve retrieval
+  of approved Tolliver information while the canonical stores remain
+  authoritative and the embedding index remains disposable derived data?
+  Governing boundary: retrieval ≠ memory ≠ truth. No embedding
+  implementation or experiment is authorized.
+- **K2 Horizon 0.9B** (small-model training/distillation/checkpoint
+  methodology) — recorded in "Scout-specific model evaluation" as a
+  model-development-lane technique-awareness note only; Tolliver does not
+  train its own models, so no integration is implied.
+- **Snapdragon Hexagon NPU / llama.cpp acceleration** — recorded in
+  "Scout-specific model evaluation" as its own WATCH tracking note,
+  distinct from the generic Android/ARM evidence-gap language already
+  attached to unrelated model candidates. Newly-upstream-supported
+  evidence, if any exists, is not Android-proven evidence.
+- **YahYah – The Portrait** (competitive/local-perception research —
+  substantial local perception paired with cloud conversational
+  intelligence) and **Loona / GPT-style multimodal companion lessons**
+  (product/architecture corroboration around multimodal interaction,
+  face-linked context, and companion UX, without adopting cloud
+  dependence) — tracked here only. Neither is placed under an existing
+  `SCOUT_AI_RESEARCH_IDEAS.md` OPEN entry by this pass: the available
+  source material for both is a one-line description only, and assigning
+  either to a specific existing entry (perception, continuity, or
+  elsewhere) without the actual architectural evidence would risk
+  manufacturing a fit rather than finding one. **Both explicitly flagged
+  as needing a later dedicated documentation pass** before any
+  OPEN-entry placement, ranking, or research question is drawn from them.
+
+**OPEN research-idea count: unchanged, 26 → 26.** No subject recorded in
+this pass required a genuinely new, independent research question that
+could not fit an existing OPEN entry or this log; every addition above is
+either a tracking note attached to an existing OPEN entry or a log-only
+note explicitly deferred pending further evidence. Terminology
+differences alone did not justify a new entry for any item.
+
+**Explicitly not decided or authorized by this entry:** any model
+evaluation, benchmark run, or experiment for Imajev-2B, Liquid d1,
+EmbeddingGemma 2, K2 Horizon 0.9B, YahYah, or Loona; any embedding index,
+retrieval mechanism, or Hexagon/NPU runtime work; any model replacement
+or change to `Qwen2.5-1.5B-Instruct Q4_K_M`'s settled role as Tolliver's
+stable conversational reference; any speaker-attribution or ADM-Planner-
+inspired implementation; any `tolliver-core`, Android, or
+`Patevan9/Scout` change; any new OPEN entry in `SCOUT_AI_RESEARCH_IDEAS.md`.

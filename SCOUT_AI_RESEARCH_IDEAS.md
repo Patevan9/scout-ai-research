@@ -187,6 +187,26 @@ a resulting transcript remains an interpretation of evidence, not a new
 fact. Does not reopen the already-complete, separate TruthDb
 fact-freshness research above. RESEARCH WORTH PURSUING / NO BUILD.
 
+**2026-10-08 note (EmbeddingGemma 2, research reconciliation — tracking
+only):** recorded here for the first time as the relevant existing-entry
+home for this candidate, rather than as a new OPEN idea. Google's
+EmbeddingGemma 2 (a small, local, text-only embedding model) is of
+interest specifically for local semantic retrieval over already-approved
+Tolliver information, not as a brain/conversational candidate. This
+entry's own prior finding (no proven cross-source-reasoning consumer, no
+universal context unit justified) is not reopened or reversed by this
+note. The concrete research question this preserves: *can a small local
+embedding model improve retrieval of approved Tolliver information while
+the canonical stores remain authoritative and the embedding index remains
+disposable derived data?* The governing boundary: retrieval ≠ memory ≠
+truth — an embedding index may help locate candidate information faster
+or more relevantly, but it is never itself memory, never itself truth,
+and never a write path into TruthDb, Working Memory, or the Habit Store.
+No embedding model evaluation, index design, or experiment is authorized
+by this note. Full source-disciplined evidence (official model card,
+license, on-device feasibility) awaits a later dedicated documentation
+pass — not manufactured here from memory.
+
 ### Coordination of existing specialized systems
 **Status:** OPEN. **Recorded:** 2026-08-29.
 
@@ -208,6 +228,15 @@ idea only, not approval of a monolithic architecture. Specialized
 components should remain independently replaceable — Scout AI potentially
 coordinates their information rather than absorbing every technology into
 one model.
+
+**ADM-Planner architectural review corroboration, 2026-10-08:** a
+completed read-only architectural comparison (see `RESEARCH_LOG.md`)
+found that ADM-Planner (arXiv 2609.29212) corroborates, rather than
+extends, this entry's own thesis — specialized update sources (perception,
+execution/verified-outcome) stay separate from each other and from the
+planning model, instead of being absorbed into one coordinator. No
+universal `WorldState`, evidence bus, coordinator, policy engine, memory
+layer, or Brick #3 is justified. CORROBORATION / NO BUILD.
 
 ### Qwen3-8B (or similar) as a teacher/reference model for structured-vs-prose context
 **Status:** OPEN. **Recorded:** 2026-08-29.
@@ -360,6 +389,56 @@ to `rsqrt`, affecting Qwen-, Kimi-, and GLM-family models.
 changing Tolliver's pinned Android native llama.cpp runtime now — the
 current known inference path should be stabilized first. Not
 authorized or scheduled by this note.
+
+**2026-10-08 note (Imajev-2B and Liquid d1, bounded/typed decision-model
+research — research reconciliation, tracking only):** recorded here for
+the first time; this research category is explicitly **not** a
+conversational-LLM candidate comparison and does not compete with
+`Qwen2.5-1.5B-Instruct Q4_K_M`'s settled role as Tolliver's stable
+conversational reference. Both are typed/bounded decision models (a
+question plus bounded state in, a classification/probability out),
+distinct from a conversational LLM's open-ended generation. The governing
+authority-boundary flow, already reviewed for Liquid d1 and equally
+applicable to Imajev-2B: Tolliver supplies bounded state/questions → the
+model returns a probability/classification → Tolliver-owned deterministic
+logic interprets the result → Tolliver decides what is allowed. A result
+from either model must never independently alter TruthDb or the Habit
+Store, identify a person permanently, authorize disclosure or physical
+action, decide that a scheduled event occurred or a capability succeeded,
+or bypass the Proposal Sandbox. For Liquid d1 specifically, a full set of
+guardrails (treat `d1-omni-600M` as experimental; keep official vs.
+third-party quantization evidence separate; separate upstream llama.cpp
+support from Android-proven status; flag the LFM Open License v1.0's
+$10M-revenue commercial-use condition) was agreed in discussion but not
+yet exercised — no investigation has been run for either model. **Both
+remain PARKED / NO BUILD.** No evaluation, benchmark run, integration, or
+experiment is authorized by this note. Full source-disciplined evidence
+for both awaits a later dedicated documentation pass.
+
+**2026-10-08 note (K2 Horizon 0.9B, small-model training/distillation
+research — research reconciliation, tracking only):** recorded here for
+the first time. This is training/distillation/checkpoint-development
+methodology research, not a model Tolliver would run or integrate —
+Tolliver does not train its own models. Relevant only as possible
+technique-awareness for understanding how small models are built, with no
+direct Tolliver action implied unless a specific transferable technique is
+later tied to a concrete Tolliver problem. **Not authorized or scheduled
+by this note.** Full evidence awaits a later dedicated documentation pass
+if a concrete connection is ever identified.
+
+**2026-10-08 note (Snapdragon Hexagon NPU / llama.cpp acceleration,
+WATCH — research reconciliation, tracking only):** recorded here for the
+first time as its own tracking note, distinct from the generic "no
+Android/ARM/NPU evidence exists yet" gap-language already attached to
+unrelated model-candidate entries above (e.g. Spark-X2.5). Upstream
+NPU/Hexagon acceleration work in `ggml-org/llama.cpp`, if and when it
+lands, is newly-upstream-supported evidence only — it does not by itself
+establish ordinary Android CPU compatibility, actual RAM use, latency,
+sustained thermals, battery consumption, or production maturity on
+Tolliver's actual target hardware. **Explicit boundary:** this does NOT
+justify any Hexagon runtime work now, and does not touch Tolliver's
+pinned Android native llama.cpp runtime. Not authorized or scheduled by
+this note.
 
 ### Habit learning from independent episodes
 **Status:** OPEN. **Recorded:** 2026-08-31. **Updated:** 2026-09-13.
