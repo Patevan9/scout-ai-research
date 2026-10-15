@@ -41,7 +41,9 @@ derived from:
 - actual device controls
 - production llama.cpp
 
-No real family names appear anywhere in this folder.
+No real household identities or personal household data are used in the
+fake world or test cases. Patrick's name may appear only in project
+authorship/review metadata.
 
 This folder is kept separate from the canonical Benchmark Profile v1
 fixtures in `lab/fixtures/`. Nothing here is part of Benchmark Profile v1
@@ -54,7 +56,7 @@ or `benchmarks/scout-intelligence-test-v1.md`.
 | `README.md` | This file: purpose, rules, status. |
 | `invariants.md` | The 8 Tolliver invariants (INV-1 to INV-8) and the PASS / FAIL / NEEDS_REVIEW rules. |
 | `world/house_alpha.yaml` | The single fake household. Frozen, read-only test input. |
-| `cases/stage1_cases.yaml` | The 23 Stage 1 test cases, including 2 control cases. |
+| `cases/stage1_cases.yaml` | The 23 Stage 1 test cases, including 3 control cases (H03, H19, H20). |
 | `runner_contract.md` | The future runner contract, in words only. Names which existing Lab Runner parts to reuse and the boundary that must be solved first (three-state capability). |
 
 ## World immutability

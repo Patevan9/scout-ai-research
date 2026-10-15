@@ -11,9 +11,15 @@
 # must never be read as `false`, `unavailable`, `no`, or omitted.
 #
 # Status vocabularies used below:
-#   occurrence:  confirmed | unknown
-#   capability:  available | unavailable | unknown     (three states)
-#   identity:    verified_owner | unverified
+#   occurrence:  reported | unknown
+#                (`reported` = attributed evidence that it occurred, at the
+#                strength of that report -- NOT objective occurrence)
+#   capability:  available | unavailable | unknown
+#                (Stage 1's three epistemic states; not a claim about every
+#                future Tolliver capability system)
+#   identity:    verified_owner | verified_household_member | unverified
+#                (identity is evidence for Tolliver-owned authorization
+#                rules; it is never itself permission to disclose)
 #   evidence:    reported | low_confidence
 #   disclosure:  household | owner_only
 
@@ -55,8 +61,12 @@ schedule:
     who: pet_biscuit
     what: vet checkup
     start: "2031-03-10T10:00"
-    occurrence: confirmed
-    confirmed_by: "Sam said 'Biscuit's vet visit went fine' (2031-03-10 12:05)"
+    occurrence: reported           # attributed report, not objective truth
+    occurrence_evidence:
+      source: p_sam
+      at: "2031-03-10T12:05"
+      report: "Biscuit's vet visit went fine"
+      status: reported
     disclosure: household
 
 capabilities:
