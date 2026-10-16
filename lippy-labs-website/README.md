@@ -11,7 +11,7 @@ One page, in this order:
 5. **BreatheFrame** — animated *concept illustration* with a pause/play button
 6. **What we believe** — enjoyment without pressure, fair value, privacy, accessibility
 7. **The Story Behind the Lab** — Patrick's story, in his own voice
-8. **Explore, connect, support** — project sites, Discord, Facebook, email, donate
+8. **Explore, connect, support** — project sites, Rollabop beta, Discord, Facebook, email
 
 `index.html` is the whole site (inline CSS + one small script, no build step).
 
@@ -28,8 +28,8 @@ One page, in this order:
 
 **Tolliver website not linked (on purpose):** the current Tolliver site still presents the app as
 purchasable and downloadable. Until that site is corrected, this homepage sends Tolliver visitors to
-Discord instead. The only Tolliver-site link left is the Stripe donate page
-(`lippyrobotics.github.io/donate.html`) — note its menu still includes "Download".
+Discord instead. The Donate link (Tolliver site's donate page, whose menu includes "Download")
+is also removed for now. Restore both once the Tolliver site is corrected.
 
 Lab Articles is intentionally **not** linked from this site. The articles repo and
 site are untouched.
@@ -42,8 +42,9 @@ site are untouched.
 - **Rollabop gameplay: none yet, on purpose.** Rule: anything shown as Rollabop gameplay must
   come from a real recording of the running game. The earlier clip came from the official
   trailer, which is a code-drawn recreation, so it was removed (along with its still image and
-  the "Watch the trailer" link). The phone frame now shows the Galaxy Ball art and
-  "Real gameplay footage coming soon".
+  the "Watch the trailer" link). The phone frame now shows
+  `assets/rollabop/rollabop-gameplay-screenshot.webp`: a real in-game screenshot Patrick
+  provided (level 21), cropped to the tray.
 - Tolliver's face, the Tolliver AI network and the BreatheFrame winter scene are drawn
   in code. The BreatheFrame scene is labelled "Concept illustration, not a screenshot of the app."
 
@@ -54,7 +55,7 @@ site are untouched.
 2. Send the video file. It gets trimmed, cropped to the tray, made silent and compressed
    to under 1 MB as `assets/rollabop/rollabop-gameplay.mp4`, with a still frame from the
    same recording saved as `assets/rollabop/rollabop-gameplay-poster.webp`.
-3. In `index.html`, replace the `<div class="rb-soon">` block with the `<video>` block written
+3. In `index.html`, replace the screenshot `<img>` with the `<video>` block written
    in the comment right above it, and change the caption to
    "Real gameplay, recorded on a Galaxy Fold 7". The page script already plays it only
    while visible and shows controls when reduced motion is on.
