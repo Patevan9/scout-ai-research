@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#131518">
+<meta name="theme-color" content="#120f0d">
 <title>Lippy Robotics Labs</title>
-<meta name="description" content="Lippy Robotics Labs makes private, thoughtful software for Android — home of Tolliver, the on-device AI companion, plus Rollabop and BreatheFrame.">
+<meta name="description" content="Big ideas. Small screens. Real enjoyment. Games, local AI companions and creative tools built with curiosity, care and respect for the people who use them.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Lippy Robotics Labs">
-<meta property="og:title" content="Lippy Robotics Labs">
-<meta property="og:description" content="Private, thoughtful software for Android. Home of Tolliver, Rollabop and BreatheFrame.">
+<meta property="og:title" content="Lippy Robotics Labs — Big ideas. Small screens. Real enjoyment.">
+<meta property="og:description" content="Games, local AI companions and creative tools built with curiosity, care and respect for the people who use them.">
 <meta property="og:image" content="assets/labs-logo.png">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -28,26 +28,21 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:       #131518;
-    --bg2:      #1a1d21;
-    --surface:  #20242a;
-    --surface2: #272c33;
-    --border:   rgba(255,255,255,0.09);
-    --text:     #eef1f4;
-    --muted:    #b3bcc6;
-    --orange:   #ff9a1f;
-    --orange2:  #ffb547;
-    --steel:    #c9d1d9;
-    --green:    #41d68a;
-    --blue:     #7eb5e8;
-    --violet:   #b59cff;
-    --radius:   18px;
-    --max:      1160px;
+    --bg:      #120f0d;
+    --bg2:     #1a1612;
+    --surface: #221d18;
+    --line:    rgba(255,255,255,0.09);
+    --text:    #f3ede5;
+    --muted:   #c2b8ab;
+    --orange:  #ff9a1f;
+    --orange2: #ffb547;
+    --ember:   #ff6a00;
+    --max:     1180px;
   }
 
   html { scroll-behavior: smooth; }
@@ -56,270 +51,443 @@
     color: var(--text);
     font-family: 'Jost', system-ui, sans-serif;
     font-size: 18px;
-    line-height: 1.65;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  img { max-width: 100%; display: block; }
+  img, video, svg { max-width: 100%; display: block; }
+  img { height: auto; }
   a { color: inherit; }
   :focus-visible { outline: 3px solid var(--orange2); outline-offset: 3px; border-radius: 6px; }
 
-  .skip {
-    position: absolute; left: -999px; top: 8px;
-    background: var(--orange); color: #111; padding: 10px 16px; border-radius: 8px; font-weight: 600; z-index: 100;
-  }
+  .skip { position: absolute; left: -999px; top: 8px; z-index: 200; background: var(--orange); color: #111; padding: 10px 16px; border-radius: 8px; font-weight: 600; }
   .skip:focus { left: 16px; }
-
   .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-  h1, h2, h3 {
-    font-family: 'Barlow Condensed', 'Jost', sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    line-height: 1.08;
-  }
-  .eyebrow {
-    display: inline-block;
-    font-size: 0.82rem; font-weight: 600;
-    letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--orange2);
-    margin-bottom: 14px;
-  }
-
-  /* ---------- Header ---------- */
-  header {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(19,21,24,0.86);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
-  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .brand img { width: 44px; height: 44px; }
-  .brand span {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-    font-size: 1.35rem; letter-spacing: 0.04em; text-transform: uppercase;
-  }
-  .brand b { color: var(--orange); font-weight: 700; }
-  .nav ul { display: flex; list-style: none; gap: 6px; align-items: center; }
-  .nav ul a {
-    display: inline-block; padding: 10px 14px; border-radius: 10px;
-    text-decoration: none; color: var(--muted); font-weight: 500; font-size: 1rem;
-  }
-  .nav ul a:hover { color: var(--text); background: var(--surface); }
-  .nav .cta { color: #141414 !important; background: var(--orange); }
-  .nav .cta:hover { background: var(--orange2) !important; }
-  .menu-btn {
-    display: none; background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); border-radius: 10px; width: 48px; height: 48px; font-size: 1.4rem; cursor: pointer;
-  }
-
-  /* ---------- Hero ---------- */
-  .hero { position: relative; padding: 88px 0 96px; overflow: hidden; }
-  .hero::before {
-    content: ""; position: absolute; inset: 0;
-    background:
-      radial-gradient(620px 420px at 78% 40%, rgba(255,154,31,0.16), transparent 70%),
-      radial-gradient(500px 360px at 10% 0%, rgba(126,181,232,0.10), transparent 70%);
-    pointer-events: none;
-  }
-  .hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
-  .hero h1 { font-size: clamp(2.8rem, 6vw, 4.6rem); margin-bottom: 22px; }
-  .hero h1 em { font-style: normal; color: var(--orange); }
-  .hero p.lead { font-size: 1.22rem; color: var(--muted); max-width: 36ch; margin-bottom: 34px; }
-  .hero-logo { justify-self: center; width: min(400px, 100%); filter: drop-shadow(0 24px 50px rgba(0,0,0,0.55)); }
+  h1, h2, h3 { font-family: 'Barlow Condensed', 'Jost', sans-serif; font-weight: 700; line-height: 1.05; letter-spacing: 0.005em; }
+  .kicker { display: inline-block; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; }
 
   .btns { display: flex; flex-wrap: wrap; gap: 14px; }
   .btn {
     display: inline-flex; align-items: center; gap: 10px;
-    min-height: 52px; padding: 0 24px; border-radius: 12px;
+    min-height: 52px; padding: 0 24px; border-radius: 999px;
     font-weight: 600; font-size: 1.02rem; text-decoration: none;
-    border: 1px solid transparent; transition: transform .15s ease, background .15s ease;
+    border: 1px solid transparent; transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
   }
   .btn:hover { transform: translateY(-2px); }
-  .btn-primary { background: var(--orange); color: #141414; }
-  .btn-primary:hover { background: var(--orange2); }
-  .btn-ghost { background: var(--surface); border-color: var(--border); color: var(--text); }
-  .btn-ghost:hover { background: var(--surface2); }
   .btn svg { width: 18px; height: 18px; flex: none; }
 
-  /* ---------- Sections ---------- */
-  section { padding: 96px 0; }
-  .alt { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .section-head { max-width: 720px; margin-bottom: 48px; }
-  .section-head h2 { font-size: clamp(2.2rem, 4.4vw, 3.2rem); margin-bottom: 14px; }
-  .section-head p { color: var(--muted); font-size: 1.12rem; }
+  .status {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 7px 15px; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid currentColor; background: rgba(0,0,0,0.25);
+  }
+  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: blinkdot 2.4s ease-in-out infinite; }
+  @keyframes blinkdot { 50% { opacity: .35; } }
 
-  /* ---------- Status pills ---------- */
-  .pill {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 13px; border-radius: 999px;
-    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-    border: 1px solid currentColor;
+  /* =================== HEADER =================== */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(18,15,13,0.82);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
   }
-  .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-  .pill.live { color: var(--green); }
-  .pill.live::before { box-shadow: 0 0 0 0 rgba(65,214,138,0.6); animation: pulse 2s infinite; }
-  .pill.soon { color: var(--orange2); }
-  .pill.dev  { color: var(--violet); }
-  .pill.read { color: var(--blue); }
-  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(65,214,138,0.55); } 70% { box-shadow: 0 0 0 9px rgba(65,214,138,0); } 100% { box-shadow: 0 0 0 0 rgba(65,214,138,0); } }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { width: 44px; height: 44px; }
+  .brand span { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.32rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .brand b { color: var(--orange); }
+  .nav ul { display: flex; list-style: none; gap: 2px; align-items: center; }
+  .nav ul a { display: inline-block; padding: 10px 13px; border-radius: 10px; text-decoration: none; color: var(--muted); font-weight: 500; font-size: 0.98rem; }
+  .nav ul a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  .nav ul a.cta { background: var(--orange); color: #1a1208; margin-left: 6px; }
+  .nav ul a.cta:hover { background: var(--orange2); }
+  .menu-btn { display: none; background: rgba(255,255,255,0.06); border: 1px solid var(--line); color: var(--text); border-radius: 12px; width: 48px; height: 48px; font-size: 1.4rem; cursor: pointer; }
 
-  /* ---------- Featured (Tolliver) ---------- */
-  .feature {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
-    background: linear-gradient(135deg, #1b2735 0%, #1e2b38 55%, #22344a 100%);
-    border: 1px solid rgba(126,181,232,0.22);
-    border-radius: 26px; overflow: hidden;
+  /* =================== HERO =================== */
+  .hero { position: relative; min-height: calc(100vh - 72px); display: flex; align-items: center; padding: 72px 0 96px; overflow: hidden; isolation: isolate; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background:
+      radial-gradient(700px 520px at 72% 46%, rgba(255,140,20,0.22), transparent 70%),
+      radial-gradient(520px 420px at 12% 18%, rgba(255,90,0,0.10), transparent 70%),
+      radial-gradient(900px 600px at 50% 120%, rgba(120,70,30,0.35), transparent 70%);
   }
-  .feature-body { padding: 52px; }
-  .feature-body h3 { font-size: clamp(2.4rem, 4.5vw, 3.4rem); margin: 18px 0 6px; }
-  .feature-body .tag { font-size: 1.15rem; color: var(--blue); margin-bottom: 20px; }
-  .feature-body p { color: #c7d3df; margin-bottom: 24px; }
-  .checks { list-style: none; display: grid; gap: 10px; margin-bottom: 32px; }
-  .checks li { display: flex; gap: 12px; align-items: flex-start; }
-  .checks li::before {
-    content: "✓"; flex: none; width: 26px; height: 26px; border-radius: 50%;
-    display: grid; place-items: center; font-size: 0.85rem; font-weight: 700;
-    background: rgba(0,255,208,0.12); color: #00ffd0; margin-top: 2px;
+  .hero-gear {
+    position: absolute; z-index: -1; width: 1100px; height: 1100px; right: -320px; top: 50%; margin-top: -550px;
+    opacity: 0.07; color: var(--orange2);
+    animation: spin 160s linear infinite;
   }
-  .feature-art {
-    position: relative; display: grid; place-items: center; padding: 48px;
-    background: radial-gradient(circle at 50% 45%, rgba(0,255,208,0.12), transparent 60%);
-    border-left: 1px solid rgba(126,181,232,0.14);
+  .embers { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .embers i {
+    position: absolute; bottom: -10px; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--orange2); box-shadow: 0 0 10px 2px rgba(255,150,40,0.7);
+    opacity: 0; animation: rise linear infinite;
   }
-  .feature-art img {
-    width: min(240px, 70%); border-radius: 44px;
-    box-shadow: 0 0 0 1px rgba(126,181,232,0.25), 0 30px 80px rgba(0,0,0,0.5), 0 0 90px rgba(0,180,255,0.25);
+  @keyframes rise {
+    0%   { transform: translate(0,0); opacity: 0; }
+    10%  { opacity: .9; }
+    100% { transform: translate(var(--dx,30px), -105vh); opacity: 0; }
   }
-  .feature-art .price {
-    position: absolute; bottom: 28px; right: 28px;
-    background: rgba(0,0,0,0.35); border: 1px solid rgba(126,181,232,0.25);
-    padding: 10px 16px; border-radius: 12px; font-size: 0.95rem; color: #dde6f0;
-  }
-  .feature-art .price strong { color: #fff; font-size: 1.15rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ---------- App cards ---------- */
-  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .card {
-    display: flex; flex-direction: column;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 30px;
-    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; width: 100%; }
+  .hero .kicker { color: var(--orange2); }
+  .hero h1 { font-size: clamp(3rem, 7vw, 5.8rem); font-weight: 800; text-transform: uppercase; letter-spacing: 0.01em; margin-bottom: 26px; line-height: 0.95; }
+  .hero h1 span { display: block; }
+  .hero h1 .glow {
+    background: linear-gradient(92deg, #ffd27a 0%, #ff9a1f 45%, #ff6a00 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .card:hover { transform: translateY(-4px); border-color: rgba(255,154,31,0.35); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
-  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
-  .icon { width: 72px; height: 72px; border-radius: 18px; flex: none; overflow: hidden; }
-  .icon img, .icon svg { width: 100%; height: 100%; }
-  .card h3 { font-size: 2rem; margin-bottom: 4px; }
-  .card .kind { color: var(--orange2); font-size: 0.95rem; font-weight: 500; margin-bottom: 14px; }
-  .card p { color: var(--muted); margin-bottom: 26px; flex: 1; }
-  .card .links { display: flex; flex-wrap: wrap; gap: 10px; }
-  .card .btn { min-height: 48px; padding: 0 18px; font-size: 0.98rem; }
+  .hero .lead { font-size: 1.28rem; color: var(--muted); max-width: 34ch; margin-bottom: 36px; }
+  .btn-orange { background: var(--orange); color: #1a1208; box-shadow: 0 8px 30px rgba(255,140,20,0.3); }
+  .btn-orange:hover { background: var(--orange2); box-shadow: 0 12px 40px rgba(255,140,20,0.45); }
+  .btn-dim { background: rgba(255,255,255,0.06); border-color: var(--line); color: var(--text); }
+  .btn-dim:hover { background: rgba(255,255,255,0.11); }
 
-  /* ---------- Pipeline ---------- */
-  .pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
-  .stage { position: relative; padding: 0 18px; }
-  .stage::before {
-    content: ""; position: absolute; top: 21px; left: 0; right: 0; height: 3px; background: var(--surface2);
+  .hero-logo-wrap { position: relative; justify-self: center; width: min(420px, 100%); aspect-ratio: 1; }
+  .hero-logo-wrap::before {
+    content: ""; position: absolute; inset: 8%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,150,40,0.35), transparent 65%);
+    filter: blur(20px); animation: breathe 6s ease-in-out infinite;
   }
-  .stage:first-child::before { left: 50%; }
-  .stage:last-child::before { right: 50%; }
-  .dot {
-    position: relative; z-index: 1; width: 45px; height: 45px; border-radius: 50%;
-    display: grid; place-items: center; margin: 0 auto 18px;
-    background: var(--surface2); border: 3px solid var(--bg2); font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem;
-  }
-  .stage.done .dot { background: var(--orange); color: #141414; }
-  .stage h4 { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 10px; }
-  .stage ul { list-style: none; display: grid; gap: 8px; }
-  .stage li {
-    text-align: center; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 12px; font-size: 0.98rem;
-  }
-  .stage li small { display: block; color: var(--muted); font-size: 0.84rem; }
+  .hero-logo { position: relative; width: 100%; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6)); }
+  @keyframes breathe { 50% { transform: scale(1.08); opacity: .75; } }
 
-  /* ---------- Values ---------- */
-  .values { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-  .value { padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); }
-  .value .v-icon {
-    width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px;
-    background: rgba(255,154,31,0.12); color: var(--orange);
+  .worlds { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 44px; }
+  .worlds a {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 48px;
+    padding: 6px 16px 6px 6px; border-radius: 999px; text-decoration: none; font-weight: 500; font-size: 0.98rem;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--text);
+    transition: background .2s, border-color .2s, transform .2s;
   }
-  .value .v-icon svg { width: 26px; height: 26px; }
-  .value h3 { font-size: 1.5rem; margin-bottom: 8px; }
-  .value p { color: var(--muted); font-size: 1rem; }
+  .worlds a:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+  .worlds .w-ico { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; overflow: hidden; flex: none; }
+  .worlds a.w-roll:hover { border-color: rgba(201,164,92,0.6); }
+  .worlds a.w-tol:hover  { border-color: rgba(110,180,255,0.6); }
+  .worlds a.w-ai:hover   { border-color: rgba(170,130,255,0.6); }
+  .worlds a.w-bf:hover   { border-color: rgba(255,200,140,0.6); }
 
-  /* ---------- About ---------- */
-  .about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: center; }
-  .about-badge {
-    border-radius: 26px; padding: 40px; text-align: center;
-    background: radial-gradient(circle at 50% 30%, rgba(255,154,31,0.14), transparent 70%), var(--surface);
-    border: 1px solid var(--border);
+  /* =================== ROLLABOP =================== */
+  .rollabop {
+    --wood0: #140c07; --wood1: #22150d; --wood2: #33200f; --wood3: #4a2e1b;
+    --brass: #c9a45c; --brass-l: #ecd49c; --brass-line: rgba(201,164,92,0.42);
+    --ink: #efe6d6; --ink-m: #cdbfa8;
+    position: relative; overflow: hidden; padding: 120px 0;
+    color: var(--ink);
+    background:
+      radial-gradient(900px 600px at 70% 40%, rgba(255,190,110,0.16), transparent 65%),
+      radial-gradient(700px 500px at 0% 100%, rgba(0,0,0,0.6), transparent 70%),
+      repeating-linear-gradient(92deg, rgba(255,220,180,0.022) 0 2px, transparent 2px 9px, rgba(0,0,0,0.05) 9px 11px, transparent 11px 23px),
+      repeating-linear-gradient(88deg, transparent 0 60px, rgba(255,200,150,0.025) 60px 64px, transparent 64px 140px),
+      linear-gradient(180deg, var(--wood1), var(--wood0) 60%, #0d0805);
+    border-top: 1px solid var(--brass-line); border-bottom: 1px solid var(--brass-line);
   }
-  .about-badge img { width: 220px; margin: 0 auto 18px; }
-  .about-badge strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; }
-  .about-badge span { color: var(--muted); }
-  .about h2 { font-size: clamp(2.2rem, 4.4vw, 3.2rem); margin-bottom: 18px; }
-  .about p { color: var(--muted); margin-bottom: 18px; font-size: 1.1rem; }
-
-  /* ---------- Contact ---------- */
-  .contact {
-    border-radius: 26px; padding: 56px; text-align: center;
-    background: linear-gradient(135deg, rgba(255,154,31,0.14), rgba(255,154,31,0.03)), var(--surface);
-    border: 1px solid rgba(255,154,31,0.25);
+  .rollabop::before, .rollabop::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--brass), transparent);
   }
-  .contact h2 { font-size: clamp(2.2rem, 4.4vw, 3rem); margin-bottom: 12px; }
-  .contact p { color: var(--muted); margin: 0 auto 30px; max-width: 52ch; font-size: 1.1rem; }
-  .contact .btns { justify-content: center; }
+  .rollabop::before { top: 10px; } .rollabop::after { bottom: 10px; }
+  .rb-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: center; }
+  .rollabop .kicker { color: var(--brass-l); }
+  .rb-wordmark { width: min(380px, 86%); margin: 6px 0 18px -6px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6)); }
+  .rb-tagline { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 500; font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.15; color: var(--brass-l); margin-bottom: 18px; }
+  .rollabop p.rb-body { color: var(--ink-m); font-size: 1.12rem; max-width: 50ch; margin-bottom: 26px; }
+  .rollabop .status { color: var(--brass-l); margin-bottom: 22px; }
+  .rb-feats { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 30px; }
+  .rb-feats li {
+    padding: 18px 16px; border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255,230,190,0.06), rgba(0,0,0,0.2));
+    border: 1px solid var(--brass-line);
+    box-shadow: inset 0 1px 0 rgba(255,230,180,0.08);
+  }
+  .rb-feats strong { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.4rem; font-weight: 600; color: var(--ink); line-height: 1.15; margin-bottom: 4px; }
+  .rb-feats span { font-size: 0.95rem; color: var(--ink-m); line-height: 1.5; display: block; }
+  .rb-fair {
+    display: flex; gap: 14px; align-items: flex-start; max-width: 58ch;
+    padding: 16px 18px; border-left: 2px solid var(--brass); background: rgba(0,0,0,0.25); border-radius: 0 12px 12px 0;
+    color: var(--ink-m); font-size: 1rem; margin-bottom: 32px;
+  }
+  .rb-fair svg { width: 24px; height: 24px; color: var(--brass-l); flex: none; margin-top: 2px; }
+  .rb-fair b { color: var(--ink); font-weight: 600; }
+  .btn-brass { background: linear-gradient(180deg, #ecd49c, #c9a45c 55%, #a8843f); color: #23170a; box-shadow: 0 8px 30px rgba(201,164,92,0.3), inset 0 1px 0 rgba(255,255,255,0.5); }
+  .btn-brass:hover { box-shadow: 0 12px 40px rgba(201,164,92,0.45), inset 0 1px 0 rgba(255,255,255,0.5); }
+  .btn-wood { background: rgba(0,0,0,0.3); border-color: var(--brass-line); color: var(--ink); }
+  .btn-wood:hover { background: rgba(0,0,0,0.45); border-color: var(--brass); }
 
-  /* ---------- Footer ---------- */
-  footer { padding: 56px 0 40px; border-top: 1px solid var(--border); margin-top: 96px; }
-  .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
-  .foot h5 { font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange2); margin-bottom: 14px; }
-  .foot ul { list-style: none; display: grid; gap: 8px; }
-  .foot a { color: var(--muted); text-decoration: none; }
-  .foot a:hover { color: var(--text); text-decoration: underline; }
-  .foot p { color: var(--muted); font-size: 0.98rem; max-width: 34ch; margin-top: 14px; }
-  .copy { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.92rem; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .rb-stage { position: relative; justify-self: center; width: min(380px, 100%); }
+  .rb-device {
+    position: relative; border-radius: 34px; padding: 12px;
+    background: linear-gradient(145deg, #3a2614, #1c120a);
+    border: 1px solid var(--brass-line);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 40px 90px rgba(0,0,0,0.7), 0 0 120px rgba(255,170,80,0.12), inset 0 1px 0 rgba(255,220,170,0.15);
+  }
+  .rb-device video, .rb-device img { width: 100%; aspect-ratio: 5 / 9; object-fit: cover; border-radius: 24px; background: #1b110a; }
+  .rb-caption { text-align: center; margin-top: 16px; font-size: 0.88rem; color: var(--ink-m); }
+  .rb-ball {
+    position: absolute; width: 150px; height: 150px; right: -70px; top: -50px; z-index: 2;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+    animation: bob 7s ease-in-out infinite;
+  }
+  .rb-ball img { width: 100%; border-radius: 50%; }
+  .rb-ball::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 60px 10px rgba(110,140,255,0.35); pointer-events: none; }
+  .rb-ball.small { width: 74px; height: 74px; left: -44px; right: auto; top: auto; bottom: 90px; animation-duration: 9s; animation-delay: -3s; }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(8deg); } }
 
-  /* ---------- Reveal ---------- */
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  /* =================== TOLLIVER =================== */
+  .tolliver {
+    --t-blue: #6cb6ff; --t-soft: #a9d3ff; --t-ink: #e6f0fb; --t-m: #b4c6da;
+    position: relative; overflow: hidden; padding: 128px 0;
+    background:
+      radial-gradient(680px 520px at 25% 50%, rgba(60,140,255,0.22), transparent 70%),
+      radial-gradient(500px 400px at 90% 10%, rgba(255,170,90,0.07), transparent 70%),
+      linear-gradient(180deg, #0c1420, #101b2a 50%, #0c141f);
+    color: var(--t-ink);
+  }
+  .t-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 72px; align-items: center; }
+  .face-wrap { justify-self: center; width: min(400px, 100%); position: relative; }
+  .face-wrap::before { content: ""; position: absolute; inset: -10%; border-radius: 50%; background: radial-gradient(circle, rgba(70,150,255,0.25), transparent 62%); filter: blur(10px); }
+  .face {
+    position: relative; aspect-ratio: 1; border-radius: 26%;
+    background: radial-gradient(circle at 50% 35%, #142740, #091422 70%);
+    box-shadow: 0 0 0 1px rgba(120,180,255,0.25), 0 40px 90px rgba(0,0,0,0.55), inset 0 0 60px rgba(60,140,255,0.18);
+    cursor: default;
+  }
+  .face svg { width: 100%; height: 100%; }
+  .face .lid { transform-box: fill-box; transform-origin: center; animation: blink 6s infinite; }
+  .face .lid.r { animation-delay: 0.04s; }
+  @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 95.5% { transform: scaleY(0.08); } }
+  .face .pupils { transition: transform .25s ease-out; }
+  .face-note { text-align: center; color: var(--t-m); font-size: 0.9rem; margin-top: 18px; }
+
+  .tolliver .kicker { color: var(--t-soft); }
+  .tolliver h2 { font-size: clamp(3rem, 6vw, 4.6rem); margin-bottom: 8px; }
+  .tolliver .t-line { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(1.6rem, 3vw, 2.1rem); color: var(--t-soft); margin-bottom: 22px; line-height: 1.2; }
+  .tolliver .status { color: #ffc56b; margin-bottom: 24px; }
+  .tolliver p { color: var(--t-m); font-size: 1.1rem; max-width: 54ch; margin-bottom: 18px; }
+  .t-wants { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 26px 0 28px; max-width: 560px; }
+  .t-wants li { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: rgba(100,170,255,0.07); border: 1px solid rgba(120,180,255,0.18); font-size: 1rem; color: var(--t-ink); }
+  .t-wants svg { width: 22px; height: 22px; color: var(--t-blue); flex: none; }
+  .t-price { display: inline-block; font-size: 0.98rem; color: var(--t-m); padding: 10px 16px; border-radius: 12px; border: 1px dashed rgba(169,211,255,0.35); margin-bottom: 30px; }
+  .t-price b { color: var(--t-ink); }
+  .btn-blue { background: linear-gradient(180deg, #8cc6ff, #4a97e8); color: #06182b; box-shadow: 0 8px 30px rgba(80,160,255,0.3); }
+  .btn-blue:hover { box-shadow: 0 12px 40px rgba(80,160,255,0.45); }
+
+  /* =================== TOLLIVER AI =================== */
+  .tai {
+    --ai: #b49bff; --ai2: #5ef2e0; --ai-ink: #ece8ff; --ai-m: #b8b2d6;
+    position: relative; overflow: hidden; padding: 128px 0;
+    background: linear-gradient(180deg, #0b0a14, #0e0c1c 50%, #0a0912);
+    color: var(--ai-ink);
+    border-top: 1px solid rgba(180,155,255,0.15);
+  }
+  #neural { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.85; }
+  .tai::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 30% 50%, rgba(11,10,20,0.92) 0%, rgba(11,10,20,0.55) 45%, transparent 75%); }
+  .tai .wrap { position: relative; z-index: 2; }
+  .tai-inner { max-width: 720px; }
+  .tai .kicker { color: var(--ai2); font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.12em; }
+  .tai h2 { font-size: clamp(3rem, 6vw, 4.6rem); margin-bottom: 10px; }
+  .tai h2 em { font-style: normal; background: linear-gradient(90deg, var(--ai2), var(--ai)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .tai .status { color: var(--ai2); margin: 6px 0 24px; font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.06em; }
+  .tai p { color: var(--ai-m); font-size: 1.12rem; margin-bottom: 18px; max-width: 60ch; }
+  .tai p strong { color: var(--ai-ink); font-weight: 600; }
+  .goals { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 30px 0; }
+  .goals li {
+    padding: 16px 18px; border-radius: 12px;
+    background: rgba(20,16,40,0.7); border: 1px solid rgba(180,155,255,0.22);
+    font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.92rem; color: var(--ai-ink);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .goals li span { display: block; color: var(--ai2); font-size: 0.78rem; margin-bottom: 4px; }
+  .core { position: absolute; right: 2%; top: 50%; width: 380px; height: 380px; margin-top: -190px; z-index: 1; pointer-events: none; }
+  .core .ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(180,155,255,0.35); animation: spin 40s linear infinite; }
+  .core .ring.r2 { inset: 44px; border-style: solid; border-color: rgba(94,242,224,0.25); border-top-color: rgba(94,242,224,0.9); animation-duration: 9s; }
+  .core .ring.r3 { inset: 92px; border-color: rgba(180,155,255,0.5); border-left-color: transparent; border-style: solid; animation-duration: 14s; animation-direction: reverse; }
+  .core .heart { position: absolute; inset: 140px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #e9fffb, #5ef2e0 30%, #6a4dff 75%, #1a0f4a); box-shadow: 0 0 60px 16px rgba(94,242,224,0.35), 0 0 140px 40px rgba(120,90,255,0.3); animation: breathe 4.5s ease-in-out infinite; }
+  .core .label { position: absolute; left: 50%; bottom: -34px; transform: translateX(-50%); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.78rem; letter-spacing: 0.14em; color: rgba(236,232,255,0.6); white-space: nowrap; }
+  .honest { display: flex; gap: 14px; padding: 18px 20px; border-radius: 14px; background: rgba(94,242,224,0.06); border: 1px solid rgba(94,242,224,0.25); max-width: 62ch; }
+  .honest svg { width: 24px; height: 24px; color: var(--ai2); flex: none; margin-top: 3px; }
+  .honest p { margin: 0; font-size: 1.02rem; }
+
+  /* =================== BREATHEFRAME =================== */
+  .bf {
+    --bf-warm: #ffcf8a; --bf-ink: #f6efe6; --bf-m: #cbbfb1;
+    position: relative; overflow: hidden; padding: 128px 0;
+    background:
+      radial-gradient(700px 500px at 75% 50%, rgba(255,190,120,0.12), transparent 70%),
+      linear-gradient(180deg, #16120f, #1b1612 60%, #14110e);
+    color: var(--bf-ink);
+  }
+  .bf-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
+  .bf .kicker { color: var(--bf-warm); }
+  .bf h2 { font-size: clamp(3rem, 6vw, 4.6rem); margin-bottom: 8px; }
+  .bf .bf-line { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(1.6rem, 3vw, 2.1rem); color: var(--bf-warm); margin-bottom: 22px; line-height: 1.2; }
+  .bf .status { color: #f2b6ff; margin-bottom: 24px; }
+  .bf p { color: var(--bf-m); font-size: 1.1rem; max-width: 50ch; margin-bottom: 18px; }
+  .bf-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 30px; }
+  .bf-tags span { padding: 8px 14px; border-radius: 999px; font-size: 0.92rem; background: rgba(255,207,138,0.08); border: 1px solid rgba(255,207,138,0.25); color: var(--bf-ink); }
+  .btn-warm { background: linear-gradient(180deg, #ffe0b0, #ffb867); color: #2a1706; box-shadow: 0 8px 30px rgba(255,184,103,0.25); }
+
+  .frame {
+    position: relative; padding: 18px; border-radius: 6px;
+    background: linear-gradient(145deg, #f4ede2, #d9cdbb);
+    box-shadow: 0 2px 0 #fff8 inset, 0 40px 80px rgba(0,0,0,0.6), 0 0 0 10px #3b2a1c, 0 0 0 12px #6b4c30;
+    transform: rotate(-1.2deg);
+    margin: 14px;
+  }
+  .scene-box { position: relative; aspect-ratio: 8 / 5; overflow: hidden; border-radius: 2px; background: #0d1830; }
+  .scene-box svg, .scene-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .scene .tree { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 5.5s ease-in-out infinite; }
+  .scene .tree.b { animation-duration: 6.8s; animation-delay: -2s; }
+  .scene .tree.c { animation-duration: 6.1s; animation-delay: -4s; }
+  @keyframes sway { 0%,100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.4deg); } }
+  .scene .bulb { animation: twinkle 2.6s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .scene .glowwin { animation: flicker 4s ease-in-out infinite; }
+  @keyframes flicker { 0%,100% { opacity: 1; } 45% { opacity: .86; } 55% { opacity: .95; } }
+  .scene-box.still .tree, .scene-box.still .bulb, .scene-box.still .glowwin { animation-play-state: paused; }
+  .bf-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+  .bf-controls small { color: var(--bf-m); font-size: 0.88rem; }
+  .toggle {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+    background: rgba(255,207,138,0.1); border: 1px solid rgba(255,207,138,0.35); color: var(--bf-ink); font: inherit; font-weight: 600; font-size: 0.95rem;
+  }
+  .toggle:hover { background: rgba(255,207,138,0.18); }
+
+  /* =================== PRINCIPLES =================== */
+  .principles { padding: 128px 0; background: var(--bg); position: relative; }
+  .manifesto { max-width: 900px; margin-bottom: 64px; }
+  .principles .kicker { color: var(--orange2); }
+  .manifesto h2 { font-size: clamp(2.6rem, 5.4vw, 4.2rem); margin-bottom: 26px; }
+  .manifesto h2 span { color: var(--orange); }
+  .manifesto p { color: var(--muted); font-size: 1.18rem; max-width: 62ch; margin-bottom: 16px; }
+  .manifesto p strong { color: var(--text); font-weight: 600; }
+  .p-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .p-card { position: relative; padding: 30px 26px; border-radius: 20px; background: linear-gradient(180deg, #221d18, #1a1612); border: 1px solid var(--line); overflow: hidden; }
+  .p-card::before { content: ""; position: absolute; top: 0; left: 26px; right: 26px; height: 2px; background: linear-gradient(90deg, var(--orange), transparent); }
+  .p-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1; color: rgba(255,154,31,0.22); margin-bottom: 12px; }
+  .p-card h3 { font-size: 1.6rem; margin-bottom: 10px; }
+  .p-card p { color: var(--muted); font-size: 1rem; }
+
+  /* =================== STORY =================== */
+  .story {
+    position: relative; padding: 140px 0; overflow: hidden;
+    background:
+      radial-gradient(800px 600px at 85% 20%, rgba(255,130,30,0.10), transparent 70%),
+      radial-gradient(600px 500px at 0% 90%, rgba(255,90,0,0.06), transparent 70%),
+      linear-gradient(180deg, #17120e, #1c1510 50%, #15110d);
+    border-top: 1px solid rgba(255,154,31,0.18);
+  }
+  .story-head { text-align: center; max-width: 760px; margin: 0 auto 80px; }
+  .story .kicker { color: var(--orange2); }
+  .story-head h2 { font-size: clamp(3rem, 6.4vw, 5rem); margin-bottom: 18px; }
+  .story-head p { color: var(--muted); font-size: 1.15rem; }
+  .chapters { max-width: 860px; margin: 0 auto; position: relative; }
+  .chapters::before { content: ""; position: absolute; left: 180px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, transparent, rgba(255,154,31,0.45) 8%, rgba(255,154,31,0.45) 92%, transparent); }
+  .ch { display: grid; grid-template-columns: 180px 1fr; gap: 0 44px; margin-bottom: 44px; position: relative; }
+  .ch::before { content: ""; position: absolute; left: 174px; top: 12px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--orange); }
+  .ch-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange2); text-align: right; padding-right: 24px; padding-top: 2px; }
+  .ch-text p { font-size: 1.2rem; line-height: 1.8; color: #e7ddd0; margin-bottom: 14px; }
+  .ch-text p:last-child { margin-bottom: 0; }
+  .turn { max-width: 860px; margin: 72px auto; text-align: center; }
+  .turn blockquote { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 500; font-size: clamp(2.1rem, 4.6vw, 3.3rem); line-height: 1.2; color: var(--text); }
+  .turn blockquote::before, .turn blockquote::after { color: var(--orange); }
+  .turn blockquote::before { content: "“"; } .turn blockquote::after { content: "”"; }
+  .ch.bright::before { background: var(--orange); box-shadow: 0 0 18px rgba(255,154,31,0.8); }
+  .signature { max-width: 860px; margin: 60px auto 0; display: flex; align-items: center; gap: 20px; justify-content: center; }
+  .signature img { width: 72px; height: 72px; }
+  .signature div { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.8rem; line-height: 1.2; }
+  .signature small { display: block; font-family: 'Jost', sans-serif; font-style: normal; font-size: 0.95rem; color: var(--muted); margin-top: 4px; }
+
+  /* =================== CONNECT =================== */
+  .connect { padding: 128px 0 40px; background: var(--bg); }
+  .connect-head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+  .connect .kicker { color: var(--orange2); }
+  .connect-head h2 { font-size: clamp(2.6rem, 5.4vw, 4rem); margin-bottom: 14px; }
+  .connect-head p { color: var(--muted); font-size: 1.15rem; }
+  .c-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .c-col { padding: 32px 28px; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); }
+  .c-col h3 { font-size: 1.7rem; margin-bottom: 6px; }
+  .c-col > p { color: var(--muted); font-size: 1rem; margin-bottom: 20px; }
+  .c-links { list-style: none; display: grid; gap: 10px; }
+  .c-links a {
+    display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 8px 14px; border-radius: 14px; text-decoration: none;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--line); transition: background .2s, border-color .2s, transform .2s;
+  }
+  .c-links a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,154,31,0.4); transform: translateX(3px); }
+  .c-links .ico { width: 38px; height: 38px; border-radius: 10px; flex: none; display: grid; place-items: center; overflow: hidden; background: rgba(255,154,31,0.12); color: var(--orange); }
+  .c-links .ico svg { width: 20px; height: 20px; }
+  .c-links .ico img { width: 100%; height: 100%; object-fit: cover; }
+  .c-links b { display: block; font-weight: 600; font-size: 1rem; line-height: 1.3; }
+  .c-links small { color: var(--muted); font-size: 0.86rem; line-height: 1.3; }
+  .c-col.support { background: linear-gradient(160deg, rgba(255,154,31,0.16), rgba(255,154,31,0.03)), var(--surface); border-color: rgba(255,154,31,0.3); }
+
+  footer { padding: 56px 0 44px; margin-top: 80px; border-top: 1px solid var(--line); }
+  .foot { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .foot nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+  .foot nav a { color: var(--muted); text-decoration: none; font-size: 0.98rem; }
+  .foot nav a:hover { color: var(--text); text-decoration: underline; }
+  .copy { margin-top: 28px; color: var(--muted); font-size: 0.9rem; }
+
+  /* =================== REVEAL =================== */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: .12s; } .reveal.d2 { transition-delay: .24s; } .reveal.d3 { transition-delay: .36s; }
   .no-js .reveal { opacity: 1; transform: none; }
+  .offscreen, .offscreen * { animation-play-state: paused !important; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .reveal { opacity: 1; transform: none; }
+    .embers { display: none; }
   }
 
-  /* ---------- Responsive ---------- */
-  @media (max-width: 980px) {
-    .hero-grid, .feature, .about { grid-template-columns: 1fr; }
-    .hero { padding: 56px 0 72px; }
-    .hero-logo { width: min(300px, 80%); order: -1; }
-    .feature-art { border-left: 0; border-top: 1px solid rgba(126,181,232,0.14); }
-    .values { grid-template-columns: repeat(2, 1fr); }
-    .pipeline { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
-    .stage::before { display: none; }
-    .foot { grid-template-columns: 1fr 1fr; }
+  /* =================== RESPONSIVE =================== */
+  @media (max-width: 1080px) {
+    .nav ul a { padding: 10px 9px; font-size: 0.94rem; }
+    .p-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 760px) {
+  @media (max-width: 960px) {
+    .hero { min-height: 0; padding: 48px 0 80px; }
+    .hero-grid, .rb-grid, .t-grid, .bf-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-logo-wrap { width: min(300px, 76%); order: -1; }
+    .hero-gear { width: 700px; height: 700px; right: -300px; margin-top: -350px; }
+    .rb-stage { order: 2; width: min(340px, 82%); }
+    .face-wrap { width: min(300px, 80%); }
+    .c-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+    .core { display: none; }
+  }
+  @media (max-width: 860px) {
     .menu-btn { display: block; }
     .nav ul {
       display: none; position: absolute; top: 72px; left: 0; right: 0;
       flex-direction: column; align-items: stretch; gap: 4px;
-      background: var(--bg); border-bottom: 1px solid var(--border); padding: 12px 16px 18px;
+      background: #120f0d; border-bottom: 1px solid var(--line); padding: 12px 16px 18px;
     }
     .nav ul.open { display: flex; }
     .nav ul a { padding: 14px 16px; font-size: 1.08rem; }
+    .nav ul a.cta { margin: 6px 0 0; text-align: center; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
     .wrap { padding: 0 16px; }
-    section { padding: 72px 0; }
-    .feature-body, .contact { padding: 32px 22px; }
-    .values, .pipeline, .foot, .cards { grid-template-columns: 1fr; }
-    .brand span { font-size: 1.15rem; }
+    .rollabop, .tolliver, .tai, .bf, .principles, .story { padding: 88px 0; }
+    .connect { padding-top: 88px; }
+    .rb-feats { grid-template-columns: 1fr; }
+    .rb-ball { width: 104px; height: 104px; right: -30px; top: -36px; }
+    .rb-ball.small { width: 56px; height: 56px; left: -22px; }
+    .t-wants { grid-template-columns: 1fr; }
+    .p-grid { grid-template-columns: 1fr; }
+    .chapters::before { left: 6px; }
+    .ch { grid-template-columns: 1fr; padding-left: 32px; }
+    .ch::before { left: 0; top: 6px; }
+    .ch-label { text-align: left; padding: 0 0 6px; }
+    .ch-text p { font-size: 1.1rem; }
+    .brand span { font-size: 1.12rem; }
+    .frame { margin: 10px 6px; padding: 10px; }
+    .signature { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
@@ -328,269 +496,408 @@
 
 <header>
   <nav class="wrap nav" aria-label="Main">
-    <a class="brand" href="#top" aria-label="Lippy Robotics Labs home">
+    <a class="brand" href="#top" aria-label="Lippy Robotics Labs, back to top">
       <img src="assets/labs-logo.png" alt="" width="44" height="44">
       <span>Lippy <b>Robotics</b> Labs</span>
     </a>
     <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">☰</button>
     <ul id="menu">
-      <li><a href="#production">In Production</a></li>
-      <li><a href="#apps">Our Apps</a></li>
-      <li><a href="#pipeline">Roadmap</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="https://patevan9.github.io/lippy-articles/">Articles</a></li>
-      <li><a class="cta" href="#contact">Contact</a></li>
+      <li><a href="#rollabop">Rollabop</a></li>
+      <li><a href="#tolliver">Tolliver</a></li>
+      <li><a href="#tolliver-ai">Tolliver AI</a></li>
+      <li><a href="#breatheframe">BreatheFrame</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a class="cta" href="#connect">Connect</a></li>
     </ul>
   </nav>
 </header>
 
 <main id="main">
 
-<!-- ================= HERO ================= -->
+<!-- ======================= HERO ======================= -->
 <section class="hero" id="top">
+  <svg class="hero-gear" viewBox="0 0 200 200" aria-hidden="true">
+    <path fill="none" stroke="currentColor" stroke-width="2.2" d="M93 8h14l3 18a76 76 0 0 1 17 7l15-11 10 10-11 15a76 76 0 0 1 7 17l18 3v14l-18 3a76 76 0 0 1-7 17l11 15-10 10-15-11a76 76 0 0 1-17 7l-3 18H93l-3-18a76 76 0 0 1-17-7l-15 11-10-10 11-15a76 76 0 0 1-7-17l-18-3V93l18-3a76 76 0 0 1 7-17L48 58l10-10 15 11a76 76 0 0 1 17-7z"/>
+    <circle cx="100" cy="100" r="46" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <circle cx="100" cy="100" r="20" fill="none" stroke="currentColor" stroke-width="2.2"/>
+  </svg>
+  <div class="embers" aria-hidden="true"></div>
+
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow">Independent Android studio</span>
-      <h1>Thoughtful software that <em>respects</em> the people who use it.</h1>
-      <p class="lead">Lippy Robotics Labs builds private, on-device apps and games for Android. No cloud lock-in. No subscriptions. Just well-made tools that stay on your phone.</p>
-      <div class="btns">
-        <a class="btn btn-primary" href="#production">Meet Tolliver
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <span class="kicker reveal">Lippy Robotics Labs</span>
+      <h1 class="reveal d1"><span>Big ideas.</span><span>Small screens.</span><span class="glow">Real enjoyment.</span></h1>
+      <p class="lead reveal d2">Games, local AI companions and creative tools, built with curiosity, care and respect for the people who use them.</p>
+      <div class="btns reveal d3">
+        <a class="btn btn-orange" href="#rollabop">Explore our creations
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
         </a>
-        <a class="btn btn-ghost" href="#apps">See all apps</a>
+        <a class="btn btn-dim" href="#story">The story behind the lab</a>
       </div>
+
+      <nav class="worlds reveal d3" aria-label="Our projects">
+        <a class="w-roll" href="#rollabop"><span class="w-ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="36" height="36"></span>Rollabop</a>
+        <a class="w-tol" href="#tolliver"><span class="w-ico" style="background:#0d1a2b"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><circle cx="12" cy="18" r="5" fill="#2a74d6"/><circle cx="12" cy="18" r="2.2" fill="#06101d"/><circle cx="24" cy="18" r="5" fill="#2a74d6"/><circle cx="24" cy="18" r="2.2" fill="#06101d"/></svg></span>Tolliver</a>
+        <a class="w-ai" href="#tolliver-ai"><span class="w-ico" style="background:#16112c"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><g stroke="#8f7bff" stroke-width="1.4"><path d="M10 12l8 6 8-7M18 18l-6 8M18 18l7 7"/></g><g fill="#5ef2e0"><circle cx="10" cy="12" r="2.4"/><circle cx="26" cy="11" r="2.4"/><circle cx="18" cy="18" r="3"/><circle cx="12" cy="26" r="2.4"/><circle cx="25" cy="25" r="2.4"/></g></svg></span>Tolliver AI</a>
+        <a class="w-bf" href="#breatheframe"><span class="w-ico" style="background:#2a1f16"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="2" fill="none" stroke="#ffcf8a" stroke-width="1.8"/><path d="M11 23l5-5 4 4 2-2 4 3" fill="none" stroke="#ffcf8a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="15" r="1.8" fill="#ffcf8a"/></svg></span>BreatheFrame</a>
+      </nav>
     </div>
-    <img class="hero-logo" src="assets/labs-logo.png" alt="Lippy Robotics Labs logo — a steel gear with the words Lippy Robotics Labs" width="400" height="400">
+
+    <div class="hero-logo-wrap reveal d1">
+      <img class="hero-logo" src="assets/labs-logo.png" alt="Lippy Robotics Labs logo: a brushed-steel gear with the words Lippy Robotics Labs in orange and silver" width="420" height="420">
+    </div>
   </div>
 </section>
 
-<!-- ================= IN PRODUCTION ================= -->
-<section class="alt" id="production">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Now in production</span>
-      <h2>Tolliver AI</h2>
-      <p>Our flagship. A private AI companion that lives entirely on your Android phone — it sees, remembers and talks with you, without sending your life to the cloud.</p>
+<!-- ======================= ROLLABOP ======================= -->
+<section class="rollabop" id="rollabop" aria-labelledby="rollabop-title">
+  <div class="wrap rb-grid">
+    <div>
+      <span class="kicker reveal">Featured · Our first priority</span>
+      <h2 id="rollabop-title" class="sr">Rollabop</h2>
+      <img class="rb-wordmark reveal" src="assets/rollabop/rollabop-wordmark.webp" alt="Rollabop" width="960" height="286">
+      <p class="rb-tagline reveal d1">The physical pile is the puzzle.</p>
+      <span class="status reveal d1">In closed testing · Android</span>
+      <p class="rb-body reveal d2">A free-to-play physics puzzle game set inside a tall walnut tray full of polished glass balls. Nothing is locked in place. Every ball has weight, and every move changes the pile. Reach in, drag a ball through the crowd, and find the move that sets off a cascade.</p>
+
+      <ul class="rb-feats reveal d2">
+        <li><strong>Gravity is always on.</strong><span>Balls fall, bump, roll and settle naturally.</span></li>
+        <li><strong>Touch any ball.</strong><span>Drag it anywhere. The others move out of the way.</span></li>
+        <li><strong>No timers. No rush.</strong><span>The challenge comes from the puzzle, never the clock.</span></li>
+      </ul>
+
+      <div class="rb-fair reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span><b>Fair by design.</b> Every level can be won without paying and without watching an ad. Any ads are optional, clearly labelled and never interrupt your game.</span>
+      </div>
+
+      <div class="btns reveal d3">
+        <a class="btn btn-brass" href="https://patevan9.github.io/rollabop-website/">Visit the Rollabop website
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+        <a class="btn btn-wood" href="https://patevan9.github.io/rollabop-website/#trailer">Watch the trailer</a>
+      </div>
     </div>
 
-    <article class="feature reveal" aria-labelledby="tolliver-title">
-      <div class="feature-body">
-        <span class="pill live">In production</span>
-        <h3 id="tolliver-title">Tolliver</h3>
-        <div class="tag">A quiet presence.</div>
-        <p>Tolliver runs a local AI brain right on your device. It recognizes the people in your home, remembers what matters to you, and answers in its own friendly voice — all offline by default.</p>
-        <ul class="checks">
-          <li>Runs on-device — works without the internet</li>
-          <li>No account, no subscription, no data harvesting</li>
-          <li>Real memory: facts it keeps and habits it learns</li>
-          <li>Built and tested on real phones, every release</li>
+    <div class="rb-stage reveal d1">
+      <div class="rb-ball" aria-hidden="true"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="150" height="150"></div>
+      <div class="rb-ball small" aria-hidden="true"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="74" height="74"></div>
+      <div class="rb-device">
+        <video id="rb-video" muted loop playsinline preload="metadata" poster="assets/rollabop/rollabop-tray.webp" aria-label="Rollabop gameplay: glass balls settle in a walnut tray, a ball is dragged through the pile, and a row of four matches and clears">
+          <source src="assets/rollabop/rollabop-gameplay.mp4" type="video/mp4">
+          <img src="assets/rollabop/rollabop-tray.webp" alt="Rollabop gameplay: colourful glass balls piled in a walnut tray with brass trim" width="500" height="900">
+        </video>
+      </div>
+      <p class="rb-caption">From the official Rollabop trailer</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TOLLIVER ======================= -->
+<section class="tolliver" id="tolliver" aria-labelledby="tolliver-title">
+  <div class="wrap t-grid">
+    <div class="face-wrap reveal">
+      <div class="face" id="face">
+        <svg viewBox="0 0 200 200" role="img" aria-label="Tolliver's face: two glowing blue eyes and a small smile">
+          <defs>
+            <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#0a1a33"/>
+              <stop offset="0.38" stop-color="#1d4f9c"/>
+              <stop offset="0.75" stop-color="#3e8cf0"/>
+              <stop offset="1" stop-color="#1b4c96"/>
+            </radialGradient>
+            <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+          </defs>
+          <path d="M44 58q22-10 40 0M116 58q18-10 40 0" fill="none" stroke="#6cb6ff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+          <g class="lid l">
+            <circle cx="64" cy="98" r="30" fill="#6cb6ff" opacity=".35" filter="url(#soft)"/>
+            <circle cx="64" cy="98" r="27" fill="#e8f3ff"/>
+            <g class="pupils">
+              <circle cx="64" cy="98" r="20" fill="url(#iris)"/>
+              <circle cx="64" cy="98" r="8.5" fill="#030912"/>
+              <circle cx="58" cy="91" r="4" fill="#fff" opacity=".95"/>
+              <circle cx="70" cy="104" r="1.8" fill="#fff" opacity=".6"/>
+            </g>
+          </g>
+          <g class="lid r">
+            <circle cx="136" cy="98" r="30" fill="#6cb6ff" opacity=".35" filter="url(#soft)"/>
+            <circle cx="136" cy="98" r="27" fill="#e8f3ff"/>
+            <g class="pupils">
+              <circle cx="136" cy="98" r="20" fill="url(#iris)"/>
+              <circle cx="136" cy="98" r="8.5" fill="#030912"/>
+              <circle cx="130" cy="91" r="4" fill="#fff" opacity=".95"/>
+              <circle cx="142" cy="104" r="1.8" fill="#fff" opacity=".6"/>
+            </g>
+          </g>
+          <path d="M88 148q12 8 24 0" fill="none" stroke="#6cb6ff" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="face-note">Tolliver’s eyes follow your pointer or finger.</p>
+    </div>
+
+    <div>
+      <span class="kicker reveal">The companion</span>
+      <h2 id="tolliver-title" class="reveal d1">Tolliver</h2>
+      <p class="t-line reveal d1">A companion, not another chatbot.</p>
+      <span class="status reveal d2">In development · Not yet available</span>
+      <p class="reveal d2">Tolliver began as <strong>Scout</strong>, our original attempt at a private AI companion that runs on the phone itself instead of in someone else's cloud. Scout grew into Tolliver.</p>
+      <p class="reveal d2">The goal is something that feels present in your home, with its own personality and a gentle, steady sense of who you are.</p>
+      <ul class="t-wants reveal d3" aria-label="What we're building Tolliver to do">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Recognize the people it knows</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 00-6 6c0 2.5 1.5 3.8 2.5 5 .8 1 1 2 1 3h5c0-1 .2-2 1-3 1-1.2 2.5-2.5 2.5-5a6 6 0 00-6-6zM10 21h4"/></svg>Remember what really matters</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>Talk with you naturally</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>Live on an Android device</li>
+      </ul>
+      <div class="t-price reveal d3">Planned price: <b>$9.99, one-time purchase</b>. Not on sale yet.</div>
+      <div class="btns reveal d3">
+        <a class="btn btn-blue" href="https://patevan9.github.io/lippyrobotics.github.io/">Visit the Tolliver website
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TOLLIVER AI ======================= -->
+<section class="tai" id="tolliver-ai" aria-labelledby="tai-title">
+  <canvas id="neural" aria-hidden="true"></canvas>
+  <div class="core" aria-hidden="true"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="heart"></div><div class="label">WORK IN PROGRESS</div></div>
+  <div class="wrap">
+    <div class="tai-inner">
+      <span class="kicker reveal">// our research ambition</span>
+      <h2 id="tai-title" class="reveal d1">Tolliver <em>AI</em></h2>
+      <span class="status reveal d1">Ongoing research</span>
+      <p class="reveal d2">Tolliver AI is our long-term effort to build an <strong>excellent local language model</strong>, and the architecture around it, designed for what a real companion needs.</p>
+      <p class="reveal d2">The ambition is a brain that can one day <strong>outperform existing local AI options</strong> in the areas that matter most to Tolliver:</p>
+      <ul class="goals reveal d3">
+        <li><span>01</span>Useful reasoning</li>
+        <li><span>02</span>Memory integration</li>
+        <li><span>03</span>Efficiency</li>
+        <li><span>04</span>Responsiveness</li>
+        <li><span>05</span>Real performance on Android phones</li>
+      </ul>
+      <div class="honest reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <p><strong>Where we are, honestly:</strong> we are working toward this goal. We have not achieved it yet. Our hope is that, one day, our own Tolliver AI brain will power the Tolliver companion.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BREATHEFRAME ======================= -->
+<section class="bf" id="breatheframe" aria-labelledby="bf-title">
+  <div class="wrap bf-grid">
+    <div>
+      <span class="kicker reveal">A future creative tool</span>
+      <h2 id="bf-title" class="reveal d1">BreatheFrame</h2>
+      <p class="bf-line reveal d1">Some moments deserve to breathe.</p>
+      <span class="status reveal d2">In development</span>
+      <p class="reveal d2">BreatheFrame will add subtle, realistic movement to your still photographs. Picture softly falling snow, gently blinking holiday lights, or trees moving slightly in the wind.</p>
+      <p class="reveal d2">It's meant to be quiet and believable, like a memory that's still a little alive.</p>
+      <div class="bf-tags reveal d3"><span>Planned: free</span><span>Planned: open source</span><span>Android</span></div>
+      <div class="btns reveal d3">
+        <a class="btn btn-warm" href="https://github.com/Patevan9/BreatheFrame">Follow it on GitHub
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="reveal d1">
+      <div class="frame">
+        <div class="scene-box" id="scene">
+          <svg class="scene" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Concept illustration: a snowy cabin at night with glowing windows, holiday lights along the roof and pine trees">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0b1530"/><stop offset=".6" stop-color="#22305a"/><stop offset="1" stop-color="#4a4f7a"/>
+              </linearGradient>
+              <radialGradient id="moon" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fffbe8"/><stop offset=".6" stop-color="#f6eac2" stop-opacity=".9"/><stop offset="1" stop-color="#f6eac2" stop-opacity="0"/></radialGradient>
+              <radialGradient id="winglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd38a" stop-opacity=".75"/><stop offset="1" stop-color="#ffb35a" stop-opacity="0"/></radialGradient>
+              <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9eefc"/><stop offset="1" stop-color="#aab6d8"/></linearGradient>
+            </defs>
+            <rect width="800" height="500" fill="url(#sky)"/>
+            <circle cx="640" cy="92" r="70" fill="url(#moon)"/>
+            <circle cx="640" cy="92" r="30" fill="#fffaf0"/>
+            <path d="M0 330 Q160 270 320 315 T640 300 T800 310 V500 H0z" fill="#3a4672"/>
+            <!-- far trees -->
+            <g fill="#25305a">
+              <path class="tree c" d="M70 330l26-80 26 80z"/><path class="tree b" d="M720 318l22-70 22 70z"/><path class="tree" d="M600 312l18-58 18 58z"/>
+            </g>
+            <path d="M0 380 Q200 340 400 372 T800 362 V500 H0z" fill="url(#snow)"/>
+            <!-- cabin -->
+            <g>
+              <ellipse cx="330" cy="352" rx="150" ry="30" fill="url(#winglow)" class="glowwin"/>
+              <rect x="250" y="272" width="170" height="92" fill="#3b2a22"/>
+              <path d="M236 278 L335 205 L434 278 Z" fill="#2a1d18"/>
+              <path d="M232 280 L335 202 L438 280" fill="none" stroke="#eef2ff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+              <rect x="372" y="222" width="18" height="34" fill="#2a1d18"/><rect x="368" y="218" width="26" height="8" fill="#eef2ff"/>
+              <rect x="272" y="296" width="40" height="34" rx="2" fill="#ffcf7a" class="glowwin"/>
+              <path d="M292 296v34M272 313h40" stroke="#3b2a22" stroke-width="3"/>
+              <rect x="350" y="296" width="40" height="34" rx="2" fill="#ffcf7a" class="glowwin"/>
+              <path d="M370 296v34M350 313h40" stroke="#3b2a22" stroke-width="3"/>
+              <rect x="318" y="316" width="26" height="48" fill="#5a3a26"/>
+              <!-- string of lights -->
+              <path d="M244 282 Q262 292 280 270 Q298 282 316 250 Q333 262 335 214 Q338 262 354 250 Q372 282 390 270 Q408 292 426 282" fill="none" stroke="#1b1410" stroke-width="1.5" opacity=".7"/>
+              <g>
+                <circle class="bulb" cx="252" cy="286" r="4.5" fill="#ff5a5a" style="animation-delay:-.2s"/>
+                <circle class="bulb" cx="270" cy="282" r="4.5" fill="#ffd34d" style="animation-delay:-1.1s"/>
+                <circle class="bulb" cx="290" cy="270" r="4.5" fill="#5ad1ff" style="animation-delay:-.6s"/>
+                <circle class="bulb" cx="306" cy="262" r="4.5" fill="#7dff8a" style="animation-delay:-1.8s"/>
+                <circle class="bulb" cx="322" cy="244" r="4.5" fill="#ff5a5a" style="animation-delay:-.9s"/>
+                <circle class="bulb" cx="348" cy="244" r="4.5" fill="#ffd34d" style="animation-delay:-2.2s"/>
+                <circle class="bulb" cx="364" cy="262" r="4.5" fill="#5ad1ff" style="animation-delay:-.3s"/>
+                <circle class="bulb" cx="380" cy="270" r="4.5" fill="#7dff8a" style="animation-delay:-1.5s"/>
+                <circle class="bulb" cx="400" cy="282" r="4.5" fill="#ff5a5a" style="animation-delay:-2.5s"/>
+                <circle class="bulb" cx="418" cy="286" r="4.5" fill="#ffd34d" style="animation-delay:-.75s"/>
+              </g>
+            </g>
+            <!-- near trees -->
+            <g>
+              <g class="tree"><path d="M120 420l46-150 46 150z" fill="#16304a"/><path d="M140 360l26-78 26 78z" fill="#1d3d5c"/><path d="M152 300 l14 -32 l14 32 q-14 -8 -28 0z" fill="#eef2ff"/><path d="M128 410q38-14 76 0" stroke="#eef2ff" stroke-width="6" fill="none" stroke-linecap="round" opacity=".85"/></g>
+              <g class="tree b"><path d="M520 430l56-180 56 180z" fill="#132b44"/><path d="M546 350l30-96 30 96z" fill="#1b3a58"/><path d="M561 286 l15 -36 l15 36 q-15 -9 -30 0z" fill="#eef2ff"/><path d="M530 418q46-16 92 0" stroke="#eef2ff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".85"/></g>
+              <g class="tree c"><path d="M660 440l40-130 40 130z" fill="#16304a"/><path d="M684 345 l16 -38 l16 38 q-16 -9 -32 0z" fill="#eef2ff"/></g>
+            </g>
+            <path d="M0 440 Q240 410 480 438 T800 430 V500 H0z" fill="#dfe6f8"/>
+          </svg>
+          <canvas id="snowfall" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <div class="bf-controls">
+        <small>Concept illustration, not a screenshot of the app.</small>
+        <button class="toggle" id="bf-toggle" aria-pressed="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+          <span>Pause the motion</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PRINCIPLES ======================= -->
+<section class="principles" id="principles" aria-labelledby="principles-title">
+  <div class="wrap">
+    <div class="manifesto">
+      <span class="kicker reveal">What we believe</span>
+      <h2 id="principles-title" class="reveal d1">Software should <span>respect</span> the people using it.</h2>
+      <p class="reveal d2">We want people to enjoy meaningful experiences on devices they already own, without being pressured, manipulated or nickel-and-dimed along the way.</p>
+      <p class="reveal d2"><strong>We're not against earning money.</strong> This lab exists partly to help support a family. But we want to earn it by making things people genuinely appreciate. Not everything we build will be free. Everything we build should be fair.</p>
+    </div>
+    <div class="p-grid">
+      <div class="p-card reveal"><div class="p-num">01</div><h3>Enjoyment without pressure</h3><p>No artificial urgency, no tricks, no punishing you until you pay. Fun comes first.</p></div>
+      <div class="p-card reveal d1"><div class="p-num">02</div><h3>Fair value, clear prices</h3><p>You'll always know what something costs and what you get. Optional purchases stay truly optional.</p></div>
+      <div class="p-card reveal d2"><div class="p-num">03</div><h3>Privacy where practical</h3><p>Your life belongs on your device, not on our servers. We keep things local wherever we can.</p></div>
+      <div class="p-card reveal d3"><div class="p-num">04</div><h3>Accessible to everyone</h3><p>Readable, clear and comfortable to use, made by someone who knows firsthand why that matters.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= STORY ======================= -->
+<section class="story" id="story" aria-labelledby="story-title">
+  <div class="wrap">
+    <div class="story-head">
+      <span class="kicker reveal">From the founder</span>
+      <h2 id="story-title" class="reveal d1">The Story Behind the Lab</h2>
+      <p class="reveal d2">Why a man who never planned to be a programmer is building games and AI companions.</p>
+    </div>
+
+    <div class="chapters">
+      <div class="ch reveal">
+        <div class="ch-label">Age 39</div>
+        <div class="ch-text"><p>At thirty-nine, I had open-heart bypass surgery. The doctors couldn't explain why someone my age needed it.</p></div>
+      </div>
+      <div class="ch reveal">
+        <div class="ch-label">Then</div>
+        <div class="ch-text"><p>I lost the vision in my right eye.</p></div>
+      </div>
+      <div class="ch reveal">
+        <div class="ch-label">Elijah, age one</div>
+        <div class="ch-text"><p>Later, when my son Elijah was only twelve months old, not even walking yet, I had a stroke.</p></div>
+      </div>
+      <div class="ch reveal">
+        <div class="ch-label">The answer</div>
+        <div class="ch-text">
+          <p>For years, none of it seemed connected. Each thing arrived on its own, without an explanation.</p>
+          <p>Eventually a rheumatologist connected the dots. A hyperactive autoimmune system was probably responsible for much of what had happened to me.</p>
+        </div>
+      </div>
+      <div class="ch reveal">
+        <div class="ch-label">Also</div>
+        <div class="ch-text"><p>I'm a type 1 diabetic, and I'm dyslexic.</p></div>
+      </div>
+      <div class="ch reveal">
+        <div class="ch-label">What changed</div>
+        <div class="ch-text"><p>Together, these things changed my ability to work. In time, they led me to disability and early retirement.</p></div>
+      </div>
+    </div>
+
+    <div class="turn reveal">
+      <blockquote>But I still wanted to create something.</blockquote>
+    </div>
+
+    <div class="chapters">
+      <div class="ch reveal">
+        <div class="ch-label">Scout</div>
+        <div class="ch-text">
+          <p>I'm not a professional programmer. I started building Scout anyway: a private AI companion that could live on an ordinary Android phone.</p>
+          <p>I built it slowly, with persistence, patience and a lot of experimentation, working alongside AI collaborators who treated the work as a real partnership.</p>
+        </div>
+      </div>
+      <div class="ch reveal">
+        <div class="ch-label">And then</div>
+        <div class="ch-text"><p>Scout became Tolliver. Then my curiosity kept going, into Rollabop, BreatheFrame and the long road of Tolliver AI.</p></div>
+      </div>
+      <div class="ch bright reveal">
+        <div class="ch-label">Why I build</div>
+        <div class="ch-text">
+          <p>I build these things because I love technology. Because I still want to contribute something meaningful. And because I hope that, one day, what I make here can help support my family.</p>
+          <p>That's what Lippy Robotics Labs is.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="signature reveal">
+      <img src="assets/labs-logo.png" alt="" width="72" height="72">
+      <div>Patrick Evan Lippy<small>Founder, Lippy Robotics Labs</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CONNECT ======================= -->
+<section class="connect" id="connect" aria-labelledby="connect-title">
+  <div class="wrap">
+    <div class="connect-head">
+      <span class="kicker reveal">Come along for the ride</span>
+      <h2 id="connect-title" class="reveal d1">Explore, connect, support</h2>
+      <p class="reveal d2">Visit each project's home, say hello, or help keep the lab building.</p>
+    </div>
+
+    <div class="c-grid">
+      <div class="c-col reveal">
+        <h3>Explore</h3>
+        <p>Each project has its own home.</p>
+        <ul class="c-links">
+          <li><a href="https://patevan9.github.io/rollabop-website/"><span class="ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="38" height="38"></span><span><b>Rollabop</b><small>Game website</small></span></a></li>
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/"><span class="ico"><img src="assets/tolliver-icon.png" alt="" width="38" height="38"></span><span><b>Tolliver</b><small>Companion website</small></span></a></li>
+          <li><a href="https://github.com/Patevan9/BreatheFrame"><span class="ico" style="background:rgba(255,207,138,0.12);color:#ffcf8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M5 17l5-5 4 4 2-2 3 3"/></svg></span><span><b>BreatheFrame</b><small>On GitHub</small></span></a></li>
         </ul>
-        <div class="btns">
-          <a class="btn btn-primary" href="https://patevan9.github.io/lippyrobotics.github.io/">Visit the Tolliver website
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
-          </a>
-          <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/download.html">Download</a>
-          <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/whatsnew.html">What's new</a>
-        </div>
       </div>
-      <div class="feature-art">
-        <img src="assets/tolliver-icon.png" alt="Tolliver app icon — two glowing blue eyes and a small smile" width="240" height="240">
-        <div class="price">One-time purchase · <strong>$9.99</strong></div>
-      </div>
-    </article>
-  </div>
-</section>
 
-<!-- ================= APPS ================= -->
-<section id="apps">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">The lineup</span>
-      <h2>Apps &amp; projects</h2>
-      <p>Everything we make, where it stands today, and where to find it. Each card takes you straight to that project's own website.</p>
-    </div>
+      <div class="c-col reveal d1">
+        <h3>Connect</h3>
+        <p>Questions, ideas or feedback? We read everything.</p>
+        <ul class="c-links">
+          <li><a href="https://discord.gg/UaCkkSZvx4"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg></span><span><b>Discord</b><small>Join the community</small></span></a></li>
+          <li><a href="https://www.facebook.com/share/1D1Q4uskqZ/"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h-2a4 4 0 00-4 4v3H7v4h2v7h4v-7h2.5l.5-4h-3V7a1 1 0 011-1h2z"/></svg></span><span><b>Facebook</b><small>Follow along</small></span></a></li>
+          <li><a href="mailto:lippyroboticslabs@gmail.com"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><b>Email</b><small>lippyroboticslabs@gmail.com</small></span></a></li>
+        </ul>
+      </div>
 
-    <div class="cards">
-      <!-- Tolliver -->
-      <article class="card reveal">
-        <div class="card-top">
-          <div class="icon"><img src="assets/tolliver-icon.png" alt="" width="72" height="72"></div>
-          <span class="pill live">In production</span>
-        </div>
-        <h3>Tolliver</h3>
-        <div class="kind">On-device AI companion · Android</div>
-        <p>A private AI companion with real memory, face recognition and a voice of its own. No cloud, no subscriptions, no account.</p>
-        <div class="links">
-          <a class="btn btn-primary" href="https://patevan9.github.io/lippyrobotics.github.io/">Visit site</a>
-          <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/support.html">Support</a>
-        </div>
-      </article>
-
-      <!-- Rollabop -->
-      <article class="card reveal">
-        <div class="card-top">
-          <div class="icon"><img src="assets/rollabop-icon.png" alt="" width="72" height="72"></div>
-          <span class="pill soon">Coming to Android</span>
-        </div>
-        <h3>Rollabop</h3>
-        <div class="kind">Physics puzzle game · Android</div>
-        <p>The physical pile is the puzzle. Reach into a living pile of balls, rearrange it under gravity, build bigger matches and find the move that changes everything.</p>
-        <div class="links">
-          <a class="btn btn-primary" href="https://patevan9.github.io/rollabop-website/">Visit site</a>
-          <a class="btn btn-ghost" href="https://patevan9.github.io/rollabop-website/#how-it-plays">How it plays</a>
-        </div>
-      </article>
-
-      <!-- BreatheFrame -->
-      <article class="card reveal">
-        <div class="card-top">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 72 72">
-              <defs>
-                <linearGradient id="bf" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#3a2f6b"/><stop offset="1" stop-color="#7b5cff"/>
-                </linearGradient>
-              </defs>
-              <rect width="72" height="72" rx="18" fill="url(#bf)"/>
-              <rect x="16" y="18" width="40" height="36" rx="5" fill="none" stroke="#fff" stroke-width="3" opacity=".95"/>
-              <path d="M19 47l10-11 8 8 6-6 10 9" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-              <circle cx="46" cy="28" r="4" fill="#ffd27a"/>
-              <path d="M10 30c-3 4-3 8 0 12M62 30c3 4 3 8 0 12" stroke="#cdbdff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <span class="pill dev">In development</span>
-        </div>
-        <h3>BreatheFrame</h3>
-        <div class="kind">Photo motion · Android · Open source</div>
-        <p>Adds subtle, believable motion to your still photographs — a gentle breath of life, processed entirely on your device.</p>
-        <div class="links">
-          <a class="btn btn-primary" href="https://github.com/Patevan9/BreatheFrame">View on GitHub</a>
-        </div>
-      </article>
-
-      <!-- Articles -->
-      <article class="card reveal">
-        <div class="card-top">
-          <div class="icon" aria-hidden="true">
-            <svg viewBox="0 0 72 72">
-              <rect width="72" height="72" rx="18" fill="#1f3550"/>
-              <rect x="18" y="16" width="36" height="42" rx="4" fill="none" stroke="#7eb5e8" stroke-width="3"/>
-              <path d="M25 27h22M25 35h22M25 43h14" stroke="#dde6f0" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <span class="pill read">Updated regularly</span>
-        </div>
-        <h3>Lab Articles</h3>
-        <div class="kind">News &amp; behind-the-scenes</div>
-        <p>Stories from the workbench — like how an old Android phone became the first version of Tolliver — plus release news and development updates.</p>
-        <div class="links">
-          <a class="btn btn-primary" href="https://patevan9.github.io/lippy-articles/">Read articles</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PIPELINE ================= -->
-<section class="alt" id="pipeline">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">At a glance</span>
-      <h2>From idea to your phone</h2>
-      <p>Every project moves through the same careful steps. Here's where each one is right now.</p>
-    </div>
-    <div class="pipeline reveal" role="list">
-      <div class="stage done" role="listitem">
-        <div class="dot">1</div>
-        <h4>Research</h4>
-        <ul><li>Tolliver's next brain<small>On-device AI research</small></li></ul>
-      </div>
-      <div class="stage done" role="listitem">
-        <div class="dot">2</div>
-        <h4>Development</h4>
-        <ul><li>BreatheFrame<small>Open source, in progress</small></li></ul>
-      </div>
-      <div class="stage done" role="listitem">
-        <div class="dot">3</div>
-        <h4>Launching</h4>
-        <ul><li>Rollabop<small>Coming to Android</small></li></ul>
-      </div>
-      <div class="stage done" role="listitem">
-        <div class="dot">4</div>
-        <h4>In production</h4>
-        <ul><li>Tolliver<small>Available now</small></li></ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= VALUES ================= -->
-<section>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">How we build</span>
-      <h2>Our promises</h2>
-    </div>
-    <div class="values">
-      <div class="value reveal">
-        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
-        <h3>Private by design</h3>
-        <p>Your data stays on your device. We don't sell it, track it or need it.</p>
-      </div>
-      <div class="value reveal">
-        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
-        <h3>On-device first</h3>
-        <p>Apps that keep working when the Wi-Fi doesn't.</p>
-      </div>
-      <div class="value reveal">
-        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-        <h3>Fair pricing</h3>
-        <p>Pay once and own it. No subscriptions sneaking up on you.</p>
-      </div>
-      <div class="value reveal">
-        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/></svg></div>
-        <h3>Accessible</h3>
-        <p>Clear, readable and kind to every kind of user — built by someone who knows why that matters.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= ABOUT ================= -->
-<section class="alt" id="about">
-  <div class="wrap about">
-    <div class="about-badge reveal">
-      <img src="assets/labs-logo.png" alt="" width="220" height="220">
-      <strong>Lippy Robotics Labs</strong>
-      <span>Founded by Patrick Evan Lippy</span>
-    </div>
-    <div class="reveal">
-      <span class="eyebrow">About the lab</span>
-      <h2>Small studio. Big care.</h2>
-      <p>Lippy Robotics Labs is an independent studio run by Patrick Evan Lippy. It started with a simple question: what if an old Android phone could become a friendly, private companion for the home? That question became Tolliver.</p>
-      <p>Today the lab builds apps and games that share the same values — run on the device, respect the user, and get tested on real phones before anyone else sees them.</p>
-      <div class="btns">
-        <a class="btn btn-ghost" href="https://patevan9.github.io/lippy-articles/">Read the story</a>
-        <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/donate.html">Support the lab</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CONTACT ================= -->
-<section id="contact">
-  <div class="wrap">
-    <div class="contact reveal">
-      <span class="eyebrow">Get in touch</span>
-      <h2>Questions, ideas or feedback?</h2>
-      <p>We read every message. Join the community on Discord, follow along on Facebook, or send an email.</p>
-      <div class="btns">
-        <a class="btn btn-primary" href="mailto:lippyroboticslabs@gmail.com">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          Email us
-        </a>
-        <a class="btn btn-ghost" href="https://discord.gg/UaCkkSZvx4">Join Discord</a>
-        <a class="btn btn-ghost" href="https://www.facebook.com/share/1D1Q4uskqZ/">Facebook</a>
+      <div class="c-col support reveal d2">
+        <h3>Support the lab</h3>
+        <p>Every bit of support helps a small, independent lab keep building fair, thoughtful software.</p>
+        <ul class="c-links">
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/donate.html"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/></svg></span><span><b>Donate</b><small>Support development</small></span></a></li>
+          <li><a href="https://discord.gg/UaCkkSZvx4"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h4l3-8 4 16 3-8h2"/></svg></span><span><b>Share your feedback</b><small>Testing &amp; ideas on Discord</small></span></a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -601,71 +908,174 @@
 <footer>
   <div class="wrap">
     <div class="foot">
-      <div>
-        <a class="brand" href="#top"><img src="assets/labs-logo.png" alt="" width="44" height="44"><span>Lippy <b>Robotics</b> Labs</span></a>
-        <p>Private, thoughtful software for Android.</p>
-      </div>
-      <div>
-        <h5>Apps</h5>
-        <ul>
-          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/">Tolliver</a></li>
-          <li><a href="https://patevan9.github.io/rollabop-website/">Rollabop</a></li>
-          <li><a href="https://github.com/Patevan9/BreatheFrame">BreatheFrame</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Tolliver</h5>
-        <ul>
-          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/download.html">Download</a></li>
-          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/faq.html">FAQ</a></li>
-          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/support.html">Support</a></li>
-          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/privacy.html">Privacy</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Lab</h5>
-        <ul>
-          <li><a href="https://patevan9.github.io/lippy-articles/">Articles</a></li>
-          <li><a href="https://discord.gg/UaCkkSZvx4">Discord</a></li>
-          <li><a href="https://www.facebook.com/share/1D1Q4uskqZ/">Facebook</a></li>
-          <li><a href="mailto:lippyroboticslabs@gmail.com">Email</a></li>
-        </ul>
-      </div>
+      <a class="brand" href="#top"><img src="assets/labs-logo.png" alt="" width="44" height="44"><span>Lippy <b>Robotics</b> Labs</span></a>
+      <nav aria-label="Footer">
+        <a href="#rollabop">Rollabop</a>
+        <a href="#tolliver">Tolliver</a>
+        <a href="#tolliver-ai">Tolliver AI</a>
+        <a href="#breatheframe">BreatheFrame</a>
+        <a href="#story">Our Story</a>
+        <a href="#connect">Connect</a>
+      </nav>
     </div>
-    <div class="copy">
-      <span>Copyright © 2026 Patrick Evan Lippy. All rights reserved.</span>
-      <span>Lippy Robotics Labs</span>
-    </div>
+    <p class="copy">Copyright © 2026 Patrick Evan Lippy. All rights reserved.</p>
   </div>
 </footer>
 
 <script>
+(function () {
   document.body.classList.remove('no-js');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasIO = 'IntersectionObserver' in window;
 
-  // Mobile menu
-  var btn = document.querySelector('.menu-btn');
-  var menu = document.getElementById('menu');
+  // ---- Mobile menu
+  var btn = document.querySelector('.menu-btn'), menu = document.getElementById('menu');
   btn.addEventListener('click', function () {
     var open = menu.classList.toggle('open');
     btn.setAttribute('aria-expanded', open);
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     btn.textContent = open ? '✕' : '☰';
   });
-  menu.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A' && menu.classList.contains('open')) btn.click();
-  });
+  menu.addEventListener('click', function (e) { if (e.target.tagName === 'A' && menu.classList.contains('open')) btn.click(); });
 
-  // Gentle fade-in as sections scroll into view
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  // ---- Reveal on scroll
+  var reveals = document.querySelectorAll('.reveal');
+  if (hasIO && !reduce) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else { reveals.forEach(function (el) { el.classList.add('in'); }); }
+
+  // ---- Pause CSS animations in sections that are off-screen
+  var sections = document.querySelectorAll('section');
+  var visible = {};
+  if (hasIO) {
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.target.classList.toggle('offscreen', !e.isIntersecting); visible[e.target.id] = e.isIntersecting; });
+    }, { threshold: 0 });
+    sections.forEach(function (s) { so.observe(s); });
   }
+  function onScreen(id) { return !hasIO || visible[id] !== false; }
+
+  // ---- Hero embers
+  if (!reduce) {
+    var em = document.querySelector('.embers');
+    var n = window.innerWidth < 700 ? 10 : 18;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('i');
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.animationDuration = (9 + Math.random() * 10) + 's';
+      s.style.animationDelay = (-Math.random() * 18) + 's';
+      s.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+      var sz = 2 + Math.random() * 3; s.style.width = s.style.height = sz + 'px';
+      em.appendChild(s);
+    }
+  }
+
+  // ---- Rollabop gameplay video: play only while visible, never under reduced motion
+  var vid = document.getElementById('rb-video');
+  if (vid && !reduce && hasIO) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { var p = vid.play(); if (p && p.catch) p.catch(function () {}); }
+        else vid.pause();
+      });
+    }, { threshold: 0.25 }).observe(vid);
+  }
+
+  // ---- Tolliver eyes follow the pointer
+  var face = document.getElementById('face');
+  if (face && !reduce) {
+    var pupils = face.querySelectorAll('.pupils');
+    var raf = null, tx = 0, ty = 0;
+    window.addEventListener('pointermove', function (ev) {
+      var r = face.getBoundingClientRect();
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var dx = ev.clientX - cx, dy = ev.clientY - cy;
+      var d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var k = Math.min(1, d / 400);
+      tx = dx / d * 7 * k; ty = dy / d * 6 * k;
+      if (!raf) raf = requestAnimationFrame(function () {
+        pupils.forEach(function (p) { p.setAttribute('transform', 'translate(' + tx.toFixed(2) + ' ' + ty.toFixed(2) + ')'); });
+        raf = null;
+      });
+    }, { passive: true });
+  }
+
+  // ---- Tolliver AI neural field
+  var nc = document.getElementById('neural');
+  if (nc && nc.getContext) {
+    var ctx = nc.getContext('2d'), nodes = [], pulses = [], W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function sizeN() {
+      var r = nc.getBoundingClientRect(); W = r.width; H = r.height;
+      nc.width = W * dpr; nc.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var count = Math.round(Math.min(70, Math.max(26, W * H / 16000)));
+      nodes = [];
+      for (var i = 0; i < count; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, r: 1.2 + Math.random() * 2 });
+    }
+    function drawN() {
+      ctx.clearRect(0, 0, W, H);
+      var L = 140;
+      for (var i = 0; i < nodes.length; i++) {
+        var a = nodes[i];
+        for (var j = i + 1; j < nodes.length; j++) {
+          var b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.sqrt(dx * dx + dy * dy);
+          if (d < L) { ctx.strokeStyle = 'rgba(160,140,255,' + (0.22 * (1 - d / L)).toFixed(3) + ')'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        }
+      }
+      pulses.forEach(function (p) {
+        var x = p.a.x + (p.b.x - p.a.x) * p.t, y = p.a.y + (p.b.y - p.a.y) * p.t;
+        ctx.fillStyle = 'rgba(94,242,224,' + (1 - Math.abs(p.t - .5) * 1.6).toFixed(2) + ')';
+        ctx.beginPath(); ctx.arc(x, y, 2.4, 0, 6.283); ctx.fill();
+      });
+      nodes.forEach(function (n) { ctx.fillStyle = 'rgba(200,190,255,0.85)'; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, 6.283); ctx.fill(); });
+    }
+    function stepN() {
+      nodes.forEach(function (n) { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > W) n.vx *= -1; if (n.y < 0 || n.y > H) n.vy *= -1; });
+      if (pulses.length < 10 && Math.random() < 0.08) {
+        var a = nodes[(Math.random() * nodes.length) | 0], best = null, bd = 1e9;
+        nodes.forEach(function (b) { if (b === a) return; var d = Math.hypot(a.x - b.x, a.y - b.y); if (d < 140 && d < bd && Math.random() < .6) { bd = d; best = b; } });
+        if (best) pulses.push({ a: a, b: best, t: 0 });
+      }
+      pulses = pulses.filter(function (p) { p.t += 0.018; return p.t < 1; });
+    }
+    sizeN(); drawN();
+    window.addEventListener('resize', function () { sizeN(); drawN(); });
+    if (!reduce) (function loop() { if (onScreen('tolliver-ai') && !document.hidden) { stepN(); drawN(); } requestAnimationFrame(loop); })();
+  }
+
+  // ---- BreatheFrame snowfall + motion toggle
+  var sc = document.getElementById('snowfall'), box = document.getElementById('scene'), tog = document.getElementById('bf-toggle');
+  if (sc && sc.getContext) {
+    var sx = sc.getContext('2d'), flakes = [], SW = 0, SH = 0, sd = Math.min(window.devicePixelRatio || 1, 2), moving = !reduce;
+    function sizeS() {
+      var r = sc.getBoundingClientRect(); SW = r.width; SH = r.height;
+      sc.width = SW * sd; sc.height = SH * sd; sx.setTransform(sd, 0, 0, sd, 0, 0);
+      flakes = []; var c = Math.round(SW * SH / 2600);
+      for (var i = 0; i < c; i++) flakes.push({ x: Math.random() * SW, y: Math.random() * SH, r: .6 + Math.random() * 2, s: .25 + Math.random() * .7, w: Math.random() * 6.28 });
+    }
+    function drawS() {
+      sx.clearRect(0, 0, SW, SH);
+      flakes.forEach(function (f) { sx.fillStyle = 'rgba(255,255,255,' + (0.45 + f.r / 5).toFixed(2) + ')'; sx.beginPath(); sx.arc(f.x, f.y, f.r, 0, 6.283); sx.fill(); });
+    }
+    function stepS() {
+      flakes.forEach(function (f) { f.y += f.s; f.w += 0.012; f.x += Math.sin(f.w) * 0.3; if (f.y > SH + 4) { f.y = -4; f.x = Math.random() * SW; } });
+    }
+    sizeS(); drawS();
+    window.addEventListener('resize', function () { sizeS(); drawS(); });
+    (function loop() { if (moving && onScreen('breatheframe') && !document.hidden) { stepS(); drawS(); } requestAnimationFrame(loop); })();
+
+    function setMotion(on) {
+      moving = on; box.classList.toggle('still', !on);
+      tog.setAttribute('aria-pressed', on);
+      tog.querySelector('span').textContent = on ? 'Pause the motion' : 'Bring it to life';
+      tog.querySelector('svg').innerHTML = on ? '<path d="M8 5v14M16 5v14"/>' : '<path d="M7 5l12 7-12 7z" fill="currentColor"/>';
+    }
+    if (reduce) setMotion(false);
+    tog.addEventListener('click', function () { setMotion(!moving); });
+  }
+})();
 </script>
 </body>
 </html>
