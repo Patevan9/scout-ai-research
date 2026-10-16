@@ -239,13 +239,13 @@
   .rb-soon span { color: var(--ink-m); font-size: 0.98rem; line-height: 1.5; max-width: 24ch; }
   .rb-caption { text-align: center; margin-top: 16px; font-size: 0.88rem; color: var(--ink-m); }
   .rb-ball {
-    position: absolute; width: 150px; height: 150px; right: -70px; top: -50px; z-index: 2;
+    position: absolute; width: 150px; height: 150px; right: -150px; top: -130px; z-index: 2;
     filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
     animation: bob 7s ease-in-out infinite;
   }
   .rb-ball img { width: 100%; border-radius: 50%; }
   .rb-ball::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 60px 10px rgba(110,140,255,0.35); pointer-events: none; }
-  .rb-ball.small { width: 74px; height: 74px; left: -44px; right: auto; top: auto; bottom: 90px; animation-duration: 9s; animation-delay: -3s; }
+  .rb-ball.small { width: 74px; height: 74px; left: -96px; right: auto; top: auto; bottom: 90px; animation-duration: 9s; animation-delay: -3s; }
   @keyframes bob { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(8deg); } }
 
   .beta {
@@ -482,6 +482,9 @@
     .nav ul a { padding: 10px 9px; font-size: 0.94rem; }
     .p-grid { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (min-width: 961px) and (max-width: 1379px) {
+    .rb-ball { right: -14px; top: -168px; }
+  }
   @media (max-width: 960px) {
     .hero { min-height: 0; padding: 48px 0 80px; }
     .hero-grid, .rb-grid, .t-grid, .bf-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -554,8 +557,8 @@
     .c-links a { min-height: 52px; padding: 6px 12px; }
     .beta-steps small { margin-bottom: 10px; }
     .concept-badge { top: 18px; left: 16px; }
-    .rb-ball { width: 104px; height: 104px; right: -30px; top: -36px; }
-    .rb-ball.small { width: 56px; height: 56px; left: -22px; }
+    .rb-ball { width: 64px; height: 64px; right: -54px; top: -62px; }
+    .rb-ball.small { width: 46px; height: 46px; left: -52px; }
     .p-grid { grid-template-columns: 1fr; }
     .chapters::before { left: 6px; }
     .ch { grid-template-columns: 1fr; padding-left: 32px; }
