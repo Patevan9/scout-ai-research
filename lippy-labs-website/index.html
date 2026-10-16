@@ -63,6 +63,7 @@
   .skip { position: absolute; left: -999px; top: 8px; z-index: 200; background: var(--orange); color: #111; padding: 10px 16px; border-radius: 8px; font-weight: 600; }
   .skip:focus { left: 16px; }
   .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  section[id] { scroll-margin-top: 72px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   h1, h2, h3 { font-family: 'Barlow Condensed', 'Jost', sans-serif; font-weight: 700; line-height: 1.05; letter-spacing: 0.005em; }
@@ -224,6 +225,18 @@
     box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 40px 90px rgba(0,0,0,0.7), 0 0 120px rgba(255,170,80,0.12), inset 0 1px 0 rgba(255,220,170,0.15);
   }
   .rb-device video, .rb-device img { width: 100%; aspect-ratio: 5 / 9; object-fit: cover; border-radius: 24px; background: #1b110a; }
+  .rb-soon {
+    position: relative; aspect-ratio: 5 / 9; border-radius: 24px; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 28px; text-align: center;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(110,140,255,0.22), transparent 55%),
+      repeating-linear-gradient(92deg, rgba(255,220,180,0.03) 0 2px, transparent 2px 9px, rgba(0,0,0,0.06) 9px 11px, transparent 11px 23px),
+      linear-gradient(180deg, #3a2414, #22150d 60%, #170e08);
+    box-shadow: inset 0 0 0 1px var(--brass-line), inset 0 0 60px rgba(0,0,0,0.5);
+  }
+  .rb-device .rb-soon img { width: 54%; height: auto; aspect-ratio: 1; object-fit: cover; background: none; border-radius: 50%; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.6)); }
+  .rb-soon b { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: 1.7rem; line-height: 1.15; color: var(--ink); }
+  .rb-soon span { color: var(--ink-m); font-size: 0.98rem; line-height: 1.5; max-width: 24ch; }
   .rb-caption { text-align: center; margin-top: 16px; font-size: 0.88rem; color: var(--ink-m); }
   .rb-ball {
     position: absolute; width: 150px; height: 150px; right: -70px; top: -50px; z-index: 2;
@@ -644,7 +657,6 @@
         <a class="btn btn-wood" href="https://patevan9.github.io/rollabop-website/">Visit the Rollabop website
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
         </a>
-        <a class="btn btn-wood" href="https://patevan9.github.io/rollabop-website/#trailer">Watch the trailer</a>
       </div>
     </div>
 
@@ -652,12 +664,22 @@
       <div class="rb-ball" aria-hidden="true"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="150" height="150"></div>
       <div class="rb-ball small" aria-hidden="true"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="74" height="74"></div>
       <div class="rb-device">
-        <video id="rb-video" muted loop playsinline preload="metadata" poster="assets/rollabop/rollabop-tray.webp" aria-label="Scene from the official Rollabop trailer: glass balls settle in a walnut tray, a ball is dragged through the pile, and a row of four matches and clears">
+        <!-- REAL GAMEPLAY GOES HERE.
+             Only use footage recorded from the running game on a real phone.
+             When a recording is ready, save it as assets/rollabop/rollabop-gameplay.mp4
+             (plus a still frame from it as assets/rollabop/rollabop-gameplay-poster.webp),
+             then replace the <div class="rb-soon"> block below with:
+        <video id="rb-video" muted loop playsinline preload="metadata" poster="assets/rollabop/rollabop-gameplay-poster.webp" aria-label="Rollabop gameplay recorded on a Galaxy Fold 7">
           <source src="assets/rollabop/rollabop-gameplay.mp4" type="video/mp4">
-          <img src="assets/rollabop/rollabop-tray.webp" alt="Scene from the official Rollabop trailer: colourful glass balls piled in a walnut tray with brass trim" width="500" height="900">
         </video>
+             and change the caption to: Real gameplay, recorded on a Galaxy Fold 7 -->
+        <div class="rb-soon" role="img" aria-label="Real Rollabop gameplay footage is coming soon">
+          <img src="assets/rollabop/galaxy-ball.webp" alt="" width="240" height="240">
+          <b>Real gameplay footage coming soon</b>
+          <span>Recorded on a real phone. Want to play it now? Join the beta below.</span>
+        </div>
       </div>
-      <p class="rb-caption">Scene from the official Rollabop trailer</p>
+      <p class="rb-caption">Galaxy Ball artwork from Rollabop</p>
     </div>
   </div>
 
@@ -906,7 +928,7 @@
         <div class="ch-text"><p>Later, when my son Elijah was only twelve months old, not even walking yet, I had a stroke.</p></div>
       </div>
       <div class="ch reveal">
-        <div class="ch-label">The answer</div>
+        <div class="ch-label">Connecting the dots</div>
         <div class="ch-text">
           <p>For years, none of it seemed connected. Each thing arrived on its own, without an explanation.</p>
           <p>Eventually a rheumatologist connected the dots. A hyperactive autoimmune system was probably responsible for much of what had happened to me.</p>
