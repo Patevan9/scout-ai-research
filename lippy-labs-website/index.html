@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131518">
+<title>Lippy Robotics Labs</title>
+<meta name="description" content="Lippy Robotics Labs makes private, thoughtful software for Android — home of Tolliver, the on-device AI companion, plus Rollabop and BreatheFrame.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lippy Robotics Labs">
+<meta property="og:title" content="Lippy Robotics Labs">
+<meta property="og:description" content="Private, thoughtful software for Android. Home of Tolliver, Rollabop and BreatheFrame.">
+<meta property="og:image" content="assets/labs-logo.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/favicon-192.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Lippy Robotics Labs",
+  "founder": { "@type": "Person", "name": "Patrick Evan Lippy" },
+  "email": "lippyroboticslabs@gmail.com",
+  "logo": "assets/labs-logo.png",
+  "sameAs": ["https://discord.gg/UaCkkSZvx4", "https://www.facebook.com/share/1D1Q4uskqZ/"]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #131518;
+    --bg2:      #1a1d21;
+    --surface:  #20242a;
+    --surface2: #272c33;
+    --border:   rgba(255,255,255,0.09);
+    --text:     #eef1f4;
+    --muted:    #b3bcc6;
+    --orange:   #ff9a1f;
+    --orange2:  #ffb547;
+    --steel:    #c9d1d9;
+    --green:    #41d68a;
+    --blue:     #7eb5e8;
+    --violet:   #b59cff;
+    --radius:   18px;
+    --max:      1160px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--orange2); outline-offset: 3px; border-radius: 6px; }
+
+  .skip {
+    position: absolute; left: -999px; top: 8px;
+    background: var(--orange); color: #111; padding: 10px 16px; border-radius: 8px; font-weight: 600; z-index: 100;
+  }
+  .skip:focus { left: 16px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3 {
+    font-family: 'Barlow Condensed', 'Jost', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.08;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--orange2);
+    margin-bottom: 14px;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(19,21,24,0.86);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { width: 44px; height: 44px; }
+  .brand span {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 1.35rem; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .brand b { color: var(--orange); font-weight: 700; }
+  .nav ul { display: flex; list-style: none; gap: 6px; align-items: center; }
+  .nav ul a {
+    display: inline-block; padding: 10px 14px; border-radius: 10px;
+    text-decoration: none; color: var(--muted); font-weight: 500; font-size: 1rem;
+  }
+  .nav ul a:hover { color: var(--text); background: var(--surface); }
+  .nav .cta { color: #141414 !important; background: var(--orange); }
+  .nav .cta:hover { background: var(--orange2) !important; }
+  .menu-btn {
+    display: none; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 10px; width: 48px; height: 48px; font-size: 1.4rem; cursor: pointer;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: 88px 0 96px; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(620px 420px at 78% 40%, rgba(255,154,31,0.16), transparent 70%),
+      radial-gradient(500px 360px at 10% 0%, rgba(126,181,232,0.10), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+  .hero h1 { font-size: clamp(2.8rem, 6vw, 4.6rem); margin-bottom: 22px; }
+  .hero h1 em { font-style: normal; color: var(--orange); }
+  .hero p.lead { font-size: 1.22rem; color: var(--muted); max-width: 36ch; margin-bottom: 34px; }
+  .hero-logo { justify-self: center; width: min(400px, 100%); filter: drop-shadow(0 24px 50px rgba(0,0,0,0.55)); }
+
+  .btns { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 52px; padding: 0 24px; border-radius: 12px;
+    font-weight: 600; font-size: 1.02rem; text-decoration: none;
+    border: 1px solid transparent; transition: transform .15s ease, background .15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--orange); color: #141414; }
+  .btn-primary:hover { background: var(--orange2); }
+  .btn-ghost { background: var(--surface); border-color: var(--border); color: var(--text); }
+  .btn-ghost:hover { background: var(--surface2); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 96px 0; }
+  .alt { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .section-head { max-width: 720px; margin-bottom: 48px; }
+  .section-head h2 { font-size: clamp(2.2rem, 4.4vw, 3.2rem); margin-bottom: 14px; }
+  .section-head p { color: var(--muted); font-size: 1.12rem; }
+
+  /* ---------- Status pills ---------- */
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 13px; border-radius: 999px;
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    border: 1px solid currentColor;
+  }
+  .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .pill.live { color: var(--green); }
+  .pill.live::before { box-shadow: 0 0 0 0 rgba(65,214,138,0.6); animation: pulse 2s infinite; }
+  .pill.soon { color: var(--orange2); }
+  .pill.dev  { color: var(--violet); }
+  .pill.read { color: var(--blue); }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(65,214,138,0.55); } 70% { box-shadow: 0 0 0 9px rgba(65,214,138,0); } 100% { box-shadow: 0 0 0 0 rgba(65,214,138,0); } }
+
+  /* ---------- Featured (Tolliver) ---------- */
+  .feature {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    background: linear-gradient(135deg, #1b2735 0%, #1e2b38 55%, #22344a 100%);
+    border: 1px solid rgba(126,181,232,0.22);
+    border-radius: 26px; overflow: hidden;
+  }
+  .feature-body { padding: 52px; }
+  .feature-body h3 { font-size: clamp(2.4rem, 4.5vw, 3.4rem); margin: 18px 0 6px; }
+  .feature-body .tag { font-size: 1.15rem; color: var(--blue); margin-bottom: 20px; }
+  .feature-body p { color: #c7d3df; margin-bottom: 24px; }
+  .checks { list-style: none; display: grid; gap: 10px; margin-bottom: 32px; }
+  .checks li { display: flex; gap: 12px; align-items: flex-start; }
+  .checks li::before {
+    content: "✓"; flex: none; width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 0.85rem; font-weight: 700;
+    background: rgba(0,255,208,0.12); color: #00ffd0; margin-top: 2px;
+  }
+  .feature-art {
+    position: relative; display: grid; place-items: center; padding: 48px;
+    background: radial-gradient(circle at 50% 45%, rgba(0,255,208,0.12), transparent 60%);
+    border-left: 1px solid rgba(126,181,232,0.14);
+  }
+  .feature-art img {
+    width: min(240px, 70%); border-radius: 44px;
+    box-shadow: 0 0 0 1px rgba(126,181,232,0.25), 0 30px 80px rgba(0,0,0,0.5), 0 0 90px rgba(0,180,255,0.25);
+  }
+  .feature-art .price {
+    position: absolute; bottom: 28px; right: 28px;
+    background: rgba(0,0,0,0.35); border: 1px solid rgba(126,181,232,0.25);
+    padding: 10px 16px; border-radius: 12px; font-size: 0.95rem; color: #dde6f0;
+  }
+  .feature-art .price strong { color: #fff; font-size: 1.15rem; }
+
+  /* ---------- App cards ---------- */
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .card {
+    display: flex; flex-direction: column;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 30px;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(255,154,31,0.35); box-shadow: 0 20px 50px rgba(0,0,0,0.35); }
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+  .icon { width: 72px; height: 72px; border-radius: 18px; flex: none; overflow: hidden; }
+  .icon img, .icon svg { width: 100%; height: 100%; }
+  .card h3 { font-size: 2rem; margin-bottom: 4px; }
+  .card .kind { color: var(--orange2); font-size: 0.95rem; font-weight: 500; margin-bottom: 14px; }
+  .card p { color: var(--muted); margin-bottom: 26px; flex: 1; }
+  .card .links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .card .btn { min-height: 48px; padding: 0 18px; font-size: 0.98rem; }
+
+  /* ---------- Pipeline ---------- */
+  .pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+  .stage { position: relative; padding: 0 18px; }
+  .stage::before {
+    content: ""; position: absolute; top: 21px; left: 0; right: 0; height: 3px; background: var(--surface2);
+  }
+  .stage:first-child::before { left: 50%; }
+  .stage:last-child::before { right: 50%; }
+  .dot {
+    position: relative; z-index: 1; width: 45px; height: 45px; border-radius: 50%;
+    display: grid; place-items: center; margin: 0 auto 18px;
+    background: var(--surface2); border: 3px solid var(--bg2); font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem;
+  }
+  .stage.done .dot { background: var(--orange); color: #141414; }
+  .stage h4 { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 10px; }
+  .stage ul { list-style: none; display: grid; gap: 8px; }
+  .stage li {
+    text-align: center; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 12px; font-size: 0.98rem;
+  }
+  .stage li small { display: block; color: var(--muted); font-size: 0.84rem; }
+
+  /* ---------- Values ---------- */
+  .values { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .value { padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); }
+  .value .v-icon {
+    width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px;
+    background: rgba(255,154,31,0.12); color: var(--orange);
+  }
+  .value .v-icon svg { width: 26px; height: 26px; }
+  .value h3 { font-size: 1.5rem; margin-bottom: 8px; }
+  .value p { color: var(--muted); font-size: 1rem; }
+
+  /* ---------- About ---------- */
+  .about { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 56px; align-items: center; }
+  .about-badge {
+    border-radius: 26px; padding: 40px; text-align: center;
+    background: radial-gradient(circle at 50% 30%, rgba(255,154,31,0.14), transparent 70%), var(--surface);
+    border: 1px solid var(--border);
+  }
+  .about-badge img { width: 220px; margin: 0 auto 18px; }
+  .about-badge strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; }
+  .about-badge span { color: var(--muted); }
+  .about h2 { font-size: clamp(2.2rem, 4.4vw, 3.2rem); margin-bottom: 18px; }
+  .about p { color: var(--muted); margin-bottom: 18px; font-size: 1.1rem; }
+
+  /* ---------- Contact ---------- */
+  .contact {
+    border-radius: 26px; padding: 56px; text-align: center;
+    background: linear-gradient(135deg, rgba(255,154,31,0.14), rgba(255,154,31,0.03)), var(--surface);
+    border: 1px solid rgba(255,154,31,0.25);
+  }
+  .contact h2 { font-size: clamp(2.2rem, 4.4vw, 3rem); margin-bottom: 12px; }
+  .contact p { color: var(--muted); margin: 0 auto 30px; max-width: 52ch; font-size: 1.1rem; }
+  .contact .btns { justify-content: center; }
+
+  /* ---------- Footer ---------- */
+  footer { padding: 56px 0 40px; border-top: 1px solid var(--border); margin-top: 96px; }
+  .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+  .foot h5 { font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange2); margin-bottom: 14px; }
+  .foot ul { list-style: none; display: grid; gap: 8px; }
+  .foot a { color: var(--muted); text-decoration: none; }
+  .foot a:hover { color: var(--text); text-decoration: underline; }
+  .foot p { color: var(--muted); font-size: 0.98rem; max-width: 34ch; margin-top: 14px; }
+  .copy { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.92rem; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  .no-js .reveal { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-grid, .feature, .about { grid-template-columns: 1fr; }
+    .hero { padding: 56px 0 72px; }
+    .hero-logo { width: min(300px, 80%); order: -1; }
+    .feature-art { border-left: 0; border-top: 1px solid rgba(126,181,232,0.14); }
+    .values { grid-template-columns: repeat(2, 1fr); }
+    .pipeline { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
+    .stage::before { display: none; }
+    .foot { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 760px) {
+    .menu-btn { display: block; }
+    .nav ul {
+      display: none; position: absolute; top: 72px; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 4px;
+      background: var(--bg); border-bottom: 1px solid var(--border); padding: 12px 16px 18px;
+    }
+    .nav ul.open { display: flex; }
+    .nav ul a { padding: 14px 16px; font-size: 1.08rem; }
+    .wrap { padding: 0 16px; }
+    section { padding: 72px 0; }
+    .feature-body, .contact { padding: 32px 22px; }
+    .values, .pipeline, .foot, .cards { grid-template-columns: 1fr; }
+    .brand span { font-size: 1.15rem; }
+  }
+</style>
+</head>
+<body class="no-js">
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <nav class="wrap nav" aria-label="Main">
+    <a class="brand" href="#top" aria-label="Lippy Robotics Labs home">
+      <img src="assets/labs-logo.png" alt="" width="44" height="44">
+      <span>Lippy <b>Robotics</b> Labs</span>
+    </a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">☰</button>
+    <ul id="menu">
+      <li><a href="#production">In Production</a></li>
+      <li><a href="#apps">Our Apps</a></li>
+      <li><a href="#pipeline">Roadmap</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="https://patevan9.github.io/lippy-articles/">Articles</a></li>
+      <li><a class="cta" href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Independent Android studio</span>
+      <h1>Thoughtful software that <em>respects</em> the people who use it.</h1>
+      <p class="lead">Lippy Robotics Labs builds private, on-device apps and games for Android. No cloud lock-in. No subscriptions. Just well-made tools that stay on your phone.</p>
+      <div class="btns">
+        <a class="btn btn-primary" href="#production">Meet Tolliver
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#apps">See all apps</a>
+      </div>
+    </div>
+    <img class="hero-logo" src="assets/labs-logo.png" alt="Lippy Robotics Labs logo — a steel gear with the words Lippy Robotics Labs" width="400" height="400">
+  </div>
+</section>
+
+<!-- ================= IN PRODUCTION ================= -->
+<section class="alt" id="production">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Now in production</span>
+      <h2>Tolliver AI</h2>
+      <p>Our flagship. A private AI companion that lives entirely on your Android phone — it sees, remembers and talks with you, without sending your life to the cloud.</p>
+    </div>
+
+    <article class="feature reveal" aria-labelledby="tolliver-title">
+      <div class="feature-body">
+        <span class="pill live">In production</span>
+        <h3 id="tolliver-title">Tolliver</h3>
+        <div class="tag">A quiet presence.</div>
+        <p>Tolliver runs a local AI brain right on your device. It recognizes the people in your home, remembers what matters to you, and answers in its own friendly voice — all offline by default.</p>
+        <ul class="checks">
+          <li>Runs on-device — works without the internet</li>
+          <li>No account, no subscription, no data harvesting</li>
+          <li>Real memory: facts it keeps and habits it learns</li>
+          <li>Built and tested on real phones, every release</li>
+        </ul>
+        <div class="btns">
+          <a class="btn btn-primary" href="https://patevan9.github.io/lippyrobotics.github.io/">Visit the Tolliver website
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/download.html">Download</a>
+          <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/whatsnew.html">What's new</a>
+        </div>
+      </div>
+      <div class="feature-art">
+        <img src="assets/tolliver-icon.png" alt="Tolliver app icon — two glowing blue eyes and a small smile" width="240" height="240">
+        <div class="price">One-time purchase · <strong>$9.99</strong></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= APPS ================= -->
+<section id="apps">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The lineup</span>
+      <h2>Apps &amp; projects</h2>
+      <p>Everything we make, where it stands today, and where to find it. Each card takes you straight to that project's own website.</p>
+    </div>
+
+    <div class="cards">
+      <!-- Tolliver -->
+      <article class="card reveal">
+        <div class="card-top">
+          <div class="icon"><img src="assets/tolliver-icon.png" alt="" width="72" height="72"></div>
+          <span class="pill live">In production</span>
+        </div>
+        <h3>Tolliver</h3>
+        <div class="kind">On-device AI companion · Android</div>
+        <p>A private AI companion with real memory, face recognition and a voice of its own. No cloud, no subscriptions, no account.</p>
+        <div class="links">
+          <a class="btn btn-primary" href="https://patevan9.github.io/lippyrobotics.github.io/">Visit site</a>
+          <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/support.html">Support</a>
+        </div>
+      </article>
+
+      <!-- Rollabop -->
+      <article class="card reveal">
+        <div class="card-top">
+          <div class="icon"><img src="assets/rollabop-icon.png" alt="" width="72" height="72"></div>
+          <span class="pill soon">Coming to Android</span>
+        </div>
+        <h3>Rollabop</h3>
+        <div class="kind">Physics puzzle game · Android</div>
+        <p>The physical pile is the puzzle. Reach into a living pile of balls, rearrange it under gravity, build bigger matches and find the move that changes everything.</p>
+        <div class="links">
+          <a class="btn btn-primary" href="https://patevan9.github.io/rollabop-website/">Visit site</a>
+          <a class="btn btn-ghost" href="https://patevan9.github.io/rollabop-website/#how-it-plays">How it plays</a>
+        </div>
+      </article>
+
+      <!-- BreatheFrame -->
+      <article class="card reveal">
+        <div class="card-top">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 72 72">
+              <defs>
+                <linearGradient id="bf" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#3a2f6b"/><stop offset="1" stop-color="#7b5cff"/>
+                </linearGradient>
+              </defs>
+              <rect width="72" height="72" rx="18" fill="url(#bf)"/>
+              <rect x="16" y="18" width="40" height="36" rx="5" fill="none" stroke="#fff" stroke-width="3" opacity=".95"/>
+              <path d="M19 47l10-11 8 8 6-6 10 9" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+              <circle cx="46" cy="28" r="4" fill="#ffd27a"/>
+              <path d="M10 30c-3 4-3 8 0 12M62 30c3 4 3 8 0 12" stroke="#cdbdff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="pill dev">In development</span>
+        </div>
+        <h3>BreatheFrame</h3>
+        <div class="kind">Photo motion · Android · Open source</div>
+        <p>Adds subtle, believable motion to your still photographs — a gentle breath of life, processed entirely on your device.</p>
+        <div class="links">
+          <a class="btn btn-primary" href="https://github.com/Patevan9/BreatheFrame">View on GitHub</a>
+        </div>
+      </article>
+
+      <!-- Articles -->
+      <article class="card reveal">
+        <div class="card-top">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 72 72">
+              <rect width="72" height="72" rx="18" fill="#1f3550"/>
+              <rect x="18" y="16" width="36" height="42" rx="4" fill="none" stroke="#7eb5e8" stroke-width="3"/>
+              <path d="M25 27h22M25 35h22M25 43h14" stroke="#dde6f0" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="pill read">Updated regularly</span>
+        </div>
+        <h3>Lab Articles</h3>
+        <div class="kind">News &amp; behind-the-scenes</div>
+        <p>Stories from the workbench — like how an old Android phone became the first version of Tolliver — plus release news and development updates.</p>
+        <div class="links">
+          <a class="btn btn-primary" href="https://patevan9.github.io/lippy-articles/">Read articles</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PIPELINE ================= -->
+<section class="alt" id="pipeline">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">At a glance</span>
+      <h2>From idea to your phone</h2>
+      <p>Every project moves through the same careful steps. Here's where each one is right now.</p>
+    </div>
+    <div class="pipeline reveal" role="list">
+      <div class="stage done" role="listitem">
+        <div class="dot">1</div>
+        <h4>Research</h4>
+        <ul><li>Tolliver's next brain<small>On-device AI research</small></li></ul>
+      </div>
+      <div class="stage done" role="listitem">
+        <div class="dot">2</div>
+        <h4>Development</h4>
+        <ul><li>BreatheFrame<small>Open source, in progress</small></li></ul>
+      </div>
+      <div class="stage done" role="listitem">
+        <div class="dot">3</div>
+        <h4>Launching</h4>
+        <ul><li>Rollabop<small>Coming to Android</small></li></ul>
+      </div>
+      <div class="stage done" role="listitem">
+        <div class="dot">4</div>
+        <h4>In production</h4>
+        <ul><li>Tolliver<small>Available now</small></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VALUES ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How we build</span>
+      <h2>Our promises</h2>
+    </div>
+    <div class="values">
+      <div class="value reveal">
+        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
+        <h3>Private by design</h3>
+        <p>Your data stays on your device. We don't sell it, track it or need it.</p>
+      </div>
+      <div class="value reveal">
+        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+        <h3>On-device first</h3>
+        <p>Apps that keep working when the Wi-Fi doesn't.</p>
+      </div>
+      <div class="value reveal">
+        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <h3>Fair pricing</h3>
+        <p>Pay once and own it. No subscriptions sneaking up on you.</p>
+      </div>
+      <div class="value reveal">
+        <div class="v-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/></svg></div>
+        <h3>Accessible</h3>
+        <p>Clear, readable and kind to every kind of user — built by someone who knows why that matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="alt" id="about">
+  <div class="wrap about">
+    <div class="about-badge reveal">
+      <img src="assets/labs-logo.png" alt="" width="220" height="220">
+      <strong>Lippy Robotics Labs</strong>
+      <span>Founded by Patrick Evan Lippy</span>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">About the lab</span>
+      <h2>Small studio. Big care.</h2>
+      <p>Lippy Robotics Labs is an independent studio run by Patrick Evan Lippy. It started with a simple question: what if an old Android phone could become a friendly, private companion for the home? That question became Tolliver.</p>
+      <p>Today the lab builds apps and games that share the same values — run on the device, respect the user, and get tested on real phones before anyone else sees them.</p>
+      <div class="btns">
+        <a class="btn btn-ghost" href="https://patevan9.github.io/lippy-articles/">Read the story</a>
+        <a class="btn btn-ghost" href="https://patevan9.github.io/lippyrobotics.github.io/donate.html">Support the lab</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact reveal">
+      <span class="eyebrow">Get in touch</span>
+      <h2>Questions, ideas or feedback?</h2>
+      <p>We read every message. Join the community on Discord, follow along on Facebook, or send an email.</p>
+      <div class="btns">
+        <a class="btn btn-primary" href="mailto:lippyroboticslabs@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          Email us
+        </a>
+        <a class="btn btn-ghost" href="https://discord.gg/UaCkkSZvx4">Join Discord</a>
+        <a class="btn btn-ghost" href="https://www.facebook.com/share/1D1Q4uskqZ/">Facebook</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="#top"><img src="assets/labs-logo.png" alt="" width="44" height="44"><span>Lippy <b>Robotics</b> Labs</span></a>
+        <p>Private, thoughtful software for Android.</p>
+      </div>
+      <div>
+        <h5>Apps</h5>
+        <ul>
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/">Tolliver</a></li>
+          <li><a href="https://patevan9.github.io/rollabop-website/">Rollabop</a></li>
+          <li><a href="https://github.com/Patevan9/BreatheFrame">BreatheFrame</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Tolliver</h5>
+        <ul>
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/download.html">Download</a></li>
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/faq.html">FAQ</a></li>
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/support.html">Support</a></li>
+          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Lab</h5>
+        <ul>
+          <li><a href="https://patevan9.github.io/lippy-articles/">Articles</a></li>
+          <li><a href="https://discord.gg/UaCkkSZvx4">Discord</a></li>
+          <li><a href="https://www.facebook.com/share/1D1Q4uskqZ/">Facebook</a></li>
+          <li><a href="mailto:lippyroboticslabs@gmail.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>Copyright © 2026 Patrick Evan Lippy. All rights reserved.</span>
+      <span>Lippy Robotics Labs</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.body.classList.remove('no-js');
+
+  // Mobile menu
+  var btn = document.querySelector('.menu-btn');
+  var menu = document.getElementById('menu');
+  btn.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    btn.textContent = open ? '✕' : '☰';
+  });
+  menu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && menu.classList.contains('open')) btn.click();
+  });
+
+  // Gentle fade-in as sections scroll into view
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+</script>
+</body>
+</html>
