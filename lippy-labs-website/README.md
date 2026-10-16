@@ -19,7 +19,7 @@ One page, in this order:
 
 | Project | Status on the page | Links to |
 |---|---|---|
-| Rollabop | In closed testing · Android · free-to-play | https://patevan9.github.io/rollabop-website/ (+ `#trailer`) |
+| Rollabop | In closed testing · Android · free-to-play | https://patevan9.github.io/rollabop-website/ |
 | Rollabop beta (step 1) | Join the Google Group first | https://groups.google.com/g/rollabop-beta-testers |
 | Rollabop beta (step 2) | Then opt in / install, if eligible | https://play.google.com/apps/testing/com.lippyrobotics.rollabop |
 | Tolliver | In development · Not yet available · planned $9.99 one-time, not on sale | Discord (see note below) |
@@ -39,16 +39,27 @@ site are untouched.
 - `assets/labs-logo.png`, favicons — resized from the existing Lippy Robotics Labs logo
 - `assets/tolliver-icon.png` — the existing Tolliver app icon
 - `assets/rollabop/rollabop-wordmark.webp`, `galaxy-ball.webp` — official art from `rollabop-website`
-- `assets/rollabop/rollabop-gameplay.mp4` (silent, ~0.6 MB) and `rollabop-tray.webp` —
-  cropped from the **official Rollabop portrait trailer** (8.5s–34s), labelled on the page
-  as "Scene from the official Rollabop trailer". Note: that trailer is an animation drawn in
-  code (`rollabop-website/src/trailer/`) using recorded ball movements, laid out like the real
-  game screen. It is not a screen recording of the game. Swap in a real phone screen
-  recording when one is approved.
+- **Rollabop gameplay: none yet, on purpose.** Rule: anything shown as Rollabop gameplay must
+  come from a real recording of the running game. The earlier clip came from the official
+  trailer, which is a code-drawn recreation, so it was removed (along with its still image and
+  the "Watch the trailer" link). The phone frame now shows the Galaxy Ball art and
+  "Real gameplay footage coming soon".
 - Tolliver's face, the Tolliver AI network and the BreatheFrame winter scene are drawn
   in code. The BreatheFrame scene is labelled "Concept illustration, not a screenshot of the app."
 
-When real Rollabop or BreatheFrame screenshots are approved, swap them in.
+### Adding the real Rollabop gameplay video
+
+1. On the Galaxy Fold 7 (folded, portrait), open Quick Settings, then **Screen recorder**
+   (sound: none). Play 20-40 seconds: balls settling, a drag through the pile, a match.
+2. Send the video file. It gets trimmed, cropped to the tray, made silent and compressed
+   to under 1 MB as `assets/rollabop/rollabop-gameplay.mp4`, with a still frame from the
+   same recording saved as `assets/rollabop/rollabop-gameplay-poster.webp`.
+3. In `index.html`, replace the `<div class="rb-soon">` block with the `<video>` block written
+   in the comment right above it, and change the caption to
+   "Real gameplay, recorded on a Galaxy Fold 7". The page script already plays it only
+   while visible and shows controls when reduced motion is on.
+
+When real BreatheFrame screenshots exist, they can replace the concept illustration.
 
 ## Motion & accessibility
 
