@@ -81,7 +81,7 @@
   .status {
     display: inline-flex; align-items: center; gap: 9px;
     padding: 7px 15px; border-radius: 999px;
-    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    font-size: 0.84rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
     border: 1px solid currentColor; background: rgba(0,0,0,0.25);
   }
   .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: blinkdot 2.4s ease-in-out infinite; }
@@ -235,6 +235,26 @@
   .rb-ball.small { width: 74px; height: 74px; left: -44px; right: auto; top: auto; bottom: 90px; animation-duration: 9s; animation-delay: -3s; }
   @keyframes bob { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(8deg); } }
 
+  .beta {
+    position: relative; margin-top: 64px; padding: 36px; border-radius: 24px;
+    display: grid; grid-template-columns: 1fr; gap: 26px;
+    background: linear-gradient(160deg, rgba(255,226,170,0.10), rgba(0,0,0,0.35));
+    border: 1px solid var(--brass); box-shadow: 0 30px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,230,180,0.12);
+    scroll-margin-top: 90px;
+  }
+  .beta-badge { display: inline-block; padding: 5px 12px; border-radius: 999px; background: var(--brass); color: #23170a; font-size: 0.84rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .beta h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: clamp(2.1rem, 3.6vw, 2.8rem); line-height: 1.05; color: var(--ink); margin-bottom: 10px; }
+  .beta-head p { color: var(--ink-m); font-size: 1.05rem; max-width: 62ch; }
+  .beta-steps { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .beta-steps li { display: flex; gap: 14px; padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--brass-line); }
+  .beta-steps .n { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: 'Jost', sans-serif; font-weight: 600; font-size: 1.15rem; color: #23170a; background: linear-gradient(180deg, #ecd49c, #c9a45c); }
+  .beta-steps b { display: block; font-size: 1.08rem; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+  .beta-steps small { display: block; color: var(--ink-m); font-size: 0.95rem; line-height: 1.5; margin-bottom: 14px; }
+  .beta-steps .btn { min-height: 48px; padding: 0 18px; font-size: 0.98rem; }
+  .beta-note { grid-column: 1 / -1; color: var(--ink-m); font-size: 0.92rem; border-top: 1px solid var(--brass-line); padding-top: 16px; }
+  .beta-note a { color: var(--brass-l); }
+  .rb-more { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+
   /* =================== TOLLIVER =================== */
   .tolliver {
     --t-blue: #6cb6ff; --t-soft: #a9d3ff; --t-ink: #e6f0fb; --t-m: #b4c6da;
@@ -297,7 +317,6 @@
     padding: 16px 18px; border-radius: 12px;
     background: rgba(20,16,40,0.7); border: 1px solid rgba(180,155,255,0.22);
     font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.92rem; color: var(--ai-ink);
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
   }
   .goals li span { display: block; color: var(--ai2); font-size: 0.78rem; margin-bottom: 4px; }
   .core { position: absolute; right: 2%; top: 50%; width: 380px; height: 380px; margin-top: -190px; z-index: 1; pointer-events: none; }
@@ -336,6 +355,7 @@
     transform: rotate(-1.2deg);
     margin: 14px;
   }
+  .concept-badge { position: absolute; top: 26px; left: 26px; z-index: 3; padding: 6px 12px; border-radius: 999px; background: rgba(20,14,10,0.82); color: #ffe0b0; font-size: 0.84rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(255,207,138,0.45); }
   .scene-box { position: relative; aspect-ratio: 8 / 5; overflow: hidden; border-radius: 2px; background: #0d1830; }
   .scene-box svg, .scene-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .scene .tree { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 5.5s ease-in-out infinite; }
@@ -473,12 +493,56 @@
   @media (max-width: 640px) {
     body { font-size: 17px; }
     .wrap { padding: 0 16px; }
-    .rollabop, .tolliver, .tai, .bf, .principles, .story { padding: 88px 0; }
-    .connect { padding-top: 88px; }
-    .rb-feats { grid-template-columns: 1fr; }
+    .rollabop, .tolliver, .tai, .bf, .principles, .story { padding: 64px 0; }
+    .connect { padding-top: 64px; }
+    footer { margin-top: 48px; padding: 40px 0 32px; }
+    .kicker { margin-bottom: 10px; }
+    .hero { padding: 24px 0 56px; }
+    .hero-grid { gap: 20px; }
+    .hero-logo-wrap { width: min(210px, 58%); }
+    .hero h1 { margin-bottom: 18px; }
+    .hero .lead { font-size: 1.15rem; margin-bottom: 26px; }
+    .worlds { margin-top: 26px; }
+    .rb-grid, .t-grid, .bf-grid { gap: 36px; }
+    .rb-feats { grid-template-columns: 1fr; gap: 10px; margin-bottom: 22px; }
+    .rb-feats li { padding: 12px 14px; }
+    .rb-feats strong { font-size: 1.25rem; }
+    .rb-stage { width: min(290px, 76%); }
+    .beta { margin-top: 44px; padding: 24px 18px; gap: 20px; grid-template-columns: 1fr; }
+    .beta-steps { grid-template-columns: 1fr; gap: 12px; }
+    .beta-steps li { padding: 16px; flex-direction: column; gap: 10px; }
+    .beta-steps .btn { width: 100%; justify-content: center; }
+    .face-wrap { width: min(210px, 60%); }
+    .face-note { margin-top: 10px; }
+    .t-wants { grid-template-columns: 1fr 1fr; gap: 8px; margin: 20px 0 22px; }
+    .t-wants li { padding: 10px 12px; font-size: 0.95rem; line-height: 1.35; align-items: flex-start; gap: 8px; }
+    .t-wants svg { width: 20px; height: 20px; margin-top: 1px; }
+    .t-price { margin-bottom: 22px; }
+    .goals { grid-template-columns: 1fr 1fr; gap: 8px; margin: 22px 0; }
+    .goals li { padding: 12px 14px; font-size: 0.86rem; }
+    .goals li:last-child { grid-column: 1 / -1; }
+    .bf-tags { margin: 18px 0 22px; }
+    .manifesto { margin-bottom: 36px; }
+    .p-grid { gap: 10px; }
+    .p-card { display: grid; grid-template-columns: 42px 1fr; column-gap: 12px; padding: 18px 18px 18px 14px; }
+    .p-card::before { left: 14px; right: 14px; }
+    .p-num { grid-row: 1 / 3; font-size: 1.9rem; margin: 2px 0 0; }
+    .p-card h3 { font-size: 1.35rem; margin-bottom: 4px; }
+    .p-card p { grid-column: 2; }
+    .story-head { margin-bottom: 44px; }
+    .ch { margin-bottom: 28px; }
+    .turn { margin: 40px auto; }
+    .signature { margin-top: 36px; }
+    .connect-head { margin-bottom: 32px; }
+    .c-grid { gap: 14px; }
+    .c-col { padding: 22px 16px; }
+    .c-col > p { margin-bottom: 14px; }
+    .c-links { gap: 8px; }
+    .c-links a { min-height: 52px; padding: 6px 12px; }
+    .beta-steps small { margin-bottom: 10px; }
+    .concept-badge { top: 18px; left: 16px; }
     .rb-ball { width: 104px; height: 104px; right: -30px; top: -36px; }
     .rb-ball.small { width: 56px; height: 56px; left: -22px; }
-    .t-wants { grid-template-columns: 1fr; }
     .p-grid { grid-template-columns: 1fr; }
     .chapters::before { left: 6px; }
     .ch { grid-template-columns: 1fr; padding-left: 32px; }
@@ -529,10 +593,10 @@
       <h1 class="reveal d1"><span>Big ideas.</span><span>Small screens.</span><span class="glow">Real enjoyment.</span></h1>
       <p class="lead reveal d2">Games, local AI companions and creative tools, built with curiosity, care and respect for the people who use them.</p>
       <div class="btns reveal d3">
-        <a class="btn btn-orange" href="#rollabop">Explore our creations
+        <a class="btn btn-orange" href="#beta">Become a Rollabop beta tester
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
         </a>
-        <a class="btn btn-dim" href="#story">The story behind the lab</a>
+        <a class="btn btn-dim" href="#rollabop">Explore our creations</a>
       </div>
 
       <nav class="worlds reveal d3" aria-label="Our projects">
@@ -558,6 +622,11 @@
       <img class="rb-wordmark reveal" src="assets/rollabop/rollabop-wordmark.webp" alt="Rollabop" width="960" height="286">
       <p class="rb-tagline reveal d1">The physical pile is the puzzle.</p>
       <span class="status reveal d1">In closed testing · Android</span>
+      <div class="btns reveal d1" style="margin-bottom:26px">
+        <a class="btn btn-brass" href="#beta">Become a Beta Tester
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </a>
+      </div>
       <p class="rb-body reveal d2">A free-to-play physics puzzle game set inside a tall walnut tray full of polished glass balls. Nothing is locked in place. Every ball has weight, and every move changes the pile. Reach in, drag a ball through the crowd, and find the move that sets off a cascade.</p>
 
       <ul class="rb-feats reveal d2">
@@ -571,8 +640,8 @@
         <span><b>Fair by design.</b> Every level can be won without paying and without watching an ad. Any ads are optional, clearly labelled and never interrupt your game.</span>
       </div>
 
-      <div class="btns reveal d3">
-        <a class="btn btn-brass" href="https://patevan9.github.io/rollabop-website/">Visit the Rollabop website
+      <div class="rb-more reveal d3">
+        <a class="btn btn-wood" href="https://patevan9.github.io/rollabop-website/">Visit the Rollabop website
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
         </a>
         <a class="btn btn-wood" href="https://patevan9.github.io/rollabop-website/#trailer">Watch the trailer</a>
@@ -583,12 +652,35 @@
       <div class="rb-ball" aria-hidden="true"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="150" height="150"></div>
       <div class="rb-ball small" aria-hidden="true"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="74" height="74"></div>
       <div class="rb-device">
-        <video id="rb-video" muted loop playsinline preload="metadata" poster="assets/rollabop/rollabop-tray.webp" aria-label="Rollabop gameplay: glass balls settle in a walnut tray, a ball is dragged through the pile, and a row of four matches and clears">
+        <video id="rb-video" muted loop playsinline preload="metadata" poster="assets/rollabop/rollabop-tray.webp" aria-label="Scene from the official Rollabop trailer: glass balls settle in a walnut tray, a ball is dragged through the pile, and a row of four matches and clears">
           <source src="assets/rollabop/rollabop-gameplay.mp4" type="video/mp4">
-          <img src="assets/rollabop/rollabop-tray.webp" alt="Rollabop gameplay: colourful glass balls piled in a walnut tray with brass trim" width="500" height="900">
+          <img src="assets/rollabop/rollabop-tray.webp" alt="Scene from the official Rollabop trailer: colourful glass balls piled in a walnut tray with brass trim" width="500" height="900">
         </video>
       </div>
-      <p class="rb-caption">From the official Rollabop trailer</p>
+      <p class="rb-caption">Scene from the official Rollabop trailer</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="beta reveal" id="beta">
+      <div class="beta-head">
+        <span class="beta-badge">Android testers wanted</span>
+        <h3>Become a Beta Tester</h3>
+        <p>Rollabop is in closed testing, and real feedback from Android players helps shape the game. Joining takes two steps:</p>
+      </div>
+      <ol class="beta-steps">
+        <li><span class="n" aria-hidden="true">1</span><div>
+          <b>Join the Google Group</b>
+          <small>Sign in with the Google account you use on your Android phone, then join the Rollabop beta testers group.</small>
+          <a class="btn btn-brass" href="https://groups.google.com/g/rollabop-beta-testers">Step 1: Join the group</a>
+        </div></li>
+        <li><span class="n" aria-hidden="true">2</span><div>
+          <b>Opt in on Google Play</b>
+          <small>Using the same Google account, opt in to the test, then install Rollabop from Google Play if your device is eligible.</small>
+          <a class="btn btn-wood" href="https://play.google.com/apps/testing/com.lippyrobotics.rollabop">Step 2: Opt in on Google Play</a>
+        </div></li>
+      </ol>
+      <p class="beta-note">Please do step 1 first. The Google Play opt-in only works for accounts that have joined the group. Questions or feedback? Tell us on <a href="https://discord.gg/UaCkkSZvx4">Discord</a> or by <a href="mailto:lippyroboticslabs@gmail.com">email</a>.</p>
     </div>
   </div>
 </section>
@@ -650,7 +742,7 @@
       </ul>
       <div class="t-price reveal d3">Planned price: <b>$9.99, one-time purchase</b>. Not on sale yet.</div>
       <div class="btns reveal d3">
-        <a class="btn btn-blue" href="https://patevan9.github.io/lippyrobotics.github.io/">Visit the Tolliver website
+        <a class="btn btn-blue" href="https://discord.gg/UaCkkSZvx4">Follow Tolliver's progress on Discord
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
         </a>
       </div>
@@ -704,6 +796,7 @@
 
     <div class="reveal d1">
       <div class="frame">
+        <span class="concept-badge">Concept illustration</span>
         <div class="scene-box" id="scene">
           <svg class="scene" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Concept illustration: a snowy cabin at night with glowing windows, holiday lights along the roof and pine trees">
             <defs>
@@ -820,12 +913,11 @@
         </div>
       </div>
       <div class="ch reveal">
-        <div class="ch-label">Also</div>
-        <div class="ch-text"><p>I'm a type 1 diabetic, and I'm dyslexic.</p></div>
-      </div>
-      <div class="ch reveal">
         <div class="ch-label">What changed</div>
-        <div class="ch-text"><p>Together, these things changed my ability to work. In time, they led me to disability and early retirement.</p></div>
+        <div class="ch-text">
+          <p>All the while, I was living with type 1 diabetes, which asks for attention every single day, and with dyslexia, which makes reading and writing harder work than most people realize.</p>
+          <p>Together, these challenges changed my ability to work. In time, they led me to disability and early retirement.</p>
+        </div>
       </div>
     </div>
 
@@ -876,7 +968,7 @@
         <p>Each project has its own home.</p>
         <ul class="c-links">
           <li><a href="https://patevan9.github.io/rollabop-website/"><span class="ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="38" height="38"></span><span><b>Rollabop</b><small>Game website</small></span></a></li>
-          <li><a href="https://patevan9.github.io/lippyrobotics.github.io/"><span class="ico"><img src="assets/tolliver-icon.png" alt="" width="38" height="38"></span><span><b>Tolliver</b><small>Companion website</small></span></a></li>
+          <li><a href="#beta"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L5 18a2 2 0 001.7 3h10.6a2 2 0 001.7-3L14 9V3"/><path d="M7.5 14h9"/></svg></span><span><b>Rollabop beta</b><small>Become a tester</small></span></a></li>
           <li><a href="https://github.com/Patevan9/BreatheFrame"><span class="ico" style="background:rgba(255,207,138,0.12);color:#ffcf8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M5 17l5-5 4 4 2-2 3 3"/></svg></span><span><b>BreatheFrame</b><small>On GitHub</small></span></a></li>
         </ul>
       </div>
@@ -896,7 +988,7 @@
         <p>Every bit of support helps a small, independent lab keep building fair, thoughtful software.</p>
         <ul class="c-links">
           <li><a href="https://patevan9.github.io/lippyrobotics.github.io/donate.html"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/></svg></span><span><b>Donate</b><small>Support development</small></span></a></li>
-          <li><a href="https://discord.gg/UaCkkSZvx4"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h4l3-8 4 16 3-8h2"/></svg></span><span><b>Share your feedback</b><small>Testing &amp; ideas on Discord</small></span></a></li>
+          <li><a href="#beta"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h4l3-8 4 16 3-8h2"/></svg></span><span><b>Test Rollabop</b><small>Your feedback shapes the game</small></span></a></li>
         </ul>
       </div>
     </div>
@@ -975,6 +1067,7 @@
 
   // ---- Rollabop gameplay video: play only while visible, never under reduced motion
   var vid = document.getElementById('rb-video');
+  if (vid && reduce) vid.controls = true;
   if (vid && !reduce && hasIO) {
     new IntersectionObserver(function (es) {
       es.forEach(function (e) {
