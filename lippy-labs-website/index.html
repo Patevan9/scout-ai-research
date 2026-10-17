@@ -239,7 +239,7 @@
   .rb-soon span { color: var(--ink-m); font-size: 0.98rem; line-height: 1.5; max-width: 24ch; }
   .rb-caption { text-align: center; margin-top: 16px; font-size: 0.88rem; color: var(--ink-m); }
   .rb-ball {
-    position: absolute; width: 150px; height: 150px; right: -150px; top: -130px; z-index: 2;
+    position: absolute; width: 150px; height: 150px; right: -150px; top: 24px; z-index: 2;
     filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
     animation: bob 7s ease-in-out infinite;
   }
@@ -483,7 +483,10 @@
     .p-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (min-width: 961px) and (max-width: 1379px) {
-    .rb-ball { right: -14px; top: -168px; }
+    .rb-ball:not(.small) { display: none; }
+  }
+  @media (max-width: 960px) {
+    .rb-ball:not(.small) { width: 110px; height: 110px; right: -118px; }
   }
   @media (max-width: 960px) {
     .hero { min-height: 0; padding: 48px 0 80px; }
@@ -557,7 +560,7 @@
     .c-links a { min-height: 52px; padding: 6px 12px; }
     .beta-steps small { margin-bottom: 10px; }
     .concept-badge { top: 18px; left: 16px; }
-    .rb-ball { width: 64px; height: 64px; right: -54px; top: -62px; }
+    .rb-ball:not(.small) { display: none; }
     .rb-ball.small { width: 46px; height: 46px; left: -52px; }
     .p-grid { grid-template-columns: 1fr; }
     .chapters::before { left: 6px; }
