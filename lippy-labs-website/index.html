@@ -177,6 +177,7 @@
   .worlds a.w-tol:hover  { border-color: rgba(110,180,255,0.6); }
   .worlds a.w-ai:hover   { border-color: rgba(170,130,255,0.6); }
   .worlds a.w-bf:hover   { border-color: rgba(255,200,140,0.6); }
+  .worlds a.w-cap:hover  { border-color: rgba(227,19,27,0.7); }
 
   /* =================== ROLLABOP =================== */
   .rollabop {
@@ -395,6 +396,37 @@
   }
   .toggle:hover { background: rgba(255,207,138,0.18); }
 
+  /* =================== CAPTRAZE CARD =================== */
+  .cap { padding: 96px 0; background: #08080a; border-top: 1px solid rgba(227,19,27,0.25); }
+  .cap-card { position: relative; display: grid; grid-template-columns: 1.1fr 0.9fr; overflow: hidden; text-decoration: none; color: #f2f2f2;
+    background: linear-gradient(180deg, #1c1f24, #131519); border: 1px solid #2a2e35;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px); transition: transform .2s ease, box-shadow .2s ease; }
+  .cap-card:hover { transform: translateY(-3px); box-shadow: 0 24px 60px rgba(227,19,27,0.18); }
+  .cap-card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2; background: linear-gradient(90deg, #e3131b 0 33%, #f5b301 33% 67%, #1f8bff 67%); }
+  .cap-body { padding: 44px 40px; position: relative; z-index: 1; }
+  .cap-kicker { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.9rem; color: #ff3b3b; margin-bottom: 12px; display: block; }
+  .cap-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(3rem, 6vw, 4.6rem); line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase; }
+  .cap-logo b { color: #e3131b; font-weight: 800; }
+  .cap-motto { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; font-size: 1.15rem; margin: 6px 0 18px; }
+  .cap-motto span:nth-child(1) { color: #ff3b3b; } .cap-motto span:nth-child(2) { color: #f5b301; } .cap-motto span:nth-child(3) { color: #5fb0ff; }
+  .cap-body p { color: #b9bec6; font-size: 1.05rem; margin-bottom: 20px; max-width: 46ch; }
+  .cap-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .cap-badges span { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.9rem; padding: 4px 10px; border: 1px solid #3a3f47; color: #f2f2f2; }
+  .cap-badges .adult { background: #e3131b; border-color: #e3131b; }
+  .cap-go { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 24px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.1em; text-transform: uppercase; color: #fff;
+    background: linear-gradient(180deg, #ff3b3b, #e3131b 60%, #a80d13); clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+  .cap-go svg { width: 18px; height: 18px; }
+  .cap-art { position: relative; min-height: 300px; background: url('captraze/assets/vehicle-combat.webp') 42% 100% / auto 162% no-repeat; }
+  .cap-art::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #15171b 0%, rgba(21,23,27,0.2) 40%, transparent 70%); }
+  .cap-art span { position: absolute; right: 12px; bottom: 12px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem; background: rgba(0,0,0,0.75); color: #f5b301; border: 1px solid rgba(245,179,1,0.5); padding: 2px 8px; }
+  @media (max-width: 860px) {
+    .cap-card { grid-template-columns: 1fr; }
+    .cap-art { order: -1; min-height: 200px; background-image: url('captraze/assets/vehicle-combat-800.webp'); background-size: 190% auto; background-position: 70% 80%; }
+    .cap-art::before { background: linear-gradient(0deg, #1c1f24 0%, transparent 55%); }
+    .cap-body { padding: 30px 22px; }
+    .cap { padding: 64px 0; }
+  }
+
   /* =================== PRINCIPLES =================== */
   .principles { padding: 128px 0; background: var(--bg); position: relative; }
   .manifesto { max-width: 900px; margin-bottom: 64px; }
@@ -505,7 +537,7 @@
     .c-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
     .core { display: none; }
   }
-  @media (max-width: 860px) {
+  @media (max-width: 1020px) {
     .menu-btn { display: block; }
     .nav ul {
       display: none; position: absolute; top: 72px; left: 0; right: 0;
@@ -596,6 +628,7 @@
       <li><a href="#tolliver">Tolliver</a></li>
       <li><a href="#tolliver-ai">Tolliver AI</a></li>
       <li><a href="#breatheframe">BreatheFrame</a></li>
+      <li><a href="#captraze">CAPTRAZE</a></li>
       <li><a href="#story">Our Story</a></li>
       <li><a class="cta" href="#connect">Connect</a></li>
     </ul>
@@ -630,6 +663,7 @@
         <a class="w-tol" href="#tolliver"><span class="w-ico" style="background:#0d1a2b"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><circle cx="12" cy="18" r="5" fill="#2a74d6"/><circle cx="12" cy="18" r="2.2" fill="#06101d"/><circle cx="24" cy="18" r="5" fill="#2a74d6"/><circle cx="24" cy="18" r="2.2" fill="#06101d"/></svg></span>Tolliver</a>
         <a class="w-ai" href="#tolliver-ai"><span class="w-ico" style="background:#16112c"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><g stroke="#8f7bff" stroke-width="1.4"><path d="M10 12l8 6 8-7M18 18l-6 8M18 18l7 7"/></g><g fill="#5ef2e0"><circle cx="10" cy="12" r="2.4"/><circle cx="26" cy="11" r="2.4"/><circle cx="18" cy="18" r="3"/><circle cx="12" cy="26" r="2.4"/><circle cx="25" cy="25" r="2.4"/></g></svg></span>Tolliver AI</a>
         <a class="w-bf" href="#breatheframe"><span class="w-ico" style="background:#2a1f16"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="2" fill="none" stroke="#ffcf8a" stroke-width="1.8"/><path d="M11 23l5-5 4 4 2-2 4 3" fill="none" stroke="#ffcf8a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="15" r="1.8" fill="#ffcf8a"/></svg></span>BreatheFrame</a>
+        <a class="w-cap" href="#captraze"><span class="w-ico" style="background:#16080a"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><polygon points="18,6 28,12 28,24 18,30 8,24 8,12" fill="none" stroke="#e3131b" stroke-width="2"/><text x="18" y="23" text-anchor="middle" font-family="Arial Black,Arial" font-weight="900" font-size="12" fill="#e3131b">R</text></svg></span>CAPTRAZE</a>
       </nav>
     </div>
 
@@ -869,6 +903,23 @@
   </div>
 </section>
 
+<!-- ======================= CAPTRAZE ======================= -->
+<section class="cap" id="captraze" aria-labelledby="cap-title">
+  <div class="wrap">
+    <a class="cap-card reveal" href="https://patevan9.github.io/captraze/">
+      <div class="cap-body">
+        <span class="cap-kicker">Future game concept</span>
+        <h2 class="cap-logo" id="cap-title">Capt<b>r</b>aze</h2>
+        <div class="cap-motto"><span>Drive.</span> <span>Capture.</span> <span>Conquer.</span></div>
+        <p>A future multiplayer vehicle-combat and territory-control game for mobile. Red versus Blue: drive in hard, jump out and hold the pod.</p>
+        <div class="cap-badges"><span>In planning &amp; design</span><span class="adult">18+ website</span></div>
+        <span class="cap-go">Enter the CAPTRAZE site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
+      </div>
+      <div class="cap-art" role="img" aria-label="Concept art: armored combat vehicles racing across a battlefield"><span>Concept art</span></div>
+    </a>
+  </div>
+</section>
+
 <!-- ======================= PRINCIPLES ======================= -->
 <section class="principles" id="principles" aria-labelledby="principles-title">
   <div class="wrap">
@@ -973,6 +1024,7 @@
         <ul class="c-links">
           <li><a href="https://patevan9.github.io/rollabop-website/"><span class="ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="38" height="38"></span><span><b>Rollabop</b><small>Game website</small></span></a></li>
           <li><a href="https://github.com/Patevan9/BreatheFrame"><span class="ico" style="background:rgba(255,207,138,0.12);color:#ffcf8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M5 17l5-5 4 4 2-2 3 3"/></svg></span><span><b>BreatheFrame</b><small>On GitHub</small></span></a></li>
+          <li><a href="https://patevan9.github.io/captraze/"><span class="ico" style="background:#16080a;color:#e3131b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5"/><path d="M9.5 16V8h3a2.2 2.2 0 010 4.4h-3M12.5 12.4L15 16"/></svg></span><span><b>CAPTRAZE</b><small>Concept site · 18+</small></span></a></li>
         </ul>
       </div>
 
@@ -1000,6 +1052,7 @@
         <a href="#tolliver">Tolliver</a>
         <a href="#tolliver-ai">Tolliver AI</a>
         <a href="#breatheframe">BreatheFrame</a>
+        <a href="#captraze">CAPTRAZE</a>
         <a href="#story">Our Story</a>
         <a href="#connect">Connect</a>
       </nav>
