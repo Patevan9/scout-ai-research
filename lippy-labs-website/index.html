@@ -275,6 +275,9 @@
   .beta-note { grid-column: 1 / -1; color: var(--ink-m); font-size: 0.92rem; border-top: 1px solid var(--brass-line); padding-top: 16px; }
   .beta-note a { color: var(--brass-l); }
   .rb-more { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+  .play-badge { display: inline-block; border-radius: 12px; transition: transform .2s ease, filter .2s ease; }
+  .play-badge:hover { transform: translateY(-2px); filter: brightness(1.15); }
+  .play-badge img { height: 64px; width: auto; display: block; }
 
   /* =================== TOLLIVER =================== */
   .tolliver {
@@ -681,7 +684,7 @@
       <p class="rb-tagline reveal d1">The physical pile is the puzzle.</p>
       <span class="status reveal d1" style="margin-bottom:22px">Now on Google Play</span>
       <div class="btns reveal d1" style="margin-bottom:26px">
-        <a class="btn btn-brass" href="https://play.google.com/store/apps/details?id=com.lippyrobotics.rollabop"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.5v17a1 1 0 001.5.86l14-8.5a1 1 0 000-1.72l-14-8.5A1 1 0 005 3.5z"/></svg> Get it on Google Play</a>
+        <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.lippyrobotics.rollabop"><img src="assets/rollabop/google-play-badge.png" alt="Get it on Google Play" width="481" height="180"></a>
       </div>
       <p class="rb-body reveal d2">A free-to-play physics puzzle game set inside a tall walnut tray full of polished glass balls. Nothing is locked in place. Every ball has weight, and every move changes the pile. Reach in, drag a ball through the crowd, and find the move that sets off a cascade.</p>
 
