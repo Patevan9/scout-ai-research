@@ -44,7 +44,7 @@ site are untouched.
   trailer, which is a code-drawn recreation, so it was removed (along with its still image and
   the "Watch the trailer" link). The phone frame now shows
   `assets/rollabop/rollabop-gameplay-screenshot.webp`: a real in-game screenshot Patrick
-  provided (level 21), cropped to the tray.
+  provided (level 35), cropped to the tray. (Level 21 was removed from the game.)
 - Tolliver's face, the Tolliver AI network and the BreatheFrame winter scene are drawn
   in code. The BreatheFrame scene is labelled "Concept illustration, not a screenshot of the app."
 
