@@ -177,6 +177,7 @@
   .worlds a.w-tol:hover  { border-color: rgba(110,180,255,0.6); }
   .worlds a.w-ai:hover   { border-color: rgba(170,130,255,0.6); }
   .worlds a.w-bf:hover   { border-color: rgba(255,200,140,0.6); }
+  .worlds a.w-gg:hover   { border-color: rgba(61,220,132,0.6); }
   .worlds a.w-cap:hover  { border-color: rgba(227,19,27,0.7); }
 
   /* =================== ROLLABOP =================== */
@@ -398,6 +399,58 @@
     background: rgba(255,207,138,0.1); border: 1px solid rgba(255,207,138,0.35); color: var(--bf-ink); font: inherit; font-weight: 600; font-size: 0.95rem;
   }
   .toggle:hover { background: rgba(255,207,138,0.18); }
+
+  /* =================== GLUCOSE GLANCE =================== */
+  .gg { position: relative; padding: 120px 0; overflow: hidden; color: #eef1ff;
+    background: radial-gradient(circle at 78% 30%, rgba(60,80,220,0.35), transparent 55%), linear-gradient(160deg, #0b0f33 0%, #10164a 50%, #070a24 100%);
+    border-top: 1px solid rgba(120,140,255,0.22); border-bottom: 1px solid rgba(120,140,255,0.22); }
+  .gg-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; grid-template-areas: "head stage" "rest stage"; column-gap: 64px; align-items: center; }
+  .gg-head { grid-area: head; align-self: end; } .gg-rest { grid-area: rest; align-self: start; } .gg-stage { grid-area: stage; }
+  .gg .kicker { color: #8fe9b4; }
+  .gg-title { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
+  .gg-title img { width: 76px; height: 76px; border-radius: 50%; flex: none; box-shadow: 0 0 40px rgba(255,30,60,0.35); }
+  .gg h2 { font-size: clamp(2.8rem, 6vw, 4.4rem); text-transform: uppercase; letter-spacing: 0.02em; }
+  .gg h2 span { color: #3ddc84; }
+  .gg-tagline { font-size: clamp(1.3rem, 2.4vw, 1.6rem); font-weight: 500; color: #ffffff; line-height: 1.35; margin-bottom: 20px; }
+  .gg .status { color: #8fe9b4; margin-bottom: 24px; }
+  .gg-body { color: #c9cff5; font-size: 1.12rem; max-width: 52ch; margin-bottom: 26px; }
+  .gg-feats { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 26px; }
+  .gg-feats li { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(140,160,255,0.22); }
+  .gg-feats strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 4px; }
+  .gg-feats span { display: block; color: #c9cff5; font-size: 0.95rem; line-height: 1.5; }
+  .gg-works { margin-bottom: 24px; color: #c9cff5; }
+  .gg-works b { color: #fff; font-weight: 600; }
+  .gg-works ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .gg-works li { padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(61,220,132,0.45); background: rgba(61,220,132,0.08); font-size: 0.95rem; color: #eaffef; }
+  .gg-note { display: flex; gap: 14px; align-items: flex-start; max-width: 58ch; padding: 16px 18px; border-radius: 0 12px 12px 0; margin-bottom: 14px; font-size: 1rem; color: #d6dbff; background: rgba(0,0,0,0.25); }
+  .gg-note svg { width: 24px; height: 24px; flex: none; margin-top: 2px; }
+  .gg-note b { color: #fff; font-weight: 600; }
+  .gg-note.priv { border-left: 2px solid #3ddc84; } .gg-note.priv svg { color: #3ddc84; }
+  .gg-note.med { border-left: 2px solid #ffc83d; margin-bottom: 30px; } .gg-note.med svg { color: #ffc83d; }
+  .gg-btns { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn-gg { background: linear-gradient(180deg, #5ef0a0, #2fc874); color: #04210f; box-shadow: 0 8px 30px rgba(61,220,132,0.28); }
+  .btn-gg:hover { box-shadow: 0 12px 40px rgba(61,220,132,0.42); }
+  .btn-ggdim { background: rgba(255,255,255,0.06); border-color: rgba(140,160,255,0.35); color: #eef1ff; }
+  .btn-ggdim:hover { background: rgba(255,255,255,0.12); }
+  .gg-small { margin-top: 18px; font-size: 0.88rem; color: #9aa3d6; }
+  .gg-stage { justify-self: center; width: min(420px, 100%); text-align: center; }
+  .gg-watch { position: relative; border-radius: 50%; padding: 16px; margin: 0 auto;
+    background: linear-gradient(145deg, #3b3f4a, #15171d); box-shadow: 0 0 0 2px #0a0b10, 0 40px 90px rgba(0,0,0,0.6), 0 0 120px rgba(80,110,255,0.3), inset 0 2px 0 rgba(255,255,255,0.18); }
+  .gg-watch img { width: 100%; aspect-ratio: 1; border-radius: 50%; background: #000; }
+  .gg-cap { margin-top: 16px; font-size: 0.92rem; color: #b5bdf0; }
+  .gg-previews { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 30px; }
+  .gg-previews img { width: 100%; aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 3px #22252e, 0 10px 24px rgba(0,0,0,0.5); background: #000; }
+  .gg-pcap { margin-top: 12px; font-size: 0.86rem; color: #9aa3d6; }
+  @media (max-width: 960px) { .gg-grid { grid-template-columns: 1fr; grid-template-areas: "head" "stage" "rest"; row-gap: 36px; } }
+  @media (max-width: 640px) {
+    .gg { padding: 64px 0; }
+    .gg-title img { width: 60px; height: 60px; }
+    .gg-feats { grid-template-columns: 1fr; gap: 10px; }
+    .gg-feats li { padding: 12px 14px; }
+    .gg-stage { width: min(320px, 88%); }
+    .gg-previews { gap: 6px; }
+    .gg-btns .btn { width: 100%; justify-content: center; }
+  }
 
   /* =================== CAPTRAZE CARD =================== */
   .cap { padding: 96px 0; background: #08080a; border-top: 1px solid rgba(227,19,27,0.25); }
@@ -628,6 +681,7 @@
     <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu">☰</button>
     <ul id="menu">
       <li><a href="#rollabop">Rollabop</a></li>
+      <li><a href="#glucose-glance">Glucose Glance</a></li>
       <li><a href="#tolliver">Tolliver</a></li>
       <li><a href="#tolliver-ai">Tolliver AI</a></li>
       <li><a href="#breatheframe">BreatheFrame</a></li>
@@ -661,6 +715,7 @@
 
       <nav class="worlds reveal d3" aria-label="Our projects">
         <a class="w-roll" href="#rollabop"><span class="w-ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="36" height="36"></span>Rollabop</a>
+        <a class="w-gg" href="#glucose-glance"><span class="w-ico"><img src="assets/glucose/glucose-icon.webp" alt="" width="36" height="36"></span>Glucose Glance</a>
         <a class="w-tol" href="#tolliver"><span class="w-ico" style="background:#0d1a2b"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><circle cx="12" cy="18" r="5" fill="#2a74d6"/><circle cx="12" cy="18" r="2.2" fill="#06101d"/><circle cx="24" cy="18" r="5" fill="#2a74d6"/><circle cx="24" cy="18" r="2.2" fill="#06101d"/></svg></span>Tolliver</a>
         <a class="w-ai" href="#tolliver-ai"><span class="w-ico" style="background:#16112c"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><g stroke="#8f7bff" stroke-width="1.4"><path d="M10 12l8 6 8-7M18 18l-6 8M18 18l7 7"/></g><g fill="#5ef2e0"><circle cx="10" cy="12" r="2.4"/><circle cx="26" cy="11" r="2.4"/><circle cx="18" cy="18" r="3"/><circle cx="12" cy="26" r="2.4"/><circle cx="25" cy="25" r="2.4"/></g></svg></span>Tolliver AI</a>
         <a class="w-bf" href="#breatheframe"><span class="w-ico" style="background:#2a1f16"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="2" fill="none" stroke="#ffcf8a" stroke-width="1.8"/><path d="M11 23l5-5 4 4 2-2 4 3" fill="none" stroke="#ffcf8a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="15" r="1.8" fill="#ffcf8a"/></svg></span>BreatheFrame</a>
@@ -723,6 +778,71 @@
         <img src="assets/rollabop/rollabop-gameplay-screenshot.webp" alt="Real Rollabop gameplay screenshot: level 35, glass balls and Galaxy balls resting on wooden shelves in the walnut tray" width="500" height="889">
       </div>
       <p class="rb-caption">Real gameplay screenshot from Rollabop</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= GLUCOSE GLANCE ======================= -->
+<section class="gg" id="glucose-glance" aria-labelledby="gg-title">
+  <div class="wrap gg-grid">
+    <div class="gg-head">
+      <span class="kicker reveal">New · Wear OS watch app</span>
+      <div class="gg-title reveal">
+        <img src="assets/glucose/glucose-icon.webp" alt="" width="192" height="192">
+        <h2 id="gg-title">Glucose <span>Glance</span></h2>
+      </div>
+      <p class="gg-tagline reveal d1">Your glucose, big and clear, right on your watch.</p>
+      <span class="status reveal d1">Coming soon to Google Play</span>
+    </div>
+    <div class="gg-rest">
+      <p class="gg-body reveal d2">Made by a person with diabetes and low vision, for everyone who wants their numbers easy to read. Glucose Glance shows your CGM reading in large, high-contrast numbers on your Wear OS watch.</p>
+
+      <ul class="gg-feats reveal d2">
+        <li><strong>Big number, clear arrow</strong><span>Your reading and its trend, readable at a glance.</span></li>
+        <li><strong>Colors and words</strong><span>Green, yellow and red, plus "In range", "LOW" and "HIGH".</span></li>
+        <li><strong>Read aloud</strong><span>Tap the number to hear your reading.</span></li>
+        <li><strong>3-hour dot chart</strong><span>Minutes since the last reading and the change, like +2 or -5.</span></li>
+        <li><strong>Your watch face</strong><span>10 backgrounds, 8 text colors and 4 changeable spots.</span></li>
+        <li><strong>Any watch face</strong><span>Add your glucose to watch faces that support complications. mg/dL or mmol/L.</span></li>
+      </ul>
+
+      <div class="gg-works reveal d2">
+        <b>Works with</b>
+        <ul>
+          <li>Dexcom G6, G7 and ONE+ (Dexcom Share)</li>
+          <li>Nightscout (most other CGMs)</li>
+        </ul>
+      </div>
+
+      <div class="gg-note priv reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+        <span><b>Private by design.</b> Your login stays on your watch, encrypted. No ads. No tracking. Lippy Robotics Labs never receives your readings or your login.</span>
+      </div>
+      <div class="gg-note med reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.5v.01"/></svg>
+        <span><b>Not a medical device.</b> Readings can be late or missing. Keep your CGM's own app on for alarms, and do not make treatment decisions based on this app alone.</span>
+      </div>
+
+      <div class="gg-btns reveal d3">
+        <a class="btn btn-gg" href="glucose-privacy.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg> Privacy policy</a>
+        <a class="btn btn-ggdim" href="mailto:lippyroboticslabs@gmail.com">Questions? Email us</a>
+      </div>
+      <p class="gg-small">Planned price: $0.99 for the app. The matching watch face will be free. Glucose Glance is not made by, or affiliated with, Dexcom or Nightscout.</p>
+    </div>
+
+    <div class="gg-stage reveal d1">
+      <div class="gg-watch">
+        <img src="assets/glucose/glucose-watch-real.webp" alt="Real watch screenshot of the Glucose Glance watch face: Saturday, November 28, 10:08:30, a green dot chart, a glucose reading of 112 with a steady arrow, 14 days and minus 8, and a 100 percent battery ring" width="640" height="640">
+      </div>
+      <p class="gg-cap">Real screenshot from the watch</p>
+      <ul class="gg-previews" aria-label="Store preview images">
+        <li><img src="assets/glucose/preview-face-blue.webp" alt="Watch face preview: 105 in range, steady" width="360" height="360" loading="lazy"></li>
+        <li><img src="assets/glucose/preview-face-high.webp" alt="Watch face preview in yellow: 211, rising" width="360" height="360" loading="lazy"></li>
+        <li><img src="assets/glucose/preview-face-low.webp" alt="Watch face preview: 61 in red, falling" width="360" height="360" loading="lazy"></li>
+        <li><img src="assets/glucose/preview-choose-cgm.webp" alt="App setup screen: Which CGM do you use? Dexcom or Nightscout" width="360" height="360" loading="lazy"></li>
+        <li><img src="assets/glucose/preview-reading.webp" alt="App screen: 112, In range, Steady, Just now, with a Read aloud button" width="360" height="360" loading="lazy"></li>
+      </ul>
+      <p class="gg-pcap">Store previews, drawn from the app's real design</p>
     </div>
   </div>
 </section>
@@ -1028,6 +1148,7 @@
         <ul class="c-links">
           <li><a href="https://patevan9.github.io/rollabop-website/"><span class="ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="38" height="38"></span><span><b>Rollabop</b><small>Game website</small></span></a></li>
           <li><a href="https://play.google.com/store/apps/details?id=com.lippyrobotics.rollabop"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.5v17a1 1 0 001.5.86l14-8.5a1 1 0 000-1.72l-14-8.5A1 1 0 005 3.5z"/></svg></span><span><b>Get Rollabop</b><small>On Google Play</small></span></a></li>
+          <li><a href="glucose-privacy.html"><span class="ico"><img src="assets/glucose/glucose-icon.webp" alt="" width="38" height="38"></span><span><b>Glucose Glance</b><small>Privacy policy</small></span></a></li>
           <li><a href="https://github.com/Patevan9/BreatheFrame"><span class="ico" style="background:rgba(255,207,138,0.12);color:#ffcf8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M5 17l5-5 4 4 2-2 3 3"/></svg></span><span><b>BreatheFrame</b><small>On GitHub</small></span></a></li>
           <li><a href="https://patevan9.github.io/captraze/"><span class="ico" style="background:#16080a;color:#e3131b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5"/><path d="M9.5 16V8h3a2.2 2.2 0 010 4.4h-3M12.5 12.4L15 16"/></svg></span><span><b>CAPTRAZE</b><small>Concept site · 18+</small></span></a></li>
         </ul>
@@ -1054,6 +1175,7 @@
       <a class="brand" href="#top"><img src="assets/labs-logo.png" alt="" width="44" height="44"><span>Lippy <b>Robotics</b> Labs</span></a>
       <nav aria-label="Footer">
         <a href="#rollabop">Rollabop</a>
+        <a href="#glucose-glance">Glucose Glance</a>
         <a href="#tolliver">Tolliver</a>
         <a href="#tolliver-ai">Tolliver AI</a>
         <a href="#breatheframe">BreatheFrame</a>
