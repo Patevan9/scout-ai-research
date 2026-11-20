@@ -441,6 +441,8 @@
   .gg-previews { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 30px; }
   .gg-previews img { width: 100%; aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 3px #22252e, 0 10px 24px rgba(0,0,0,0.5); background: #000; }
   .gg-pcap { margin-top: 12px; font-size: 0.86rem; color: #9aa3d6; }
+  .gg-small a { color: #8fe9b4; }
+  .gg-buy { margin-top: 22px; }
   @media (max-width: 960px) { .gg-grid { grid-template-columns: 1fr; grid-template-areas: "head" "stage" "rest"; row-gap: 36px; } }
   @media (max-width: 640px) {
     .gg { padding: 64px 0; }
@@ -827,7 +829,7 @@
         <a class="btn btn-gg" href="glucose-glance/">Visit the Glucose Glance website <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
         <a class="btn btn-ggdim" href="glucose-privacy.html">Privacy policy</a>
       </div>
-      <p class="gg-small">Price: $1.99 one-time, sold on our website. The matching watch face is included free. Glucose Glance is not made by, or affiliated with, Dexcom or Nightscout.</p>
+      <p class="gg-small">Price: $1.99 one-time, sold on the <a href="glucose-glance/#buy">Glucose Glance website</a>. The matching watch face is included free. Glucose Glance is not made by, or affiliated with, Dexcom or Nightscout.</p>
     </div>
 
     <div class="gg-stage reveal d1">
@@ -835,14 +837,15 @@
         <img src="assets/glucose/glucose-watch-real.webp" alt="Real watch screenshot of the Glucose Glance watch face: Saturday, November 28, 10:08:30, a green dot chart, a glucose reading of 112 with a steady arrow, 14 days and minus 8, and a 100 percent battery ring" width="640" height="640">
       </div>
       <p class="gg-cap">Real screenshot from the watch</p>
-      <ul class="gg-previews" aria-label="Store preview images">
+      <ul class="gg-previews" aria-label="Preview images">
         <li><img src="assets/glucose/preview-face-blue.webp" alt="Watch face preview: 105 in range, steady" width="360" height="360" loading="lazy"></li>
         <li><img src="assets/glucose/preview-face-high.webp" alt="Watch face preview in yellow: 211, rising" width="360" height="360" loading="lazy"></li>
         <li><img src="assets/glucose/preview-face-low.webp" alt="Watch face preview: 61 in red, falling" width="360" height="360" loading="lazy"></li>
         <li><img src="assets/glucose/preview-choose-cgm.webp" alt="App setup screen: Which CGM do you use? Dexcom or Nightscout" width="360" height="360" loading="lazy"></li>
         <li><img src="assets/glucose/preview-reading.webp" alt="App screen: 112, In range, Steady, Just now, with a Read aloud button" width="360" height="360" loading="lazy"></li>
       </ul>
-      <p class="gg-pcap">Store previews, drawn from the app's real design</p>
+      <p class="gg-pcap">Preview images, drawn from the app's real design</p>
+      <a class="btn btn-gg gg-buy" href="glucose-glance/">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
     </div>
   </div>
 </section>
