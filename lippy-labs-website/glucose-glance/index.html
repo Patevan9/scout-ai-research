@@ -104,6 +104,12 @@
   .gnote { margin-top: 22px; font-size: 0.92rem; color: var(--soft); }
 
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .letter { max-width: 760px; padding: 34px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--green); }
+  .letter p { color: #dfe3ff; font-size: 1.1rem; margin-bottom: 18px; }
+  .letter p b { color: var(--text); }
+  .letter .sign { margin: 26px 0 0; font-style: italic; color: var(--muted); line-height: 1.5; }
+  .letter .sign b { display: block; font-style: italic; font-size: 1.2rem; color: var(--text); }
+  @media (max-width: 640px) { .letter { padding: 22px 18px; } }
   .panel { padding: 26px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
   .panel h3 { font-size: 1.35rem; margin-bottom: 10px; }
   .panel ul { padding-left: 1.2em; color: var(--muted); }
@@ -288,8 +294,23 @@
   </div>
 </section>
 
+<!-- FROM THE DEVELOPER -->
+<section class="sec" id="why" aria-labelledby="why-title">
+  <div class="wrap">
+    <span class="kicker">From the developer</span>
+    <h2 id="why-title">Why I made <span>Glucose Glance</span></h2>
+    <div class="letter">
+      <p>Hi, I'm Patrick Lippy, the independent developer behind Glucose Glance.</p>
+      <p>I live with diabetes, vision challenges and other disabilities. I originally made Glucose Glance for myself, because I wanted an easier way to see my glucose on my smartwatch: big, clear and quick to read. Once it was working well for me, I wanted to share it with others who might find it helpful too.</p>
+      <p><b>Why $1.99?</b> Glucose Glance is a one-time purchase, with no subscriptions, no ads and no tracking. Your purchase helps support my family, my medical expenses, the cost of running this website, and the continued development of Glucose Glance.</p>
+      <p>Thank you for taking the time to learn about Glucose Glance. I hope it makes checking your glucose a little easier every day.</p>
+      <p class="sign"><b>Patrick Lippy</b>Lippy Robotics Labs</p>
+    </div>
+  </div>
+</section>
+
 <!-- BUY -->
-<section class="sec" id="buy" aria-labelledby="b-title">
+<section class="sec alt" id="buy" aria-labelledby="b-title">
   <div class="wrap">
     <span class="kicker">Price</span>
     <h2 id="b-title">One price. <span>Yours to keep.</span></h2>
@@ -311,7 +332,7 @@
 </section>
 
 <!-- PRIVACY + HEALTH -->
-<section class="sec alt" id="privacy" aria-labelledby="p-title">
+<section class="sec" id="privacy" aria-labelledby="p-title">
   <div class="wrap">
     <span class="kicker">Privacy and safety</span>
     <h2 id="p-title">Your data stays <span>on your watch</span></h2>
