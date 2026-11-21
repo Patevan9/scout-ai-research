@@ -6,7 +6,7 @@
   "workers_dev": true,
   "kv_namespaces": [
     // Filled in after: npx wrangler kv namespace create glucose-download
-    { "binding": "DL", "id": "REPLACE_WITH_KV_ID" }
+    { "binding": "DL", "id": "d1198451db184b5eb75bb773252f9e5f" }
   ],
   "vars": {
     "PAYMENT_LINK_ID": "plink_1UdZxK0ynfmB2RtWyRFqMlef",
