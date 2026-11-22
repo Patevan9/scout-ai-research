@@ -99,7 +99,8 @@
     <li>Your login and your glucose readings are stored <strong>only on your watch</strong>.</li>
     <li>Your password or access token is <strong>encrypted</strong> on the watch.</li>
     <li>The app connects only to the glucose service <strong>you choose</strong> (Dexcom Share or your Nightscout site), over secure HTTPS, to read your own glucose numbers.</li>
-    <li>If you <strong>buy</strong> Glucose Glance on our website, payment is handled by <strong>Stripe</strong>. We receive your email address and purchase details, but <strong>never your card number</strong>. Your purchase is never linked to your glucose readings. The app checks your license <strong>on your watch</strong> and never contacts us or Stripe to do it.</li>
+    <li>If you <strong>buy</strong> Glucose Glance on our website, payment is handled by <strong>Stripe</strong>. We receive your email address and purchase details, but <strong>never your card number</strong>. Your purchase is never linked to your glucose readings.</li>
+    <li>The <strong>Glucose Glance Installer</strong> on your phone keeps a few setup details <strong>only on your phone</strong> and sends nothing to us.</li>
   </ul>
 </section>
 
@@ -120,7 +121,6 @@
     <tr><td data-label="Information">Nightscout access token or API secret (if your site needs one)</td><td data-label="Why the app needs it">To be allowed to read your Nightscout site</td><td data-label="How it is stored"><strong>Encrypted</strong> on the watch</td><td data-label="Where it is sent">Only to your Nightscout site</td></tr>
     <tr><td data-label="Information">Glucose readings: the number, the time and the trend arrow, for about the last 3 hours</td><td data-label="Why the app needs it">To show your glucose, the change and the 3-hour chart</td><td data-label="How it is stored">Private app storage on the watch. Older readings are replaced as new ones arrive.</td><td data-label="Where it is sent">Never sent to Lippy Robotics Labs. Shared only on your watch with watch faces where you add the Glucose Glance complication.</td></tr>
     <tr><td data-label="Information">Settings: which service you use, mg/dL or mmol/L, that you accepted the health notice, and whether Demo mode is on</td><td data-label="Why the app needs it">To remember your choices</td><td data-label="How it is stored">Private app storage on the watch</td><td data-label="Where it is sent">Not sent</td></tr>
-    <tr><td data-label="Information">Your license: a random purchase ID (not based on your email), a masked version of your email (for example, p&bull;&bull;&bull;@g&bull;&bull;&bull;.com), the license type, the date it was issued, a key ID and a digital signature</td><td data-label="Why the app needs it">To confirm that you bought the app</td><td data-label="How it is stored">Private app storage on the watch, locked to that watch using the watch's secure Android Keystore</td><td data-label="Where it is sent">Not sent. The app checks it on the watch, without contacting us or Stripe. It is shown only on the About screen, never on the watch face.</td></tr>
   </tbody>
 </table>
 </div>
@@ -178,7 +178,6 @@
 <ul>
   <li><strong>What you give Stripe:</strong> on Stripe's secure checkout page, you enter your email address and your payment details, such as your card number, expiry date and security code. Depending on your payment method, Stripe may also ask for your name, country or postal code.</li>
   <li><strong>What we receive from Stripe:</strong> your email address, the name and billing details you entered, what you bought, the amount, the date, and limited card details such as the card type and the last four digits. <strong>We never see or store your full card number.</strong></li>
-  <li><strong>Your license:</strong> after you buy, we create a license for you. It contains a random purchase ID (not based on your email), a masked version of your email, the license type, the date and a digital signature. The installer app on your phone only carries the license to your watch. Your license never expires, and the app never checks it online. We keep a record that links your purchase ID to your Stripe payment, so we can restore your purchase if you get a new watch.</li>
   <li><strong>Your download link:</strong> after you pay, Stripe sends you to your private download page. Our download helper asks Stripe whether that purchase is paid and is for Glucose Glance, then lets you download the installer up to 3 times within 48 hours. To do this, it stores only three things: the purchase code from Stripe (a checkout session ID), the time you first opened the link, and how many times you have downloaded. It does not store your email address, name or payment details. These records are deleted automatically after 60 days.</li>
   <li><strong>Why we use it:</strong> to send you the download link and install instructions, to give you a receipt, to help you if you contact us (for example, about a refund or reinstalling on a new watch), and to keep the business and tax records the law requires.</li>
   <li><strong>What we do not do:</strong> we do not sell or rent your purchase information, we do not send you marketing emails unless you ask, and we never connect your purchase to your glucose readings or login. The app on your watch does not send anything to us.</li>
@@ -186,14 +185,23 @@
   <li><strong>Stripe's own policy:</strong> Stripe handles your payment details under the <a href="https://stripe.com/privacy" rel="noopener">Stripe Privacy Policy</a>, and also uses them to prevent fraud.</li>
 </ul>
 
+<h2 id="installer">The Glucose Glance Installer (on your phone)</h2>
+<p>Glucose Glance is not in the Play Store, so you install it with our <strong>Glucose Glance Installer</strong> app on your Android phone. The installer keeps only these things, and only on your phone:</p>
+<ul>
+  <li><strong>A pairing key</strong> it creates for itself, so your watch can recognize your phone when you install or update.</li>
+  <li><strong>Your watch's model and serial number</strong>, so it can label the right watch as "Your watch".</li>
+  <li><strong>Optional backup copies</strong> of the Glucose Glance files in your phone's Downloads folder, only if you choose to save them.</li>
+</ul>
+<p>The installer does not send any of this to Lippy Robotics Labs or anyone else. It only talks to your own watch, over your Wi-Fi network, to install Glucose Glance. To remove what it stored, uninstall the installer app and delete any backup copies from your Downloads folder. When setup is done, you can turn off Wireless debugging on your watch.</p>
+
 <h2 id="retention">Keeping and deleting your information</h2>
 <ul>
   <li>Readings are kept for about 3 hours and replaced as new ones arrive.</li>
   <li>Changing your login in the app replaces your old login and clears the saved readings and session ID.</li>
-  <li>To delete everything the app stored, <strong>uninstall the app</strong>, or clear its storage in your watch's settings (<em>Settings &rarr; Apps &rarr; Glucose Glance &rarr; Storage &rarr; Clear data</em>; the exact menu names can vary by watch). This also removes your license from that watch. Email us and we can restore it.</li>
+  <li>To delete everything the app stored, <strong>uninstall the app</strong>, or clear its storage in your watch's settings (<em>Settings &rarr; Apps &rarr; Glucose Glance &rarr; Storage &rarr; Clear data</em>; the exact menu names can vary by watch).</li>
   <li>We never receive your glucose readings or login, so there is nothing of that kind for us to delete. To delete data held by Dexcom or your Nightscout site, contact Dexcom or whoever runs your site.</li>
   <li>Download records (the purchase code, first-visit time and download count) are deleted automatically after 60 days.</li>
-  <li>If you bought the app, we keep your purchase information, including the record that links your purchase ID to your Stripe payment, for as long as we need it to support you and to keep the records the law requires (for tax records, this is usually several years). To ask what we hold about you, or to ask us to delete anything we are not required to keep, email us.</li>
+  <li>If you bought the app, we keep your purchase information for as long as we need it to support you and to keep the records the law requires (for tax records, this is usually several years). To ask what we hold about you, or to ask us to delete anything we are not required to keep, email us.</li>
 </ul>
 
 <h2 id="children">Children</h2>

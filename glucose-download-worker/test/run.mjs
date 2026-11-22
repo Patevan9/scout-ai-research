@@ -49,7 +49,7 @@ await t("purchase older than 14 days, never used -> expired", async () => { asse
 await t("Stripe unreachable -> try later (503), nothing used up", async () => {
   stripeDown = true; const r = await get("/?session_id=cs_live_GOODGOODGOOD1"); stripeDown = false;
   assert.equal(r.status, 503); assert.equal(env.DL.m.has("dl:cs_live_GOODGOODGOOD1"), false); });
-await t("good purchase -> landing page says 3 downloads", async () => { const r = await get("/?session_id=cs_live_GOODGOODGOOD1"); assert.equal(r.status, 200); assert.match(await text(r), /3 more downloads/); });
+await t("good purchase -> landing page says 3 downloads", async () => { const r = await get("/?session_id=cs_live_GOODGOODGOOD1"); assert.equal(r.status, 200); assert.match(await text(r), /3 more downloads/); ; });
 await t("landing page visits do not use downloads; Stripe asked only once", async () => { const c = stripeCalls; await get("/?session_id=cs_live_GOODGOODGOOD1"); assert.equal(stripeCalls, c); assert.match(await text(await get("/?session_id=cs_live_GOODGOODGOOD1")), /3 more downloads/); });
 await t("HEAD request does not use a download", async () => { await get("/download?session_id=cs_live_GOODGOODGOOD1", "HEAD"); assert.match(await text(await get("/?session_id=cs_live_GOODGOODGOOD1")), /3 more downloads/); });
 await t("download 1..3 give the file", async () => {

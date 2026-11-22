@@ -54,12 +54,20 @@ export default {
 
     if (url.pathname === "/") {
       const hoursLeft = Math.max(1, Math.ceil((windowMs - ageMs) / 3600000));
+      const src = env.SOURCE_URL
+        ? `<p class="small">Installer source code: <a href="${esc(env.SOURCE_URL)}">${esc(env.SOURCE_URL)}</a></p>` : "";
       return page(env, 200, "Your Glucose Glance download", `
         <p class="big">Thank you for buying Glucose Glance!</p>
-        <p>Your download is ready. This link works for <b>${left} more download${left === 1 ? "" : "s"}</b>
-           within the next <b>${hoursLeft} hour${hoursLeft === 1 ? "" : "s"}</b>.</p>
-        <p><a class="btn" href="/download?session_id=${encodeURIComponent(sid)}">Download the installer</a></p>
-        <p class="small">Please keep this link private. It only works for your purchase.</p>`);
+        <p><a class="btn" href="/download?session_id=${encodeURIComponent(sid)}">Download</a></p>
+        <ol>
+          <li>Tap <b>Download</b> on your Android phone.</li>
+          <li>Open the file. If asked, allow installing from this source.</li>
+          <li>Open <b>Glucose Glance Installer</b> and follow the steps with pictures.</li>
+        </ol>
+        <p>Phone and watch on the same Wi-Fi. Keep Bluetooth on.</p>
+        <p>Need help? <a href="mailto:${esc(env.SUPPORT_EMAIL)}?subject=Glucose%20Glance">${esc(env.SUPPORT_EMAIL)}</a></p>
+        <p class="small">This link works for ${left} more download${left === 1 ? "" : "s"} within the next ${hoursLeft} hour${hoursLeft === 1 ? "" : "s"}. Please keep it private.</p>
+        ${src}`);
     }
 
     // /download
@@ -154,6 +162,7 @@ function page(env, status, title, body) {
   .btn { display: inline-block; margin: 12px 0; padding: 16px 28px; border-radius: 999px; background: #3ddc84; color: #04210f; font-weight: 700; text-decoration: none; }
   .btn:focus-visible, a:focus-visible { outline: 3px solid #ffc83d; outline-offset: 3px; }
   .small, footer { font-size: 0.95rem; color: #9aa3d6; }
+  ol { padding-left: 1.4em; color: #dfe3ff; } ol li { margin-bottom: 10px; }
   footer { margin-top: 40px; }
 </style></head>
 <body><main>
