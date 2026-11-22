@@ -170,6 +170,7 @@
   <li><strong>Watch faces you choose:</strong> Glucose Glance can show your glucose on a watch face as a "complication". When you add it to a watch face, including faces made by other developers, that watch face receives your current glucose number, trend and the 3-hour chart so it can display them. Only add it to watch faces you trust.</li>
   <li><strong>Read aloud:</strong> when you tap the number to hear it, the app uses your watch's text-to-speech service to speak your glucose. That service is part of your watch's software, and its own privacy terms apply.</li>
   <li><strong>Stripe:</strong> when you buy the app on our website, Stripe processes your payment, as described in "Buying Glucose Glance" below.</li>
+  <li><strong>Cloudflare:</strong> after you buy, your download page is provided by Cloudflare, Inc., which runs our small download helper. Like any website host, Cloudflare handles basic connection details, such as your IP address, to deliver the page, under the <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener">Cloudflare Privacy Policy</a>. We do not keep logs of these visits.</li>
 </ul>
 
 <h2 id="buying">Buying Glucose Glance</h2>
@@ -178,6 +179,7 @@
   <li><strong>What you give Stripe:</strong> on Stripe's secure checkout page, you enter your email address and your payment details, such as your card number, expiry date and security code. Depending on your payment method, Stripe may also ask for your name, country or postal code.</li>
   <li><strong>What we receive from Stripe:</strong> your email address, the name and billing details you entered, what you bought, the amount, the date, and limited card details such as the card type and the last four digits. <strong>We never see or store your full card number.</strong></li>
   <li><strong>Your license:</strong> after you buy, we create a license for you. It contains a random purchase ID (not based on your email), a masked version of your email, the license type, the date and a digital signature. The installer app on your phone only carries the license to your watch. Your license never expires, and the app never checks it online. We keep a record that links your purchase ID to your Stripe payment, so we can restore your purchase if you get a new watch.</li>
+  <li><strong>Your download link:</strong> after you pay, Stripe sends you to your private download page. Our download helper asks Stripe whether that purchase is paid and is for Glucose Glance, then lets you download the installer up to 3 times within 48 hours. To do this, it stores only three things: the purchase code from Stripe (a checkout session ID), the time you first opened the link, and how many times you have downloaded. It does not store your email address, name or payment details. These records are deleted automatically after 60 days.</li>
   <li><strong>Why we use it:</strong> to send you the download link and install instructions, to give you a receipt, to help you if you contact us (for example, about a refund or reinstalling on a new watch), and to keep the business and tax records the law requires.</li>
   <li><strong>What we do not do:</strong> we do not sell or rent your purchase information, we do not send you marketing emails unless you ask, and we never connect your purchase to your glucose readings or login. The app on your watch does not send anything to us.</li>
   <li><strong>Email:</strong> we write to you from lippyroboticslabs@gmail.com, which uses Google's Gmail service.</li>
@@ -190,6 +192,7 @@
   <li>Changing your login in the app replaces your old login and clears the saved readings and session ID.</li>
   <li>To delete everything the app stored, <strong>uninstall the app</strong>, or clear its storage in your watch's settings (<em>Settings &rarr; Apps &rarr; Glucose Glance &rarr; Storage &rarr; Clear data</em>; the exact menu names can vary by watch). This also removes your license from that watch. Email us and we can restore it.</li>
   <li>We never receive your glucose readings or login, so there is nothing of that kind for us to delete. To delete data held by Dexcom or your Nightscout site, contact Dexcom or whoever runs your site.</li>
+  <li>Download records (the purchase code, first-visit time and download count) are deleted automatically after 60 days.</li>
   <li>If you bought the app, we keep your purchase information, including the record that links your purchase ID to your Stripe payment, for as long as we need it to support you and to keep the records the law requires (for tax records, this is usually several years). To ask what we hold about you, or to ask us to delete anything we are not required to keep, email us.</li>
 </ul>
 
