@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b0f33">
 <title>Glucose Glance</title>
-<meta name="description" content="Your glucose, big and clear, right on your Wear OS watch. Works with Dexcom Share and Nightscout. $1.99 one-time. Made by a person with diabetes and low vision.">
+<meta name="description" content="Your glucose, big and clear, right on your Wear OS watch. Works with Dexcom Share and Nightscout. Free, with optional donations. Made by a person with diabetes and low vision.">
 <link rel="canonical" href="https://lippyroboticslabs.com/glucose-glance/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lippyroboticslabs.com/glucose-glance/">
 <meta property="og:site_name" content="Lippy Robotics Labs">
 <meta property="og:title" content="Glucose Glance — your glucose, big and clear, on your watch">
-<meta property="og:description" content="Large, high-contrast CGM numbers on your Wear OS watch. Dexcom Share and Nightscout. $1.99 one-time.">
+<meta property="og:description" content="Large, high-contrast CGM numbers on your Wear OS watch. Dexcom Share and Nightscout. Free.">
 <meta property="og:image" content="https://lippyroboticslabs.com/assets/glucose/glucose-watch-real.webp">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/webp" href="/assets/glucose/glucose-icon.webp">
@@ -110,6 +110,10 @@
   .letter .sign { margin: 26px 0 0; font-style: italic; color: var(--muted); line-height: 1.5; }
   .letter .sign b { display: block; font-style: italic; font-size: 1.2rem; color: var(--text); }
   @media (max-width: 640px) { .letter { padding: 22px 18px; } }
+  .dl-steps { margin: 22px 0 14px; padding-left: 1.4em; color: #dfe3ff; } .pricecard .dl-steps li { display: list-item; margin-bottom: 8px; }
+  .pricecard p { color: #dfe3ff; margin-bottom: 8px; }
+  .hash { font-family: ui-monospace, monospace; font-size: 0.8rem; word-break: break-all; }
+  .support { max-width: 760px; } .support p { color: #dfe3ff; margin-bottom: 14px; } .support ul { margin-bottom: 14px; }
   .panel { padding: 26px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
   .panel h3 { font-size: 1.35rem; margin-bottom: 10px; }
   .panel ul { padding-left: 1.2em; color: var(--muted); }
@@ -176,7 +180,7 @@
       <li><a href="#works-with">Works with</a></li>
       <li><a href="#install">Install</a></li>
       <li><a href="#privacy">Privacy</a></li>
-      <li class="keep"><a class="cta" href="#buy">Buy $1.99</a></li>
+      <li class="keep"><a class="cta" href="#download">Download free</a></li>
     </ul>
   </nav>
 </header>
@@ -197,10 +201,10 @@
         <li>mg/dL or mmol/L</li>
       </ul>
       <div class="buybox">
-        <a class="btn btn-buy" href="https://buy.stripe.com/fZueV58g75CO91z3bwe7m05">Buy $1.99</a>
-        <span class="price"><b>$1.99</b> one-time · no subscription</span>
+        <a class="btn btn-buy" href="#download">Download free</a>
+        <span class="price"><b>Free</b> · no ads · no subscription</span>
       </div>
-      <p class="soon-note">Secure checkout by Stripe. After you pay, you go straight to your download.</p>
+      <p class="soon-note">Optional donations help support Glucose Glance. <a href="#support">Learn more</a></p>
     </div>
     <div class="stage">
       <div class="watch"><img src="/assets/glucose/glucose-watch-real.webp" alt="Real watch screenshot of the Glucose Glance watch face: the date and time, a green dot chart, a glucose reading of 112 with a steady arrow, and a battery ring" width="640" height="640"></div>
@@ -280,16 +284,15 @@
   <div class="wrap">
     <span class="kicker">Getting started</span>
     <h2 id="i-title">How it <span>works</span></h2>
-    <p class="lead">Glucose Glance is sold here, not in the Google Play Store. Our simple phone app, the Glucose Glance Installer, sends Glucose Glance to your watch for you, step by step, with pictures. The installer is open source: <a href="https://github.com/Patevan9/glucose-glance-installer">view its source code</a>.</p>
+    <p class="lead">Glucose Glance is free, and you get it here, not in the Google Play Store. Our simple phone app, the Glucose Glance Installer, sends Glucose Glance to your watch for you, step by step, with pictures. The installer is open source: <a href="https://github.com/Patevan9/glucose-glance-installer">view its source code</a>.</p>
     <ol class="steps">
-      <li><div><b>Buy Glucose Glance</b><span>Pay $1.99 once, securely through Stripe. You go straight to your download page.</span></div></li>
-      <li><div><b>Get the installer</b><span>Download the Glucose Glance Installer on your Android phone. Your link works for 3 downloads within 48 hours.</span></div></li>
+      <li><div><b>Get the installer</b><span>On your Android phone, tap Download free and open the file. If asked, allow installing from this source.</span></div></li>
       <li><div><b>Let the installer do the work</b><span>It connects to your watch and installs Glucose Glance and the free watch face, showing you each step with pictures.</span></div></li>
       <li><div><b>Sign in on your watch</b><span>Open Glucose Glance, choose Dexcom or Nightscout, and sign in. Then pick the Glucose Glance watch face.</span></div></li>
     </ol>
     <div class="note med" style="margin-top:22px">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v5h1"/></svg>
-      <span><b>Good to know before you buy.</b> Because Glucose Glance is not in the Play Store, the installer guides you to turn on <b>Developer options</b> and <b>Wireless debugging</b> on your watch. It is a one-time setup, with pictures. Your phone and watch need to be on the <b>same Wi-Fi network</b>, and you should <b>keep Bluetooth on</b>. When it is done, the installer shows you how to turn Wireless debugging off again.</span>
+      <span><b>Good to know before you start.</b> Because Glucose Glance is not in the Play Store, the installer guides you to turn on <b>Developer options</b> and <b>Wireless debugging</b> on your watch. It is a one-time setup, with pictures. Your phone and watch need to be on the <b>same Wi-Fi network</b>, and you should <b>keep Bluetooth on</b>. When it is done, the installer shows you how to turn Wireless debugging off again.</span>
     </div>
   </div>
 </section>
@@ -302,37 +305,60 @@
     <div class="letter">
       <p>Hi, I'm Patrick Lippy, the independent developer behind Glucose Glance.</p>
       <p>I live with diabetes, vision challenges and other disabilities. I originally made Glucose Glance for myself, because I wanted an easier way to see my glucose on my smartwatch: big, clear and quick to read. Once it was working well for me, I wanted to share it with others who might find it helpful too.</p>
-      <p><b>Why $1.99?</b> Glucose Glance is a one-time purchase, with no subscriptions, no ads and no tracking. Your purchase helps support my family, my medical expenses, the cost of running this website, and the continued development of Glucose Glance.</p>
+      <p><b>Free, with optional support.</b> Glucose Glance is free, with no subscriptions, no ads and no tracking. If you would like to give something back, optional donations help support my family, my medical expenses, the cost of running this website, and the continued development of Glucose Glance.</p>
       <p>Thank you for taking the time to learn about Glucose Glance. I hope it makes checking your glucose a little easier every day.</p>
       <p class="sign"><b>Patrick Lippy</b>Lippy Robotics Labs</p>
     </div>
   </div>
 </section>
 
-<!-- BUY -->
-<section class="sec alt" id="buy" aria-labelledby="b-title">
+<!-- DOWNLOAD -->
+<section class="sec alt" id="download" aria-labelledby="d-title">
   <div class="wrap">
-    <span class="kicker">Price</span>
-    <h2 id="b-title">One price. <span>Yours to keep.</span></h2>
+    <span class="kicker">Free download</span>
+    <h2 id="d-title">Get <span>Glucose Glance</span></h2>
     <div class="pricecard">
-      <div class="big">$1.99<small>USD, one-time</small></div>
+      <div class="big">Free<small>no ads, no subscription</small></div>
       <ul>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>No subscription. No ads. No tracking.</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>One purchase covers one person and all their own watches, including replacements.</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>The Glucose Glance watch face is included free.</span></li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Family members each need their own purchase.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Glucose Glance and its watch face, free for everyone.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>No account, no ads, no tracking.</span></li>
       </ul>
       <div class="btns">
-        <a class="btn btn-buy" href="https://buy.stripe.com/fZueV58g75CO91z3bwe7m05">Buy $1.99</a>
-        <a class="btn btn-dim" href="mailto:lippyroboticslabs@gmail.com?subject=Glucose%20Glance">Email us a question</a>
+        <a class="btn btn-buy" href="Glucose-Glance-Installer.apk" download>Download free</a>
       </div>
-      <p class="soon-note">Payments are handled securely by Stripe. We never see your card number.</p>
+      <ol class="dl-steps">
+        <li>Tap <b>Download free</b> on your Android phone.</li>
+        <li>Open the file. If asked, allow installing from this source.</li>
+        <li>Open <b>Glucose Glance Installer</b> and follow the steps with pictures.</li>
+      </ol>
+      <p>Phone and watch on the same Wi-Fi. Keep Bluetooth on.</p>
+      <p>Need help? <a href="mailto:lippyroboticslabs@gmail.com?subject=Glucose%20Glance">lippyroboticslabs@gmail.com</a></p>
+      <p class="soon-note">Glucose Glance Installer, version 1.0 (about 17 MB). Installer source code: <a href="https://github.com/Patevan9/glucose-glance-installer">github.com/Patevan9/glucose-glance-installer</a> (GPL-3.0).<br>SHA-256: <span class="hash">0fb5e97c1713989b83257053d70d8fa9de3f174c4b434b34661e7a040058ed08</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section class="sec" id="support" aria-labelledby="s-title">
+  <div class="wrap">
+    <span class="kicker">Optional</span>
+    <h2 id="s-title">Support <span>Glucose Glance</span></h2>
+    <div class="panel support">
+      <p>Glucose Glance is free for everyone. If it helps you and you would like to give something back, you are welcome to make an optional donation of any amount. It is never expected.</p>
+      <ul>
+        <li>Glucose Glance works fully without it. Nothing is locked or held back.</li>
+        <li>Donating is separate from downloading, and it is never required.</li>
+        <li>You will never be asked for a donation inside the app.</li>
+      </ul>
+      <p>Donations help support my family, my medical expenses, the cost of running this website, and the continued development of Glucose Glance. They are processed securely by Stripe and are not tax-deductible.</p>
+      <div class="btns"><a class="btn btn-dim" href="https://donate.stripe.com/7sYbIT0NF7KW91zcM6e7m06">Support Glucose Glance ❤️</a></div>
+      <p class="soon-note">Feedback and ideas are a wonderful way to support Glucose Glance, too: <a href="mailto:lippyroboticslabs@gmail.com?subject=Glucose%20Glance%20feedback">lippyroboticslabs@gmail.com</a></p>
     </div>
   </div>
 </section>
 
 <!-- PRIVACY + HEALTH -->
-<section class="sec" id="privacy" aria-labelledby="p-title">
+<section class="sec alt" id="privacy" aria-labelledby="p-title">
   <div class="wrap">
     <span class="kicker">Privacy and safety</span>
     <h2 id="p-title">Your data stays <span>on your watch</span></h2>
