@@ -15,7 +15,8 @@
     "START_WITHIN_DAYS": "14",
     "FILE_NAME": "Glucose-Glance-Installer.apk",
     "SUPPORT_EMAIL": "lippyroboticslabs@gmail.com",
-    "SITE_URL": "https://lippyroboticslabs.com/glucose-glance/"
+    "SITE_URL": "https://lippyroboticslabs.com/glucose-glance/",
+    "SOURCE_URL": "https://github.com/Patevan9/glucose-glance-installer"
   }
   // Secret STRIPE_KEY is set in the Cloudflare dashboard (restricted key, Checkout Sessions: Read). Never put it here.
 }
