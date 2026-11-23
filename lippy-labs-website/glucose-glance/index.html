@@ -112,6 +112,7 @@
   @media (max-width: 640px) { .letter { padding: 22px 18px; } }
   .dl-steps { margin: 22px 0 14px; padding-left: 1.4em; color: #dfe3ff; } .pricecard .dl-steps li { display: list-item; margin-bottom: 8px; }
   .pricecard p { color: #dfe3ff; margin-bottom: 8px; }
+  .dl-details { margin-top: 10px; } .dl-details summary { cursor: pointer; color: var(--green-l); font-size: 0.95rem; min-height: 44px; display: inline-flex; align-items: center; } .dl-details summary:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 6px; }
   .hash { font-family: ui-monospace, monospace; font-size: 0.8rem; word-break: break-all; }
   .support { max-width: 760px; } .support p { color: #dfe3ff; margin-bottom: 14px; } .support ul { margin-bottom: 14px; }
   .panel { padding: 26px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
@@ -333,7 +334,11 @@
       </ol>
       <p>Phone and watch on the same Wi-Fi. Keep Bluetooth on.</p>
       <p>Need help? <a href="mailto:lippyroboticslabs@gmail.com?subject=Glucose%20Glance">lippyroboticslabs@gmail.com</a></p>
-      <p class="soon-note">Glucose Glance Installer, version 1.0.1 (about 17 MB). Installer source code: <a href="https://github.com/Patevan9/glucose-glance-installer">github.com/Patevan9/glucose-glance-installer</a> (GPL-3.0).<br>SHA-256: <span class="hash">4ed57d39984b6c787904261450bc92c663db786c8e0548be7fc43e89bd05f684</span></p>
+      <p class="soon-note">Glucose Glance Installer, version 1.0.1 (about 17 MB). Installer source code: <a href="https://github.com/Patevan9/glucose-glance-installer">github.com/Patevan9/glucose-glance-installer</a> (GPL-3.0).</p>
+      <details class="dl-details">
+        <summary>Details</summary>
+        <p class="soon-note">SHA-256 file fingerprint, for checking that your download is exactly the file we published. You do not need this to install Glucose Glance.<br><span class="hash">4ed57d39984b6c787904261450bc92c663db786c8e0548be7fc43e89bd05f684</span></p>
+      </details>
     </div>
   </div>
 </section>
