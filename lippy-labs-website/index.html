@@ -176,8 +176,8 @@
   .worlds a.w-roll:hover { border-color: rgba(201,164,92,0.6); }
   .worlds a.w-tol:hover  { border-color: rgba(110,180,255,0.6); }
   .worlds a.w-ai:hover   { border-color: rgba(170,130,255,0.6); }
-  .worlds a.w-bf:hover   { border-color: rgba(255,200,140,0.6); }
   .worlds a.w-gg:hover   { border-color: rgba(61,220,132,0.6); }
+  .worlds a.w-rp:hover   { border-color: rgba(179,36,44,0.6); }
   .worlds a.w-cap:hover  { border-color: rgba(227,19,27,0.7); }
 
   /* =================== ROLLABOP =================== */
@@ -354,52 +354,6 @@
   .honest svg { width: 24px; height: 24px; color: var(--ai2); flex: none; margin-top: 3px; }
   .honest p { margin: 0; font-size: 1.02rem; }
 
-  /* =================== BREATHEFRAME =================== */
-  .bf {
-    --bf-warm: #ffcf8a; --bf-ink: #f6efe6; --bf-m: #cbbfb1;
-    position: relative; overflow: hidden; padding: 128px 0;
-    background:
-      radial-gradient(700px 500px at 75% 50%, rgba(255,190,120,0.12), transparent 70%),
-      linear-gradient(180deg, #16120f, #1b1612 60%, #14110e);
-    color: var(--bf-ink);
-  }
-  .bf-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
-  .bf .kicker { color: var(--bf-warm); }
-  .bf h2 { font-size: clamp(3rem, 6vw, 4.6rem); margin-bottom: 8px; }
-  .bf .bf-line { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: clamp(1.6rem, 3vw, 2.1rem); color: var(--bf-warm); margin-bottom: 22px; line-height: 1.2; }
-  .bf .status { color: #f2b6ff; margin-bottom: 24px; }
-  .bf p { color: var(--bf-m); font-size: 1.1rem; max-width: 50ch; margin-bottom: 18px; }
-  .bf-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 30px; }
-  .bf-tags span { padding: 8px 14px; border-radius: 999px; font-size: 0.92rem; background: rgba(255,207,138,0.08); border: 1px solid rgba(255,207,138,0.25); color: var(--bf-ink); }
-  .btn-warm { background: linear-gradient(180deg, #ffe0b0, #ffb867); color: #2a1706; box-shadow: 0 8px 30px rgba(255,184,103,0.25); }
-
-  .frame {
-    position: relative; padding: 18px; border-radius: 6px;
-    background: linear-gradient(145deg, #f4ede2, #d9cdbb);
-    box-shadow: 0 2px 0 #fff8 inset, 0 40px 80px rgba(0,0,0,0.6), 0 0 0 10px #3b2a1c, 0 0 0 12px #6b4c30;
-    transform: rotate(-1.2deg);
-    margin: 14px;
-  }
-  .concept-badge { position: absolute; top: 26px; left: 26px; z-index: 3; padding: 6px 12px; border-radius: 999px; background: rgba(20,14,10,0.82); color: #ffe0b0; font-size: 0.84rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(255,207,138,0.45); }
-  .scene-box { position: relative; aspect-ratio: 8 / 5; overflow: hidden; border-radius: 2px; background: #0d1830; }
-  .scene-box svg, .scene-box canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .scene .tree { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 5.5s ease-in-out infinite; }
-  .scene .tree.b { animation-duration: 6.8s; animation-delay: -2s; }
-  .scene .tree.c { animation-duration: 6.1s; animation-delay: -4s; }
-  @keyframes sway { 0%,100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.4deg); } }
-  .scene .bulb { animation: twinkle 2.6s ease-in-out infinite; }
-  @keyframes twinkle { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-  .scene .glowwin { animation: flicker 4s ease-in-out infinite; }
-  @keyframes flicker { 0%,100% { opacity: 1; } 45% { opacity: .86; } 55% { opacity: .95; } }
-  .scene-box.still .tree, .scene-box.still .bulb, .scene-box.still .glowwin { animation-play-state: paused; }
-  .bf-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
-  .bf-controls small { color: var(--bf-m); font-size: 0.88rem; }
-  .toggle {
-    display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 18px; border-radius: 999px; cursor: pointer;
-    background: rgba(255,207,138,0.1); border: 1px solid rgba(255,207,138,0.35); color: var(--bf-ink); font: inherit; font-weight: 600; font-size: 0.95rem;
-  }
-  .toggle:hover { background: rgba(255,207,138,0.18); }
-
   /* =================== GLUCOSE GLANCE =================== */
   .gg { position: relative; padding: 120px 0; overflow: hidden; color: #eef1ff;
     background: radial-gradient(circle at 78% 30%, rgba(60,80,220,0.35), transparent 55%), linear-gradient(160deg, #0b0f33 0%, #10164a 50%, #070a24 100%);
@@ -453,6 +407,24 @@
     .gg-previews { gap: 6px; }
     .gg-btns .btn { width: 100%; justify-content: center; }
   }
+
+  /* =================== RECIPEARL =================== */
+  .rp { padding: 110px 0; background: radial-gradient(circle at 85% 30%, rgba(185,120,58,0.22), transparent 55%), #fef5e4; color: #2b1d14; border-top: 1px solid #ecd6b2; }
+  .rp-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+  .rp .kicker { color: #3f7d3a; }
+  .rp h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: clamp(3rem, 6.5vw, 4.6rem); color: #b3242c; line-height: 1; margin-bottom: 14px; }
+  .rp-tagline { font-size: clamp(1.3rem, 2.4vw, 1.6rem); font-weight: 600; margin-bottom: 18px; }
+  .rp .status { color: #3f7d3a; margin-bottom: 22px; background: rgba(255,255,255,0.5); }
+  .rp-body { color: #5e4a3a; font-size: 1.1rem; max-width: 52ch; margin-bottom: 24px; }
+  .rp-feats { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .rp-feats li { padding: 14px 16px; border-radius: 14px; background: #fffaf1; border: 1px solid #ecd6b2; font-size: 1rem; color: #5e4a3a; }
+  .rp-feats b { display: block; color: #2b1d14; font-size: 1.05rem; }
+  .btn-rp { background: #b3242c; color: #fff; box-shadow: 0 8px 24px rgba(179,36,44,0.25); }
+  .btn-rp:hover { background: #8e1a21; }
+  .btn-rpdim { background: #fffaf1; border-color: #ecd6b2; color: #2b1d14; }
+  .rp-art { justify-self: center; width: min(360px, 100%); filter: drop-shadow(0 24px 40px rgba(120,60,20,0.25)); }
+  @media (max-width: 900px) { .rp-grid { grid-template-columns: 1fr; gap: 32px; } .rp-art { order: -1; width: min(240px, 64%); } }
+  @media (max-width: 640px) { .rp { padding: 64px 0; } .rp-feats { grid-template-columns: 1fr; } .rp .btns .btn { width: 100%; justify-content: center; } }
 
   /* =================== CAPTRAZE CARD =================== */
   .cap { padding: 96px 0; background: #08080a; border-top: 1px solid rgba(227,19,27,0.25); }
@@ -587,7 +559,7 @@
   }
   @media (max-width: 960px) {
     .hero { min-height: 0; padding: 48px 0 80px; }
-    .hero-grid, .rb-grid, .t-grid, .bf-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-grid, .rb-grid, .t-grid { grid-template-columns: 1fr; gap: 48px; }
     .hero-logo-wrap { width: min(300px, 76%); order: -1; }
     .hero-gear { width: 700px; height: 700px; right: -300px; margin-top: -350px; }
     .rb-stage { order: 2; width: min(340px, 82%); }
@@ -619,7 +591,7 @@
     .hero h1 { margin-bottom: 18px; }
     .hero .lead { font-size: 1.15rem; margin-bottom: 26px; }
     .worlds { margin-top: 26px; }
-    .rb-grid, .t-grid, .bf-grid { gap: 36px; }
+    .rb-grid, .t-grid { gap: 36px; }
     .rb-feats { grid-template-columns: 1fr; gap: 10px; margin-bottom: 22px; }
     .rb-feats li { padding: 12px 14px; }
     .rb-feats strong { font-size: 1.25rem; }
@@ -637,7 +609,6 @@
     .goals { grid-template-columns: 1fr 1fr; gap: 8px; margin: 22px 0; }
     .goals li { padding: 12px 14px; font-size: 0.86rem; }
     .goals li:last-child { grid-column: 1 / -1; }
-    .bf-tags { margin: 18px 0 22px; }
     .manifesto { margin-bottom: 36px; }
     .p-grid { gap: 10px; }
     .p-card { display: grid; grid-template-columns: 42px 1fr; column-gap: 12px; padding: 18px 18px 18px 14px; }
@@ -656,7 +627,6 @@
     .c-links { gap: 8px; }
     .c-links a { min-height: 52px; padding: 6px 12px; }
     .beta-steps small { margin-bottom: 10px; }
-    .concept-badge { top: 18px; left: 16px; }
     .rb-ball:not(.small) { display: none; }
     .rb-ball.small { width: 46px; height: 46px; left: -52px; }
     .p-grid { grid-template-columns: 1fr; }
@@ -686,7 +656,6 @@
       <li><a href="#glucose-glance">Glucose Glance</a></li>
       <li><a href="#tolliver">Tolliver</a></li>
       <li><a href="#tolliver-ai">Tolliver AI</a></li>
-      <li><a href="#breatheframe">BreatheFrame</a></li>
       <li><a href="#captraze">CAPTRAZE</a></li>
       <li><a href="#story">Our Story</a></li>
       <li><a class="cta" href="#connect">Connect</a></li>
@@ -718,9 +687,9 @@
       <nav class="worlds reveal d3" aria-label="Our projects">
         <a class="w-roll" href="#rollabop"><span class="w-ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="36" height="36"></span>Rollabop</a>
         <a class="w-gg" href="#glucose-glance"><span class="w-ico"><img src="assets/glucose/glucose-icon.webp" alt="" width="36" height="36"></span>Glucose Glance</a>
+        <a class="w-rp" href="#recipearl"><span class="w-ico"><img src="recipearl/recipearl-icon.webp" alt="" width="36" height="36"></span>Recipearl</a>
         <a class="w-tol" href="#tolliver"><span class="w-ico" style="background:#0d1a2b"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><circle cx="12" cy="18" r="5" fill="#2a74d6"/><circle cx="12" cy="18" r="2.2" fill="#06101d"/><circle cx="24" cy="18" r="5" fill="#2a74d6"/><circle cx="24" cy="18" r="2.2" fill="#06101d"/></svg></span>Tolliver</a>
         <a class="w-ai" href="#tolliver-ai"><span class="w-ico" style="background:#16112c"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><g stroke="#8f7bff" stroke-width="1.4"><path d="M10 12l8 6 8-7M18 18l-6 8M18 18l7 7"/></g><g fill="#5ef2e0"><circle cx="10" cy="12" r="2.4"/><circle cx="26" cy="11" r="2.4"/><circle cx="18" cy="18" r="3"/><circle cx="12" cy="26" r="2.4"/><circle cx="25" cy="25" r="2.4"/></g></svg></span>Tolliver AI</a>
-        <a class="w-bf" href="#breatheframe"><span class="w-ico" style="background:#2a1f16"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><rect x="9" y="10" width="18" height="16" rx="2" fill="none" stroke="#ffcf8a" stroke-width="1.8"/><path d="M11 23l5-5 4 4 2-2 4 3" fill="none" stroke="#ffcf8a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="15" r="1.8" fill="#ffcf8a"/></svg></span>BreatheFrame</a>
         <a class="w-cap" href="#captraze"><span class="w-ico" style="background:#16080a"><svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true"><polygon points="18,6 28,12 28,24 18,30 8,24 8,12" fill="none" stroke="#e3131b" stroke-width="2"/><text x="18" y="23" text-anchor="middle" font-family="Arial Black,Arial" font-weight="900" font-size="12" fill="#e3131b">R</text></svg></span>CAPTRAZE</a>
       </nav>
     </div>
@@ -851,6 +820,30 @@
   </div>
 </section>
 
+<!-- ======================= RECIPEARL ======================= -->
+<section class="rp" id="recipearl" aria-labelledby="rp-title">
+  <div class="wrap rp-grid">
+    <div>
+      <span class="kicker reveal">Android recipe app</span>
+      <h2 id="rp-title" class="reveal d1">Recipearl</h2>
+      <p class="rp-tagline reveal d1">All your favorite recipes, safe and together.</p>
+      <span class="status reveal d1">Coming soon to Google Play</span>
+      <p class="rp-body reveal d2">Save recipes from your favorite websites, keep family favorites, and cook from a clear, easy-to-read page. Your collection stays on your phone, with no account, no ads and no tracking.</p>
+      <ul class="rp-feats reveal d2">
+        <li><b>Save from websites</b>Share a recipe link, and Recipearl fills in the details.</li>
+        <li><b>Duplicate protection</b>Warns you before saving a recipe you already have.</li>
+        <li><b>Shopping list</b>Add ingredients and check them off at the store.</li>
+        <li><b>Never lose a recipe</b>Recently Deleted, Undo Last Edit, and Backup &amp; Restore.</li>
+      </ul>
+      <div class="btns reveal d3">
+        <a class="btn btn-rp" href="recipearl/">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a>
+        <a class="btn btn-rpdim" href="recipearl/privacy.html">Privacy policy</a>
+      </div>
+    </div>
+    <img class="rp-art reveal d1" src="recipearl/recipearl-icon.webp" alt="Recipearl app icon: a red recipe book with a chef's hat, a wooden spoon and fresh basil" width="384" height="384" loading="lazy">
+  </div>
+</section>
+
 <!-- ======================= TOLLIVER ======================= -->
 <section class="tolliver" id="tolliver" aria-labelledby="tolliver-title">
   <div class="wrap t-grid">
@@ -937,95 +930,6 @@
       <div class="honest reveal d3">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
         <p><strong>Where we are, honestly:</strong> we are working toward this goal. We have not achieved it yet. Our hope is that, one day, our own Tolliver AI brain will power the Tolliver companion.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ======================= BREATHEFRAME ======================= -->
-<section class="bf" id="breatheframe" aria-labelledby="bf-title">
-  <div class="wrap bf-grid">
-    <div>
-      <span class="kicker reveal">A future creative tool</span>
-      <h2 id="bf-title" class="reveal d1">BreatheFrame</h2>
-      <p class="bf-line reveal d1">Some moments deserve to breathe.</p>
-      <span class="status reveal d2">In development</span>
-      <p class="reveal d2">BreatheFrame will add subtle, realistic movement to your still photographs. Picture softly falling snow, gently blinking holiday lights, or trees moving slightly in the wind.</p>
-      <p class="reveal d2">It's meant to be quiet and believable, like a memory that's still a little alive.</p>
-      <div class="bf-tags reveal d3"><span>Planned: free</span><span>Planned: open source</span><span>Android</span></div>
-      <div class="btns reveal d3">
-        <a class="btn btn-warm" href="https://github.com/Patevan9/BreatheFrame">Follow it on GitHub
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <div class="reveal d1">
-      <div class="frame">
-        <span class="concept-badge">Concept illustration</span>
-        <div class="scene-box" id="scene">
-          <svg class="scene" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Concept illustration: a snowy cabin at night with glowing windows, holiday lights along the roof and pine trees">
-            <defs>
-              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#0b1530"/><stop offset=".6" stop-color="#22305a"/><stop offset="1" stop-color="#4a4f7a"/>
-              </linearGradient>
-              <radialGradient id="moon" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fffbe8"/><stop offset=".6" stop-color="#f6eac2" stop-opacity=".9"/><stop offset="1" stop-color="#f6eac2" stop-opacity="0"/></radialGradient>
-              <radialGradient id="winglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd38a" stop-opacity=".75"/><stop offset="1" stop-color="#ffb35a" stop-opacity="0"/></radialGradient>
-              <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9eefc"/><stop offset="1" stop-color="#aab6d8"/></linearGradient>
-            </defs>
-            <rect width="800" height="500" fill="url(#sky)"/>
-            <circle cx="640" cy="92" r="70" fill="url(#moon)"/>
-            <circle cx="640" cy="92" r="30" fill="#fffaf0"/>
-            <path d="M0 330 Q160 270 320 315 T640 300 T800 310 V500 H0z" fill="#3a4672"/>
-            <!-- far trees -->
-            <g fill="#25305a">
-              <path class="tree c" d="M70 330l26-80 26 80z"/><path class="tree b" d="M720 318l22-70 22 70z"/><path class="tree" d="M600 312l18-58 18 58z"/>
-            </g>
-            <path d="M0 380 Q200 340 400 372 T800 362 V500 H0z" fill="url(#snow)"/>
-            <!-- cabin -->
-            <g>
-              <ellipse cx="330" cy="352" rx="150" ry="30" fill="url(#winglow)" class="glowwin"/>
-              <rect x="250" y="272" width="170" height="92" fill="#3b2a22"/>
-              <path d="M236 278 L335 205 L434 278 Z" fill="#2a1d18"/>
-              <path d="M232 280 L335 202 L438 280" fill="none" stroke="#eef2ff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
-              <rect x="372" y="222" width="18" height="34" fill="#2a1d18"/><rect x="368" y="218" width="26" height="8" fill="#eef2ff"/>
-              <rect x="272" y="296" width="40" height="34" rx="2" fill="#ffcf7a" class="glowwin"/>
-              <path d="M292 296v34M272 313h40" stroke="#3b2a22" stroke-width="3"/>
-              <rect x="350" y="296" width="40" height="34" rx="2" fill="#ffcf7a" class="glowwin"/>
-              <path d="M370 296v34M350 313h40" stroke="#3b2a22" stroke-width="3"/>
-              <rect x="318" y="316" width="26" height="48" fill="#5a3a26"/>
-              <!-- string of lights -->
-              <path d="M244 282 Q262 292 280 270 Q298 282 316 250 Q333 262 335 214 Q338 262 354 250 Q372 282 390 270 Q408 292 426 282" fill="none" stroke="#1b1410" stroke-width="1.5" opacity=".7"/>
-              <g>
-                <circle class="bulb" cx="252" cy="286" r="4.5" fill="#ff5a5a" style="animation-delay:-.2s"/>
-                <circle class="bulb" cx="270" cy="282" r="4.5" fill="#ffd34d" style="animation-delay:-1.1s"/>
-                <circle class="bulb" cx="290" cy="270" r="4.5" fill="#5ad1ff" style="animation-delay:-.6s"/>
-                <circle class="bulb" cx="306" cy="262" r="4.5" fill="#7dff8a" style="animation-delay:-1.8s"/>
-                <circle class="bulb" cx="322" cy="244" r="4.5" fill="#ff5a5a" style="animation-delay:-.9s"/>
-                <circle class="bulb" cx="348" cy="244" r="4.5" fill="#ffd34d" style="animation-delay:-2.2s"/>
-                <circle class="bulb" cx="364" cy="262" r="4.5" fill="#5ad1ff" style="animation-delay:-.3s"/>
-                <circle class="bulb" cx="380" cy="270" r="4.5" fill="#7dff8a" style="animation-delay:-1.5s"/>
-                <circle class="bulb" cx="400" cy="282" r="4.5" fill="#ff5a5a" style="animation-delay:-2.5s"/>
-                <circle class="bulb" cx="418" cy="286" r="4.5" fill="#ffd34d" style="animation-delay:-.75s"/>
-              </g>
-            </g>
-            <!-- near trees -->
-            <g>
-              <g class="tree"><path d="M120 420l46-150 46 150z" fill="#16304a"/><path d="M140 360l26-78 26 78z" fill="#1d3d5c"/><path d="M152 300 l14 -32 l14 32 q-14 -8 -28 0z" fill="#eef2ff"/><path d="M128 410q38-14 76 0" stroke="#eef2ff" stroke-width="6" fill="none" stroke-linecap="round" opacity=".85"/></g>
-              <g class="tree b"><path d="M520 430l56-180 56 180z" fill="#132b44"/><path d="M546 350l30-96 30 96z" fill="#1b3a58"/><path d="M561 286 l15 -36 l15 36 q-15 -9 -30 0z" fill="#eef2ff"/><path d="M530 418q46-16 92 0" stroke="#eef2ff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".85"/></g>
-              <g class="tree c"><path d="M660 440l40-130 40 130z" fill="#16304a"/><path d="M684 345 l16 -38 l16 38 q-16 -9 -32 0z" fill="#eef2ff"/></g>
-            </g>
-            <path d="M0 440 Q240 410 480 438 T800 430 V500 H0z" fill="#dfe6f8"/>
-          </svg>
-          <canvas id="snowfall" aria-hidden="true"></canvas>
-        </div>
-      </div>
-      <div class="bf-controls">
-        <small>Concept illustration, not a screenshot of the app.</small>
-        <button class="toggle" id="bf-toggle" aria-pressed="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
-          <span>Pause the motion</span>
-        </button>
       </div>
     </div>
   </div>
@@ -1118,7 +1022,7 @@
       </div>
       <div class="ch reveal">
         <div class="ch-label">And then</div>
-        <div class="ch-text"><p>Scout became Tolliver. Then my curiosity kept going, into Rollabop, BreatheFrame and the long road of Tolliver AI.</p></div>
+        <div class="ch-text"><p>Scout became Tolliver. Then my curiosity kept going, into Rollabop and the long road of Tolliver AI.</p></div>
       </div>
       <div class="ch bright reveal">
         <div class="ch-label">Why I build</div>
@@ -1153,7 +1057,7 @@
           <li><a href="https://lippyroboticslabs.com/rollabop-website/"><span class="ico"><img src="assets/rollabop/galaxy-ball.webp" alt="" width="38" height="38"></span><span><b>Rollabop</b><small>Game website</small></span></a></li>
           <li><a href="https://play.google.com/store/apps/details?id=com.lippyrobotics.rollabop"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.5v17a1 1 0 001.5.86l14-8.5a1 1 0 000-1.72l-14-8.5A1 1 0 005 3.5z"/></svg></span><span><b>Get Rollabop</b><small>On Google Play</small></span></a></li>
           <li><a href="glucose-privacy.html"><span class="ico"><img src="assets/glucose/glucose-icon.webp" alt="" width="38" height="38"></span><span><b>Glucose Glance</b><small>Privacy policy</small></span></a></li>
-          <li><a href="https://github.com/Patevan9/BreatheFrame"><span class="ico" style="background:rgba(255,207,138,0.12);color:#ffcf8a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M5 17l5-5 4 4 2-2 3 3"/></svg></span><span><b>BreatheFrame</b><small>On GitHub</small></span></a></li>
+          <li><a href="recipearl/"><span class="ico"><img src="recipearl/recipearl-icon.webp" alt="" width="38" height="38"></span><span><b>Recipearl</b><small>Recipe app website</small></span></a></li>
           <li><a href="https://lippyroboticslabs.com/captraze/"><span class="ico" style="background:#16080a;color:#e3131b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5"/><path d="M9.5 16V8h3a2.2 2.2 0 010 4.4h-3M12.5 12.4L15 16"/></svg></span><span><b>CAPTRAZE</b><small>Concept site · 18+</small></span></a></li>
         </ul>
       </div>
@@ -1180,9 +1084,9 @@
       <nav aria-label="Footer">
         <a href="#rollabop">Rollabop</a>
         <a href="#glucose-glance">Glucose Glance</a>
+        <a href="#recipearl">Recipearl</a>
         <a href="#tolliver">Tolliver</a>
         <a href="#tolliver-ai">Tolliver AI</a>
-        <a href="#breatheframe">BreatheFrame</a>
         <a href="#captraze">CAPTRAZE</a>
         <a href="#story">Our Story</a>
         <a href="#connect">Connect</a>
@@ -1316,36 +1220,6 @@
     if (!reduce) (function loop() { if (onScreen('tolliver-ai') && !document.hidden) { stepN(); drawN(); } requestAnimationFrame(loop); })();
   }
 
-  // ---- BreatheFrame snowfall + motion toggle
-  var sc = document.getElementById('snowfall'), box = document.getElementById('scene'), tog = document.getElementById('bf-toggle');
-  if (sc && sc.getContext) {
-    var sx = sc.getContext('2d'), flakes = [], SW = 0, SH = 0, sd = Math.min(window.devicePixelRatio || 1, 2), moving = !reduce;
-    function sizeS() {
-      var r = sc.getBoundingClientRect(); SW = r.width; SH = r.height;
-      sc.width = SW * sd; sc.height = SH * sd; sx.setTransform(sd, 0, 0, sd, 0, 0);
-      flakes = []; var c = Math.round(SW * SH / 2600);
-      for (var i = 0; i < c; i++) flakes.push({ x: Math.random() * SW, y: Math.random() * SH, r: .6 + Math.random() * 2, s: .25 + Math.random() * .7, w: Math.random() * 6.28 });
-    }
-    function drawS() {
-      sx.clearRect(0, 0, SW, SH);
-      flakes.forEach(function (f) { sx.fillStyle = 'rgba(255,255,255,' + (0.45 + f.r / 5).toFixed(2) + ')'; sx.beginPath(); sx.arc(f.x, f.y, f.r, 0, 6.283); sx.fill(); });
-    }
-    function stepS() {
-      flakes.forEach(function (f) { f.y += f.s; f.w += 0.012; f.x += Math.sin(f.w) * 0.3; if (f.y > SH + 4) { f.y = -4; f.x = Math.random() * SW; } });
-    }
-    sizeS(); drawS();
-    window.addEventListener('resize', function () { sizeS(); drawS(); });
-    (function loop() { if (moving && onScreen('breatheframe') && !document.hidden) { stepS(); drawS(); } requestAnimationFrame(loop); })();
-
-    function setMotion(on) {
-      moving = on; box.classList.toggle('still', !on);
-      tog.setAttribute('aria-pressed', on);
-      tog.querySelector('span').textContent = on ? 'Pause the motion' : 'Bring it to life';
-      tog.querySelector('svg').innerHTML = on ? '<path d="M8 5v14M16 5v14"/>' : '<path d="M7 5l12 7-12 7z" fill="currentColor"/>';
-    }
-    if (reduce) setMotion(false);
-    tog.addEventListener('click', function () { setMotion(!moving); });
-  }
 })();
 </script>
 </body>
