@@ -1,3 +1,5 @@
+> **Retired November 24, 2026.** The app became free, so this helper was deleted from Cloudflare (Worker and KV storage). This folder is kept only as a record.
+
 # Glucose Glance download helper (Cloudflare Worker)
 
 Locks the installer download to real purchases.
